@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import org.python.apache.commons.compress.harmony.pack200.NewAttributeBands.Callable;
+
 import Credentials.WizCredentials;
 
 import com.mysql.cj.jdbc.CallableStatement;
@@ -23,7 +25,7 @@ import Gear.Boot;
 import Gear.Deck;
 import Gear.Gear;
 import Gear.Hat;
-import Gear.Pet;
+import Pets.Pet; 
 import Gear.Ring;
 import Gear.Robe;
 import Gear.Wand;
@@ -838,9 +840,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		Amulet amulet = (Amulet)instantiateGearPiece(listGear[5], school, level); 
 		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level); 
 		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level); 
-		//Pet pet = (Pet)instantiateGearPiece(listGear[8], school, 9); 
+		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level); 
 
-		Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, null); 
+		Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, pet); 
 
 		System.out.println("The gear information for player "  + wizard + " is now completed."); 
 		System.out.println(gear.toString()); 
@@ -1417,6 +1419,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		String amuletName; 
 		String ringName; 
 		String deckName; 
+		String petName; 
 
 
 		Scanner sc = new Scanner(System.in); 
@@ -1548,15 +1551,22 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				}
 				Deck deck = (Deck)instantiateGearPiece(gearName, school, level);
 				return deck;
-			/*case "pet": 
-				boolean res8 = checkGearName(petName, gearName, school); 
-				if(res8 == true)
+			case "pet": 
+				petName = sc.nextLine(); 
+				if(!(sc.hasNextLine()))
+				{
+					sc.close(); 
+				}
+				boolean res9 = checkGearName(petName, gearName, school, level); 
+				if(res9 == true)
 				{
 					Pet pet = new Pet(petName); 
 					System.out.println("Pet: " + petName + " created."); 
 					sc.close(); 
 					return pet; 
-				}*/
+				}
+				Pet pet = (Pet)instantiateGearPiece(gearName, school, level); 
+				return pet; 
 		}
 		sc.close();
 		TypeException ex = new TypeException();
@@ -1583,26 +1593,56 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 			if(conn1 != null)
 			{
-				CallableStatement stmt = (CallableStatement) conn1.prepareCall("{call extractgear(?,?,?,?)}"); 
-			 	stmt.setString(1, school); 
-				stmt.setString(2, pieceOfGear);
-				stmt.setString(3, String.valueOf(level)); 
-				stmt.registerOutParameter(4, Types.VARCHAR); 
-
-				stmt.execute(); 
-				
-				String databaseGearName = stmt.getString(4); 
-
-			 	if(gearName.equals(databaseGearName))
+				if(gearName.equals("pet"))
 				{
+					//Create a sql string
+					String sqlToExecute = "SELECT typeName, school, description FROM wizard_schema.pets";
+					//Execute the sql string above, but create a statement first.
+					Statement createStatement = conn1.createStatement(); 
+					//Store the result inside a result set to access the database column's data
+					ResultSet rs = createStatement.executeQuery(sqlToExecute); 
+
+					boolean iterate = false; 
+					while(rs.next())
+					{
+						//Retrieve the typename of the pet
+						String typeName = rs.getString("typeName"); 
+						Pet.typeName = typeName; 
+
+						//Retrieve the school of the pet 
+						String schoolOfPet = rs.getString("school"); 
+						Pet.school = schoolOfPet; 
+
+						iterate = true; 
+					}
 					conn1.close(); 
-					return true; 
+					if(iterate == false)
+					{
+						System.out.println("Pet Type: " + Pet.typeName + " does not exist inside database.");
+					}
+					return iterate; 
 				}
-				System.out.println("Gear Name entered " + gearName + " does not match " + "database gearName " + databaseGearName + "of given school " + school); 
-				conn1.close(); 
-				return false; 
+				else 
+				{
+					CallableStatement stmt = (CallableStatement) conn1.prepareCall("{call extractgear(?,?,?,?)}"); 
+			 		stmt.setString(1, school); 
+					stmt.setString(2, pieceOfGear);
+					stmt.setString(3, String.valueOf(level)); 
+					stmt.registerOutParameter(4, Types.VARCHAR); 
 
+					stmt.execute(); 
+				
+					String databaseGearName = stmt.getString(4); 
 
+			 		if(gearName.equals(databaseGearName))
+					{
+						conn1.close(); 
+						return true; 
+					}
+					System.out.println("Gear Name entered " + gearName + " does not match " + "database gearName " + databaseGearName + "of given school " + school); 
+					conn1.close(); 
+					return false; 
+				}
 			}
 			return false; 
 		}

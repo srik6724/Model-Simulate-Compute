@@ -1,22 +1,27 @@
 package Pets;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class Pet {
 
-private String typeName; 
-private HashMap<Integer, List<String>> petTalents = new HashMap<Integer, List<String>>(); 
-
+private String nameOfPet; 
+public static String typeName; 
+public static String school;
+protected static HashMap<Integer, List<Talent>> petTalents = new HashMap<Integer, List<Talent>>(); 
 
 public Pet()
 {
-  System.out.println("Pet Type: " + typeName);
+  System.out.println("Name of Pet: " + nameOfPet);
+  if(Pet.typeName != null && Pet.school != null)
+  {
+    System.out.println("Pet Type: " + Pet.typeName);
+    System.out.println("Pet school: " + Pet.school); 
+  }
   int talentNumber = 1; 
   for(Integer number: petTalents.keySet())
   {
-    String getTalent = petTalents.get(number).get(0); 
+    Talent getTalent = petTalents.get(number).get(0); 
     talentNumber = talentNumber + 1; 
     if(talentNumber == 6 && number == 6)
     {
@@ -32,14 +37,11 @@ public Pet()
   
 }
 
-
-
-/**
- * Pet attributes: 
- * Name
- * Talents(5 Talents)
- * Socketed Talent
- */
+public Pet(String petName)
+{
+  this(); 
+  this.nameOfPet = petName;
+}
 
 }
 

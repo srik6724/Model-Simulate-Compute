@@ -1,5 +1,7 @@
 package Gear;
 
+import Pets.Pet;
+
 public class Gear {
 
   private Hat hat; 
