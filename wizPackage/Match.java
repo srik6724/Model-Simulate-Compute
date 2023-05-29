@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -393,6 +394,25 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("Now, for the final step of registration, enter the order your team "
 				+ "would like to be placed in during the match."); 
 		
+		System.out.println("Just quickly before that, here is a list of potential orders, you may be interested in " + 
+		"ordering your team."); 
+
+		HashMap<Integer, List<String>> orderDetail = new HashMap<Integer, List<String>>(); 
+
+		int left = 0; 
+		int right = 0; 
+		int length = firstTeamSchools.length; 
+
+		generatePossibleOrders(left, right, length, Arrays.asList(firstTeamSchools), orderDetail);
+
+		int setCount = 1; 
+		for(int number: orderDetail.keySet())
+		{
+			System.out.println("Order "  + setCount +  ": " + orderDetail.get(number)); 
+		}
+
+
+
 		int playerOrderCount = 4; 
 		int startIndex = 0; 
 		String retrievePlayerName = ""; 
@@ -427,6 +447,70 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		
 	}
 	
+	private void generatePossibleOrders(int left, int right, int length, List<String> firstTeamSchools, HashMap<Integer, List<String>> orderDetail) {
+
+		//Implement a backtracking algorithm that generates all the possible combinations of orders that one can look at.
+		//Use hashmap to store the information of each order. 
+		//Make sure to terminate the base case if there are duplicates and no other potential combinations can be created. 
+		//Use a randomization metric from 0-3 to decide which two elements to swap
+
+		String[] orderCreated = new String[4]; 
+
+		firstTeamSchools.toArray(orderCreated); 
+
+		if(searchForDuplicates(orderCreated, orderDetail) == true)
+		{
+			return; 
+		}
+		orderDetail.put(left + 1, Arrays.asList(orderCreated));
+
+		if(left < length)
+		{
+
+			int firstRandomNumber = (int)(Math.random() * 3); 
+			int secondRandomNumber = (int)(Math.random() * 3); 
+
+			String temp = orderCreated[firstRandomNumber]; 
+			orderCreated[firstRandomNumber] = orderCreated[secondRandomNumber];
+			orderCreated[secondRandomNumber] = temp; 
+
+			generatePossibleOrders(left + 1, right, length, Arrays.asList(orderCreated), orderDetail);
+
+		}
+
+		int firstRandomNumber = (int)(Math.random() * 3); 
+		int secondRandomNumber = (int)(Math.random() * 3); 
+
+		String temp = orderCreated[firstRandomNumber]; 
+		orderCreated[firstRandomNumber] = orderCreated[secondRandomNumber]; 
+		orderCreated[secondRandomNumber] = temp; 
+		
+		generatePossibleOrders(left, right+1, length, Arrays.asList(orderCreated), orderDetail);
+
+	}
+
+
+	private boolean searchForDuplicates(String[] orderCreated, HashMap<Integer, List<String>> orderDetail) {
+
+		boolean track = true; 
+		for(int number: orderDetail.keySet())
+		{
+			String firstSchool = orderDetail.get(number).get(0); 
+			String secondSchool = orderDetail.get(number).get(1); 
+			String thirdSchool = orderDetail.get(number).get(2); 
+			String fourthSchool = orderDetail.get(number).get(3); 
+			
+			if(firstSchool.equals(orderCreated[0]) && secondSchool.equals(orderCreated[1]) && thirdSchool.equals(orderCreated[2]) && fourthSchool.equals(orderCreated[3]))
+			{
+				track = false; 
+				break; 
+			}
+		}
+		return track;
+
+	}
+
+
 	private List<String> retrieveDuplicateKeyInfo(HashMap<String, List<String>> gearSets, String string) {
 		List<String> gearItems = new ArrayList<String>(); 
 		for(String wizard: gearSets.keySet())
