@@ -309,18 +309,19 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		LinkedList list = new LinkedList(); 
 		for(int i = 0; i < firstTeam.length; i++)
 		{
+			System.out.println(firstTeamSchools[i]); 
 			String fullGearString = computePlayerInformation(firstTeam[i], firstTeamSchools[i], Integer.parseInt(firstTeamLevels[i]));
 			ArrayList<String> storeGearPieces = new ArrayList<String>(); 
 			String gearToAdd = ""; 
 			int start = 1; 
-			while(start <= 8)
+			while(start <= 9)
 			{
 				for(int j = place; j < fullGearString.indexOf(',', 1); j++)
 				{
 					gearToAdd += fullGearString.substring(j, j+1); 
 				}
 
-				if(start == 8)
+				if(start == 9)
 				{
 					for(int x = 0; x < fullGearString.length(); x++)
 					{
@@ -329,7 +330,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				}		
 				System.out.println(gearToAdd); 
 				storeGearPieces.add(gearToAdd); 
-				if(start < 8)
+				if(start < 9)
 				{
 					gearToAdd += ","; 
 				}
@@ -974,7 +975,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 						int schoolIndex = 3; 
 						while(i < 8 && schoolIndex >= 0)
 						{
-							String[] listItems = {"hats", "robes", "boots", "wands", "athames", "amulets", "rings", "decks"};
+							String[] listItems = {"hats", "robes", "boots", "wands", "athames", "amulets", "rings", "decks", "pets"};
 							String gearItem = gearSets.get(wizard).get(i);
 							System.out.println("Here are the stats for wizard: " + wizard); 
 							System.out.println("GearItem: " + gearItem); 
@@ -1346,7 +1347,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									firstSocket = createSocketAttachment(firstSocket);
 									AeonDeckStats.socket1 = firstSocket;
 
-
 								}
 								deck = new Deck(gearItem); 
 								deck.statsInformation();
@@ -1646,7 +1646,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					Pet pet = new Pet(petName); 
 					System.out.println("Pet: " + petName + " created."); 
-					sc.close(); 
 					return pet; 
 				}
 				Pet pet = (Pet)instantiateGearPiece(gearName, school, level); 
@@ -1677,22 +1676,38 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 			if(conn1 != null)
 			{
-				if(gearName.equals("pet"))
+				if(pieceOfGear.equals("pet"))
 				{
+					Scanner sc = new Scanner(System.in); 
+					String petType; 
+					System.out.println("Enter the type of your pet here. Make sure to spell it correctly. Otherwise, an error will occur."); 
+					petType = sc.nextLine(); 
+					if(!(sc.hasNextLine()))
+					{
+						sc.close();
+					}
 					//Create a sql string
-					String sqlToExecute = "SELECT typeName, school, description FROM wizard_schema.pets";
+					String sqlToExecute = "SELECT typeName, school FROM wizard_schema.pets WHERE typename = ?";
 					//Execute the sql string above, but create a statement first.
-					Statement createStatement = conn1.createStatement(); 
+					PreparedStatement createStatement = conn1.prepareStatement(sqlToExecute); 
+					createStatement.setString(1, petType); 
 					//Store the result inside a result set to access the database column's data
-					ResultSet rs = createStatement.executeQuery(sqlToExecute); 
+					ResultSet rs = createStatement.executeQuery();  
 
 					boolean iterate = false; 
 					while(rs.next())
 					{
 						//Retrieve the typename of the pet
 						String typeName = rs.getString("typeName"); 
-						Pet.typeName = typeName; 
-
+						if(petType.equals(typeName))
+						{
+							Pet.typeName = typeName; 
+						}
+						else 
+						{
+							System.out.println("Sorry name in database for pet type: " + typeName + " does not match " + petType);
+							break;
+						}
 						//Retrieve the school of the pet 
 						String schoolOfPet = rs.getString("school"); 
 						Pet.school = schoolOfPet; 
@@ -1700,10 +1715,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 						iterate = true; 
 					}
 					conn1.close(); 
-					if(iterate == false)
-					{
-						System.out.println("Pet Type: " + Pet.typeName + " does not exist inside database.");
-					}
 					return iterate; 
 				}
 				else 

@@ -80,7 +80,7 @@ public class Gear {
 
   public String toString()
   {
-    return this.hat.name + "," + this.robe.name + "," + this.boot.name + "," + this.wand.name + "," + this.athame.name + "," + this.amulet.name + "," + this.ring.name + "," + this.deck.name; 
+    return this.hat.name + "," + this.robe.name + "," + this.boot.name + "," + this.wand.name + "," + this.athame.name + "," + this.amulet.name + "," + this.ring.name + "," + this.deck.name + "," + pet.getPetName(); 
   }
 
   public void calculateFinalStats()

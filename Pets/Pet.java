@@ -12,7 +12,6 @@ protected static HashMap<Integer, List<Talent>> petTalents = new HashMap<Integer
 
 public Pet()
 {
-  System.out.println("Name of Pet: " + nameOfPet);
   if(Pet.typeName != null && Pet.school != null)
   {
     System.out.println("Pet Type: " + Pet.typeName);
@@ -41,7 +40,15 @@ public Pet(String petName)
 {
   this(); 
   this.nameOfPet = petName;
+  System.out.println("Name of Pet: " + this.nameOfPet);
 }
+
+public String getPetName()
+{
+  return nameOfPet;
+}
+
+
 
 }
 
