@@ -19,7 +19,18 @@ import Credentials.WizCredentials;
 import com.mysql.cj.jdbc.CallableStatement;
 import com.mysql.cj.x.protobuf.MysqlxPrepare.Prepare;
 
+import AeonStats.AeonAmuletStats;
+import AeonStats.AeonAthameStats;
+import AeonStats.AeonBootsStats;
+import AeonStats.AeonClass;
+import AeonStats.AeonDeckStats;
+import AeonStats.AeonHatStats;
+import AeonStats.AeonRingStats;
+import AeonStats.AeonRobeStats;
+import AeonStats.AeonWandStats;
 import CustomExceptions.TypeException;
+import DragoonStats.DragoonClass;
+import EternalStats.EternalClass;
 import Gear.Amulet;
 import Gear.Athame;
 import Gear.Boot;
@@ -30,19 +41,12 @@ import Pets.Pet;
 import Gear.Ring;
 import Gear.Robe;
 import Gear.Wand;
-import Stats.AeonAmuletStats;
-import Stats.AeonAthameStats;
-import Stats.AeonBootsStats;
-import Stats.AeonDeckStats;
-import Stats.AeonHatStats;
-import Stats.AeonRingStats;
-import Stats.AeonRobeStats;
-import Stats.AeonWandStats;
 import wizPackage.LinkedList.Node;
 import PlayerStats.Player;
 import SchoolSpells.Spell;
 import SchoolSpells.schoolSpells;
-import Sockets.Socket; 
+import Sockets.Socket;
+import SpookyStats.SpookyClass; 
 public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
 	
 	//Arrays to store information about the firstTeam and secondTeam. 
@@ -113,8 +117,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	
 	public void enroll2Teams()
 	{
-		enrollFirstTeamPlayers(); 
-		enrollSecondTeamPlayers(); 
+		String[] teamStr = {"First", "Second"};  
+		for(int i = 0; i < 2; i++)
+		{
+			enrollTeamPlayers(teamStr[i]);
+		}
 		System.out.println(retrieveFirstTeamName + " will be competing against " + retrieveSecondTeamName); 
 		randomizeArenaSelection(); 
 		matchCountDown(retrieveFirstTeamName, retrieveSecondTeamName); 
@@ -123,11 +130,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 	
 	
-	public void enrollFirstTeamPlayers()
+	public void enrollTeamPlayers(String str)
 	{
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("First Team");
+		System.out.println(str + " Team");
 		System.out.println("-------------------"); 
 		System.out.println("What is the name of your team?"); 
 		
@@ -307,10 +314,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		int firstIteration = 1; 
 		String saveDuplicateKey = ""; 
 		LinkedList list = new LinkedList(); 
+		HashMap<Integer, String> keywords = new HashMap<Integer, String>(); 
 		for(int i = 0; i < firstTeam.length; i++)
 		{
 			System.out.println(firstTeamSchools[i]); 
-			String fullGearString = computePlayerInformation(firstTeam[i], firstTeamSchools[i], Integer.parseInt(firstTeamLevels[i]));
+			String fullGearString = computePlayerInformation(firstTeam[i], firstTeamSchools[i], Integer.parseInt(firstTeamLevels[i]), keywords);
 			ArrayList<String> storeGearPieces = new ArrayList<String>(); 
 			String gearToAdd = ""; 
 			int start = 1; 
@@ -387,8 +395,15 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		{
 			System.out.println(wizard); 
 			System.out.println(gearSets.get(wizard).get(0)); 
+			System.out.println(gearSets.get(wizard).get(1)); 
+			System.out.println(gearSets.get(wizard).get(2)); 
+			System.out.println(gearSets.get(wizard).get(3)); 
+			System.out.println(gearSets.get(wizard).get(4)); 
+			System.out.println(gearSets.get(wizard).get(5)); 
+			System.out.println(gearSets.get(wizard).get(6)); 
+			System.out.println(gearSets.get(wizard).get(7)); 
 		}
-		computeStatsInformation(gearSets);
+		computeStatsInformation(gearSets, keywords);
 		
 		
 		
@@ -403,16 +418,16 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		int left = 0; 
 		int right = 0; 
 		int length = firstTeamSchools.length; 
+		int firstLoopIteration = 1; 
+		String[]orderCreated = new String[4]; 
 
-		generatePossibleOrders(left, right, length, Arrays.asList(firstTeamSchools), orderDetail);
-
+		generatePossibleOrders(left, right, length, firstLoopIteration, orderCreated, Arrays.asList(firstTeamSchools), orderDetail);
 		int setCount = 1; 
 		for(int number: orderDetail.keySet())
 		{
 			System.out.println("Order "  + setCount +  ": " + orderDetail.get(number)); 
+			setCount++; 
 		}
-
-
 
 		int playerOrderCount = 4; 
 		int startIndex = 0; 
@@ -435,7 +450,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				System.out.println("Error occurred with registering Player " + startIndex);
 				System.out.print("Try again.");
 			}
-			
 		}
 		
 		int start = 1; 
@@ -448,52 +462,69 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		
 	}
 	
-	private void generatePossibleOrders(int left, int right, int length, List<String> firstTeamSchools, HashMap<Integer, List<String>> orderDetail) {
+	private void generatePossibleOrders(int left, int right, int length, int firstIteration, String[]orderCreated, List<String> firstTeamSchools, HashMap<Integer, List<String>> orderDetail) {
 
 		//Implement a backtracking algorithm that generates all the possible combinations of orders that one can look at.
 		//Use hashmap to store the information of each order. 
 		//Make sure to terminate the base case if there are duplicates and no other potential combinations can be created. 
 		//Use a randomization metric from 0-3 to decide which two elements to swap
 
-		String[] orderCreated = new String[4]; 
-
-		firstTeamSchools.toArray(orderCreated); 
-
-		if(searchForDuplicates(orderCreated, orderDetail) == true)
+		if(firstIteration == 1)
 		{
-			return; 
+			orderCreated = firstTeamSchools.toArray(orderCreated); 
+			firstIteration = 0; 
 		}
-		orderDetail.put(left + 1, Arrays.asList(orderCreated));
+
+		if(orderDetail.size() == 0)
+		{
+			System.out.println(orderCreated[0]); 
+			System.out.println(orderCreated[1]); 
+			System.out.println(orderCreated[2]); 
+			System.out.println(orderCreated[3]); 
+			orderDetail.put(left+1, Arrays.asList(orderCreated)); 
+		}
+		else 
+		{
+			orderDetail.put(left+1, Arrays.asList(orderCreated));
+		}
+		
+		/*if(searchForDuplicates(orderCreated, orderDetail) == true && firstIteration == 0)
+			{
+				return; 
+			}*/
 
 		if(left < length)
 		{
-
-			int firstRandomNumber = (int)(Math.random() * 3); 
-			int secondRandomNumber = (int)(Math.random() * 3); 
+			int firstRandomNumber = (int)(Math.random() * 3) + 1; 
+			int secondRandomNumber = (int)(Math.random() * 3) + 1; 
 
 			String temp = orderCreated[firstRandomNumber]; 
 			orderCreated[firstRandomNumber] = orderCreated[secondRandomNumber];
 			orderCreated[secondRandomNumber] = temp; 
 
-			generatePossibleOrders(left + 1, right, length, Arrays.asList(orderCreated), orderDetail);
+			generatePossibleOrders(left+1, right, length, firstIteration, Arrays.copyOf(orderCreated, orderCreated.length), Arrays.asList(orderCreated), orderDetail);
 
 		}
 
-		int firstRandomNumber = (int)(Math.random() * 3); 
-		int secondRandomNumber = (int)(Math.random() * 3); 
+		if(right < length)
+		{
+			int firstRandomNumber = (int)(Math.random() * 3) + 1; 
+			int secondRandomNumber = (int)(Math.random() * 3) + 1; 
 
-		String temp = orderCreated[firstRandomNumber]; 
-		orderCreated[firstRandomNumber] = orderCreated[secondRandomNumber]; 
-		orderCreated[secondRandomNumber] = temp; 
+			String temp = orderCreated[firstRandomNumber]; 
+			orderCreated[firstRandomNumber] = orderCreated[secondRandomNumber]; 
+			orderCreated[secondRandomNumber] = temp; 
 		
-		generatePossibleOrders(left, right+1, length, Arrays.asList(orderCreated), orderDetail);
+			generatePossibleOrders(left, right+1, length, firstIteration, Arrays.copyOf(orderCreated, orderCreated.length), Arrays.asList(orderCreated), orderDetail);
 
+		}
+		
 	}
 
 
-	private boolean searchForDuplicates(String[] orderCreated, HashMap<Integer, List<String>> orderDetail) {
+	/*private boolean searchForDuplicates(String[] orderCreated, HashMap<Integer, List<String>> orderDetail) {
 
-		boolean track = true; 
+		boolean track = false; 
 		for(int number: orderDetail.keySet())
 		{
 			String firstSchool = orderDetail.get(number).get(0); 
@@ -503,13 +534,13 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			
 			if(firstSchool.equals(orderCreated[0]) && secondSchool.equals(orderCreated[1]) && thirdSchool.equals(orderCreated[2]) && fourthSchool.equals(orderCreated[3]))
 			{
-				track = false; 
+				track = true; 
 				break; 
 			}
 		}
 		return track;
 
-	}
+	}*/
 
 
 	private List<String> retrieveDuplicateKeyInfo(HashMap<String, List<String>> gearSets, String string) {
@@ -913,19 +944,18 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return false; 
 	}
 	
-	public String computePlayerInformation(String wizard, String school, int level)
+	public String computePlayerInformation(String wizard, String school, int level, HashMap<Integer, String> keywords)
 	{
 		String[] listGear = {"hat", "robe", "boot", "wand", "athame", "amulet", "ring", "deck", "pet"};  
-
-		Hat hat = (Hat)instantiateGearPiece(listGear[0], school, level); 
-		Robe robe = (Robe)instantiateGearPiece(listGear[1], school, level); 
-		Boot boot = (Boot)instantiateGearPiece(listGear[2], school, level);
-		Wand wand = (Wand)instantiateGearPiece(listGear[3], school, level); 
-		Athame athame = (Athame)instantiateGearPiece(listGear[4], school, level);
-		Amulet amulet = (Amulet)instantiateGearPiece(listGear[5], school, level); 
-		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level); 
-		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level); 
-		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level); 
+		Hat hat = (Hat)instantiateGearPiece(listGear[0], school, level, keywords); 
+		Robe robe = (Robe)instantiateGearPiece(listGear[1], school, level, keywords); 
+		Boot boot = (Boot)instantiateGearPiece(listGear[2], school, level, keywords);
+		Wand wand = (Wand)instantiateGearPiece(listGear[3], school, level, keywords); 
+		Athame athame = (Athame)instantiateGearPiece(listGear[4], school, level, keywords);
+		Amulet amulet = (Amulet)instantiateGearPiece(listGear[5], school, level, keywords); 
+		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level, keywords); 
+		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level, keywords); 
+		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level, keywords); 
 
 		Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, pet); 
 
@@ -941,9 +971,46 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return true; 
 	}
 
-	public void computeStatsInformation(HashMap<String, List<String>> gearSets)
+	public void computeStatsInformation(HashMap<String, List<String>> gearSets, HashMap<Integer, String> keywords)
 	{
+
+		for(int number: keywords.keySet())
+		{
+			String word = keywords.get(number); 
+			if(word.equals("aeon"))
+			{
+				AeonClass.word = word; 
+				AeonClass cl = new AeonClass(); 
+			}
+			else if(word.equals("eternal"))
+			{
+				EternalClass.word = word; 
+				EternalClass cl = new EternalClass(); 
+			}
+			else if(word.equals("dragoon"))
+			{
+				DragoonClass.word = word; 
+				DragoonClass cl = new DragoonClass(); 
+			}
+			else if(word.equals("spooky"))
+			{
+				SpookyClass.word = word; 
+				SpookyClass cl = new SpookyClass(); 
+			}
+		}
+	}
+
+	/*public void computeStatsInformation(HashMap<String, List<String>> gearSets)
+	{
+			//Different sets of gear: jade_gear, aeon_gear, eternal_gear, dragoon_gear
+			//jade_gear: jade hat, spooky robe
+			//dragoon gear: dragoon athame
+			//darkmoor gear: morganthe's outgoing athame
+			//eternal_gear: helm, boots
 			//Open connection to database
+			//Implement an anonymous class that displays team messages such as anything. 
+			//For now, use phrases such as good luck, have fun, cheers to a good match
+			//while using a data structure, perhaps binary tree to store messages on the backend
 			try 
 			{
 				Connection conn1 = null; 
@@ -969,6 +1036,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 					Amulet amulet = null; 
 					Ring ring = null; 
 					Deck deck = null; 
+					String saveWizard = ""; 
 					for(String wizard: gearSets.keySet())
 					{
 						int i = 0; 
@@ -977,7 +1045,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 						{
 							String[] listItems = {"hats", "robes", "boots", "wands", "athames", "amulets", "rings", "decks", "pets"};
 							String gearItem = gearSets.get(wizard).get(i);
-							System.out.println("Here are the stats for wizard: " + wizard); 
 							System.out.println("GearItem: " + gearItem); 
 							
 
@@ -1001,6 +1068,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									String socket1 = rs.getString("socket1"); 
 									String socket2 = rs.getString("socket2"); 
 									String socket3 = rs.getString("socket3"); 
+									String shadowRating = rs.getString("shadowRating"); 
 
 									Socket firstSocket = new Socket("", "shield", firstTeamSchools[schoolIndex], socket1); 
 									Socket secondSocket = new Socket("", "sword", firstTeamSchools[schoolIndex], socket2); 
@@ -1015,6 +1083,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									AeonHatStats.critical = critical; 
 									AeonHatStats.damage = damage; 
 									AeonHatStats.school = school; 
+									AeonHatStats.shadowRating = shadowRating;
 									AeonHatStats.socket1 = firstSocket; 
 									AeonHatStats.socket2 = secondSocket; 
 									AeonHatStats.socket3 = thirdSocket; 
@@ -1121,11 +1190,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									AeonBootsStats.socket3 = thirdSocket; 
 
 									firstSocket = createSocketAttachment(firstSocket);
-									AeonRobeStats.socket1 = firstSocket;
+									AeonBootsStats.socket1 = firstSocket;
 									secondSocket = createSocketAttachment(secondSocket);
-									AeonRobeStats.socket2 = secondSocket;
+									AeonBootsStats.socket2 = secondSocket;
 									thirdSocket = createSocketAttachment(thirdSocket);
-									AeonRobeStats.socket3 = thirdSocket;
+									AeonBootsStats.socket3 = thirdSocket;
 
 								}
 								boot = new Boot(gearItem); 
@@ -1150,7 +1219,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									String school_damage2 = rs.getString("school_damage2"); 
 									String pip_gain = rs.getString("pip_gain"); 
 									String school = rs.getString("school"); 
+									String block1 = rs.getString("block_1"); 
+									String block2 = rs.getString("block_2"); 
 									String socket1 = rs.getString("socket1"); 
+									String accuracy = rs.getString("accuracy"); 
 
 									Socket firstSocket = new Socket("", "square", firstTeamSchools[schoolIndex], socket1); 
 
@@ -1162,12 +1234,15 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									AeonWandStats.critical_school = critical_school;
 									AeonWandStats.school_damage1 = school_damage1; 
 									AeonWandStats.school_damage2 = school_damage2; 
+									AeonWandStats.block1 = block1;
+									AeonWandStats.block2 = block2; 
+									AeonWandStats.accuracy = accuracy;
 									AeonWandStats.pip_gain = pip_gain; 
 									AeonWandStats.school = school;
 									AeonWandStats.socket1 = firstSocket; 
 
 									firstSocket = createSocketAttachment(firstSocket);
-									AeonRobeStats.socket1 = firstSocket;
+									AeonWandStats.socket1 = firstSocket;
 
 								}
 								wand = new Wand(gearItem); 
@@ -1193,6 +1268,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									String socket2 = rs.getString("socket2"); 
 									String socket3 = rs.getString("socket3");
 									String socket4 = rs.getString("socket4"); 
+									String block1 = rs.getString("block1"); 
 
 									Socket firstSocket = new Socket("", "tear", firstTeamSchools[schoolIndex], socket1); 
 									Socket secondSocket = new Socket("", "circle", firstTeamSchools[schoolIndex], socket2); 
@@ -1207,6 +1283,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									AeonAthameStats.damage = damage; 
 									AeonAthameStats.school_damage1 = school_damage1; 
 									AeonAthameStats.school = school; 
+									AeonAthameStats.block1 = block1; 
 									AeonAthameStats.socket1 = firstSocket; 
 									AeonAthameStats.socket2 = secondSocket; 
 									AeonAthameStats.socket3 = thirdSocket; 
@@ -1281,6 +1358,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									String socket1 = rs.getString("socket1"); 
 									String socket2 = rs.getString("socket2"); 
 									String socket3 = rs.getString("socket3");
+									String outgoing = rs.getString("outgoing"); 
 
 									Socket firstSocket = new Socket("", "tear", firstTeamSchools[schoolIndex], socket1); 
 									Socket secondSocket = new Socket("", "circle", firstTeamSchools[schoolIndex], socket2); 
@@ -1294,6 +1372,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									AeonRingStats.damage = damage; 
 									AeonRingStats.school_damage1 = school_damage1; 
 									AeonRingStats.school = school; 
+									AeonRingStats.outgoing = outgoing; 
 									AeonRingStats.socket1 = firstSocket; 
 									AeonRingStats.socket2 = secondSocket; 
 									AeonRingStats.socket3 = thirdSocket; 
@@ -1329,6 +1408,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									String pip_gain = rs.getString("pip_gain"); 
 									int archmasteryRating = Integer.parseInt(rs.getString("archmastery_rating"));
 									String socket1 = rs.getString("socket1");
+									String pip_conversion = rs.getString("pip_conversion"); 
 
 									Socket firstSocket = new Socket("", "tear", firstTeamSchools[schoolIndex], socket1); 
 
@@ -1338,11 +1418,13 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 									AeonDeckStats.sideboard = sideboard; 
 									AeonDeckStats.health = health; 
 									AeonDeckStats.block = block;
-									AeonDeckStats.critical = critical; 
+									AeonDeckStats.critical = critical;
+									AeonDeckStats.pip_conversion = pip_conversion; 
 									AeonDeckStats.school = school; 
 									AeonDeckStats.pip_gain = pip_gain; 
 									AeonDeckStats.archmastery_rating = archmasteryRating;
-									AeonDeckStats.socket1 = firstSocket; 
+									AeonDeckStats.socket1 = firstSocket;
+
 
 									firstSocket = createSocketAttachment(firstSocket);
 									AeonDeckStats.socket1 = firstSocket;
@@ -1352,17 +1434,20 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 								deck.statsInformation();
 							}
 							i = i + 1; 
-							schoolIndex = schoolIndex - 1; 
+							if(schoolIndex != 0)
+							{
+								schoolIndex = schoolIndex - 1; 
+							}
 						}
+						Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, null);
+						gear.calculateFinalStats(wizard);
 					}		
-					Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, null);
-					gear.calculateFinalStats();
 				}
 			}catch(SQLException e)
 			{
 				System.out.println("Sorry, an exception occurred."); 
 			}
-		}
+		}*/
 
 	private Socket createSocketAttachment(Socket socket) {
 
@@ -1493,7 +1578,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return createNewString; 
 	}
 
-	public Object instantiateGearPiece(String gearName, String school, int level)
+	public Object instantiateGearPiece(String gearName, String school, int level, HashMap<Integer,String> gearKeyWords)
 	{
 		String hatName; 
 		String robeName; 
@@ -1505,6 +1590,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		String deckName; 
 		String petName; 
 
+		String[] jadeGear = {"Sword Of Kings", "Stone Of The Other Side", "Pepper Grass Blade", "Celestian Sliver Of Power", "Ring Of The Dying Star"}; 
+
 
 		Scanner sc = new Scanner(System.in); 
 	
@@ -1512,98 +1599,183 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("If you happen to fail to follow these instructions, you will be redirected back to the same page."); 
 		System.out.println("Thank you for this understanding."); 
 		System.out.println("Enter the name of your " + gearName); 
-		
+
 		switch(gearName) 
 		{
 			case "hat": 
 				hatName = sc.nextLine();
 				if(!(sc.hasNextLine()))
 				{
-						sc.close();
+					sc.close(); 
 				}
-				boolean res1 = checkGearName(hatName, gearName, school, level); 
+				String extractGearType = ""; 
+				boolean isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(hatName)); 
+				boolean check1 = hatName.contains("Aeon"); 
+				boolean check2 = hatName.contains("Eternal"); 
+				boolean check3 = hatName.contains("Dragoon"); 
+				boolean check4 = hatName.contains("Spooky"); 
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, hatName); 
+				}
+				boolean res1 = checkGearName(hatName, gearName, extractGearType, school, level); 
 				if(res1 == true)
 				{
 					Hat hat = new Hat(hatName); 
 					System.out.println("Hat: " + hatName + " created."); 
+					gearKeyWords.put(1, extractGearType); 
 					return hat; 
 				}
-				Hat hat = (Hat)instantiateGearPiece(gearName, school, level);
+				Hat hat = (Hat)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return hat;
 			case "robe": 
 				robeName = sc.nextLine();
 				if(!(sc.hasNextLine()))
 				{
-					sc.close();
+					sc.close(); 
 				}
-				boolean res2 = checkGearName(robeName, gearName, school, level); 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(robeName)); 
+				check1 = robeName.contains("Aeon"); 
+				check2 = robeName.contains("Eternal"); 
+				check3 = robeName.contains("Dragoon"); 
+				check4 = robeName.contains("Spooky");
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, robeName); 
+				} 
+				boolean res2 = checkGearName(robeName, gearName, extractGearType, school, level); 
 				if(res2 == true)
 				{
 					Robe robe = new Robe(robeName); 
 					System.out.println("Robe: " + robeName + " created."); 
+					gearKeyWords.put(2, extractGearType); 
 					return robe;
 				}
-				Robe robe = (Robe)instantiateGearPiece(gearName, school, level);
+				Robe robe = (Robe)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return robe;
 			case "boot": 
 				bootName = sc.nextLine();
 				if(!(sc.hasNextLine()))
 				{
-					sc.close();
+					sc.close(); 
 				}
-				boolean res3 = checkGearName(bootName, gearName, school, level); 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(bootName)); 
+				check1 = bootName.contains("Aeon"); 
+				check2 = bootName.contains("Eternal"); 
+				check3 = bootName.contains("Dragoon"); 
+				check4 = bootName.contains("Spooky"); 
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, bootName); 
+				}
+				boolean res3 = checkGearName(bootName, gearName, extractGearType, school, level); 
 				if(res3 == true)
 				{
 					Boot boot = new Boot(bootName); 
 					System.out.println("Boot: " + bootName + " created."); 
+					gearKeyWords.put(3, extractGearType); 
 					return boot;
 				}
-				Boot boot = (Boot)instantiateGearPiece(gearName, school, level);
+				Boot boot = (Boot)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return boot;
 			case "wand": 
 				wandName = sc.nextLine();
 				if(!(sc.hasNextLine()))
 				{
-					sc.close();
+					sc.close(); 
 				}
-				boolean res4 = checkGearName(wandName, gearName, school, level); 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(wandName)); 
+				check1 = wandName.contains("Aeon"); 
+				check2 = wandName.contains("Eternal"); 
+				check3 = wandName.contains("Dragoon"); 
+				check4 = wandName.contains("Spooky"); 
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, wandName); 
+				}
+				boolean res4 = checkGearName(wandName, gearName, extractGearType, school, level); 
 				if(res4 == true)
 				{
 					Wand wand = new Wand(wandName); 
 					System.out.println("Boot: " + wandName + " created."); 
+					gearKeyWords.put(4, extractGearType); 
 					return wand;
 				}
-				Wand wand = (Wand)instantiateGearPiece(gearName, school, level);
+				Wand wand = (Wand)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return wand;
 			case "athame": 
 				athameName = sc.nextLine();
 				if(!(sc.hasNextLine()))
 				{
-					sc.close();
+					sc.close(); 
 				}
-				boolean res5 = checkGearName(athameName, gearName, school, level); 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(athameName)); 
+				check1 = athameName.contains("Aeon"); 
+				check2 = athameName.contains("Eternal"); 
+				check3 = athameName.contains("Dragoon"); 
+				check4 = athameName.contains("Spooky"); 
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, athameName); 
+				}
+				boolean res5 = checkGearName(athameName, gearName, extractGearType, school, level); 
 				if(res5 == true)
 				{
 					Athame athame = new Athame(athameName); 
 					System.out.println("Athame: " + athameName + " created."); 
+					gearKeyWords.put(5, extractGearType); 
 					return athame;
 				}
-				Athame athame = (Athame)instantiateGearPiece(gearName, school, level);
+				Athame athame = (Athame)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return athame;
 			case "amulet": 
 				amuletName = sc.nextLine();
 				if(!(sc.hasNextLine()))
 				{
-					sc.close();
+					sc.close(); 
 				}
-				boolean res6 = checkGearName(amuletName, gearName, school, level); 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(amuletName)); 
+				check1 = amuletName.contains("Aeon"); 
+				check2 = amuletName.contains("Eternal"); 
+				check3 = amuletName.contains("Dragoon"); 
+				check4 = amuletName.contains("Spooky"); 
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, amuletName); 
+				}
+				boolean res6 = checkGearName(amuletName, gearName, extractGearType, school, level); 
 				if(res6 == true)
 				{
 					Amulet amulet = new Amulet(amuletName); 
 					System.out.println("Amulet: " + amuletName + " created.");
+					gearKeyWords.put(6, extractGearType); 
 					return amulet;
 				}
-				Amulet amulet = (Amulet)instantiateGearPiece(gearName, school, level);
+				Amulet amulet = (Amulet)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return amulet;
 			case "ring": 
 				ringName = sc.nextLine();
@@ -1611,29 +1783,57 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					sc.close(); 
 				}
-				boolean res7 = checkGearName(ringName, gearName, school, level); 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(ringName)); 
+				check1 = ringName.contains("Aeon"); 
+				check2 = ringName.contains("Eternal"); 
+				check3 = ringName.contains("Dragoon"); 
+				check4 = ringName.contains("Spooky"); 
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, ringName); 
+				}
+				boolean res7 = checkGearName(ringName, gearName, extractGearType, school, level); 
 				if(res7 == true)
 				{
 					Ring ring = new Ring(ringName); 
 					System.out.println("Ring: " + ringName + " created.");
+					gearKeyWords.put(7, extractGearType); 
 					return ring;
 				}
-				Ring ring = (Ring)instantiateGearPiece(gearName, school, level);
+				Ring ring = (Ring)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return ring;
 			case "deck": 
 				deckName = sc.nextLine(); 
 				if(!(sc.hasNextLine()))
 				{
-					sc.close();
+					sc.close(); 
 				}
-				boolean res8 = checkGearName(deckName, gearName, school, level);
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(deckName)); 
+				check1 = deckName.contains("Aeon"); 
+				check2 = deckName.contains("Eternal"); 
+				check3 = deckName.contains("Dragoon"); 
+				check4 = deckName.contains("Spooky"); 
+				if(isJadeGear == true)
+				{
+					extractGearType = "jade"; 
+				}
+				else 
+				{
+					extractGearType = filterByKeyword(check1, check2, check3, check4, deckName); 
+				}
+				boolean res8 = checkGearName(deckName, gearName, extractGearType, school, level);
 				if(res8 == true)
 				{
 					Deck deck = new Deck(deckName); 
 					System.out.println("Deck: " + deckName + " created."); 
+					gearKeyWords.put(8, extractGearType); 
 					return deck;
 				}
-				Deck deck = (Deck)instantiateGearPiece(gearName, school, level);
+				Deck deck = (Deck)instantiateGearPiece(gearName, school, level, gearKeyWords);
 				return deck;
 			case "pet": 
 				petName = sc.nextLine(); 
@@ -1641,14 +1841,14 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					sc.close(); 
 				}
-				boolean res9 = checkGearName(petName, gearName, school, level); 
+				boolean res9 = checkGearName(petName, gearName, null, school, level); 
 				if(res9 == true)
 				{
 					Pet pet = new Pet(petName); 
 					System.out.println("Pet: " + petName + " created."); 
 					return pet; 
 				}
-				Pet pet = (Pet)instantiateGearPiece(gearName, school, level); 
+				Pet pet = (Pet)instantiateGearPiece(gearName, school, level, gearKeyWords); 
 				return pet; 
 		}
 		sc.close();
@@ -1657,7 +1857,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return null;
 	}
 
-	public boolean checkGearName(String gearName, String pieceOfGear, String school, int level)
+	public boolean checkGearName(String gearName, String pieceOfGear, String gearType, String school, int level)
 	{
 		//Open connection to database 
 		try {
@@ -1719,15 +1919,48 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				}
 				else 
 				{
-					CallableStatement stmt = (CallableStatement) conn1.prepareCall("{call extractgear(?,?,?,?)}"); 
-			 		stmt.setString(1, school); 
-					stmt.setString(2, pieceOfGear);
-					stmt.setString(3, String.valueOf(level)); 
-					stmt.registerOutParameter(4, Types.VARCHAR); 
+					CallableStatement stmt = null;
+					System.out.println(gearType); 
+					if(gearType.toLowerCase().equals("aeon"))
+					{
+						stmt = (CallableStatement) conn1.prepareCall("{call extractgear(?,?,?,?,?)}"); 
+					}
+					else if(gearType.toLowerCase().equals("eternal"))
+					{
+						stmt = (CallableStatement) conn1.prepareCall("{call extractEternalGear(?,?,?,?,?)}"); 
+					}
+					else if(gearType.toLowerCase().equals("dragoon"))
+					{
+						stmt = (CallableStatement) conn1.prepareCall("{call extractDragoonGear(?,?,?,?,?)}"); 
+						level = 130; 
+					}
+					else if(gearType.toLowerCase().equals("spooky"))
+					{
+						stmt = (CallableStatement) conn1.prepareCall("{call extractSpookyGear(?,?,?,?,?)}"); 
+						level = 130; 
+					}
+					else if(gearType.toLowerCase().equals("jade"))
+					{
+						stmt = (CallableStatement) conn1.prepareCall("{call extractJadeGear(?,?,?,?,?)}"); 
+						if(gearName.equals("Stone Of The Other Side") || gearName.equals("Pepper Grass Blade") || gearName.equals("Celestian Sliver Of Power") || gearName.equals("Ring Of The Dying Star"))
+						{
+							school = "Any";
+						}
+						level = 160; 
+					}
+					System.out.println(school); 
+					System.out.println(pieceOfGear); 
+					System.out.println(String.valueOf(level)); 
+					System.out.println(gearName); 
+					stmt.setString(1, gearName); 
+			 		stmt.setString(2, school); 
+					stmt.setString(3, pieceOfGear);
+					stmt.setString(4, String.valueOf(level)); 
+					stmt.registerOutParameter(5, Types.VARCHAR); 
 
 					stmt.execute(); 
 				
-					String databaseGearName = stmt.getString(4); 
+					String databaseGearName = stmt.getString(5); 
 
 			 		if(gearName.equals(databaseGearName))
 					{
@@ -1764,6 +1997,46 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 		}
 		return var; 
+	}
+
+	public String filterByKeyword(boolean check1, boolean check2, boolean check3, boolean check4, String name)
+	{
+		String toCheckfor = ""; 
+		String extractGearType = ""; 
+		String stopCharacter = ""; 
+		if(check1 == true)
+				{
+					toCheckfor = "Aeon"; 
+					stopCharacter = "n"; 
+				}
+				else if(check2 == true)
+				{
+					toCheckfor = "Eternal"; 
+					stopCharacter = "l"; 
+				}
+				else if(check3 == true)
+				{
+					toCheckfor = "Dragoon"; 
+					stopCharacter = "n"; 
+				}
+				else if(check4 == true)
+				{
+					toCheckfor = "Spooky"; 
+					stopCharacter = "y"; 
+				}
+				int findWordIndex = name.indexOf(toCheckfor); 
+				if(findWordIndex != -1)
+				{
+					int findNextSpace = name.indexOf(stopCharacter, findWordIndex); 
+					if(findNextSpace != -1)
+					{
+						extractGearType = name.substring(findWordIndex, findNextSpace+1); 
+						return extractGearType;
+					}
+					return null;
+				}
+				System.out.println(extractGearType); 
+				return null;
 	}
 
 	
