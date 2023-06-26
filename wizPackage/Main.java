@@ -13,8 +13,6 @@ public class Main {
 		
 		list.printData();
 		
-
-		
 		Wizard wizard1 = new Wizard("TW", "Fire", 900, 1);
 		Wizard wizard2 = new Wizard("TW", "Ice", 900, 1);
 		Wizard wizard3 = new Wizard("TW", "Life", 900, 1);

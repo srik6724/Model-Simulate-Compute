@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.python.apache.commons.compress.harmony.pack200.NewAttributeBands.Callable;
+import org.python.google.common.util.concurrent.ListenableFuture;
 
 import Credentials.WizCredentials;
 
@@ -41,6 +42,7 @@ import Pets.Pet;
 import Gear.Ring;
 import Gear.Robe;
 import Gear.Wand;
+import NightMireStats.NightMireClass;
 import wizPackage.LinkedList.Node;
 import PlayerStats.Player;
 import SchoolSpells.Spell;
@@ -314,7 +316,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		int firstIteration = 1; 
 		String saveDuplicateKey = ""; 
 		LinkedList list = new LinkedList(); 
-		HashMap<Integer, String> keywords = new HashMap<Integer, String>(); 
+		HashMap<Integer, List<String>> keywords = new HashMap<Integer, List<String>>(); 
 		for(int i = 0; i < firstTeam.length; i++)
 		{
 			System.out.println(firstTeamSchools[i]); 
@@ -403,6 +405,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println(gearSets.get(wizard).get(6)); 
 			System.out.println(gearSets.get(wizard).get(7)); 
 		}
+		System.out.println("Computing stats information now."); 
 		computeStatsInformation(gearSets, keywords);
 		
 		
@@ -944,18 +947,33 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return false; 
 	}
 	
-	public String computePlayerInformation(String wizard, String school, int level, HashMap<Integer, String> keywords)
+	public String computePlayerInformation(String wizard, String school, int level, HashMap<Integer, List<String>> keywords)
 	{
+		String gearType1 = ""; 
+		String gearType2 = ""; 
+		String gearType3 = ""; 
+		String gearType4 = ""; 
+		String gearType5 = ""; 
+		String gearType6 = ""; 
+		String gearType7 = ""; 
+		String gearType8 = ""; 
+
 		String[] listGear = {"hat", "robe", "boot", "wand", "athame", "amulet", "ring", "deck", "pet"};  
-		Hat hat = (Hat)instantiateGearPiece(listGear[0], school, level, keywords); 
-		Robe robe = (Robe)instantiateGearPiece(listGear[1], school, level, keywords); 
-		Boot boot = (Boot)instantiateGearPiece(listGear[2], school, level, keywords);
-		Wand wand = (Wand)instantiateGearPiece(listGear[3], school, level, keywords); 
-		Athame athame = (Athame)instantiateGearPiece(listGear[4], school, level, keywords);
-		Amulet amulet = (Amulet)instantiateGearPiece(listGear[5], school, level, keywords); 
-		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level, keywords); 
-		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level, keywords); 
-		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level, keywords); 
+		int count = 1; 
+
+		Hat hat = (Hat)instantiateGearPiece(listGear[0], school, level, gearType1); 
+		Robe robe = (Robe)instantiateGearPiece(listGear[1], school, level, gearType2); 
+		Boot boot = (Boot)instantiateGearPiece(listGear[2], school, level, gearType3);
+		Wand wand = (Wand)instantiateGearPiece(listGear[3], school, level, gearType4); 
+		Athame athame = (Athame)instantiateGearPiece(listGear[4], school, level, gearType5);
+		Amulet amulet = (Amulet)instantiateGearPiece(listGear[5], school, level, gearType6); 
+		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level, gearType7); 
+		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level, gearType8); 
+		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level, gearType1);
+		
+		keywords.put(count, Arrays.asList(gearType1, gearType2, gearType3, gearType4, gearType5, gearType6, gearType7, gearType8)); 
+		count++; 
+		
 
 		Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, pet); 
 
@@ -971,590 +989,49 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return true; 
 	}
 
-	public void computeStatsInformation(HashMap<String, List<String>> gearSets, HashMap<Integer, String> keywords)
+	public void computeStatsInformation(HashMap<String, List<String>> gearSets, HashMap<Integer, List<String>> keywords)
 	{
+		int index = 0; 
+		int i = 0; 
 
-		for(int number: keywords.keySet())
+		while(index <= 3)
 		{
-			String word = keywords.get(number); 
-			if(word.equals("aeon"))
-			{
-				AeonClass.word = word; 
-				AeonClass cl = new AeonClass(); 
-			}
-			else if(word.equals("eternal"))
-			{
-				EternalClass.word = word; 
-				EternalClass cl = new EternalClass(); 
-			}
-			else if(word.equals("dragoon"))
-			{
-				DragoonClass.word = word; 
-				DragoonClass cl = new DragoonClass(); 
-			}
-			else if(word.equals("spooky"))
-			{
-				SpookyClass.word = word; 
-				SpookyClass cl = new SpookyClass(); 
-			}
-		}
-	}
+			String[] listItems = {"hat", "robe", "boots", "wand", "athame", "amulet", "ring", "deck"};
 
-	/*public void computeStatsInformation(HashMap<String, List<String>> gearSets)
-	{
-			//Different sets of gear: jade_gear, aeon_gear, eternal_gear, dragoon_gear
-			//jade_gear: jade hat, spooky robe
-			//dragoon gear: dragoon athame
-			//darkmoor gear: morganthe's outgoing athame
-			//eternal_gear: helm, boots
-			//Open connection to database
-			//Implement an anonymous class that displays team messages such as anything. 
-			//For now, use phrases such as good luck, have fun, cheers to a good match
-			//while using a data structure, perhaps binary tree to store messages on the backend
-			try 
+			for(int number: keywords.keySet())
 			{
-				Connection conn1 = null; 
-				String url1 = "jdbc:mysql://localhost:3306/wizard_schema";
-				String user = "srik6724";
-				String password = "28892K0shair!";
-
-				if (WizCredentials.authenticate(user, password)) {
-					System.out.println("Authentication successful");
-				} else {
-					System.out.println("Authentication failed");
-				}
-
-				conn1 = DriverManager.getConnection(url1, user, password); 
-
-				if(conn1 != null)
+				for(String wizard: gearSets.keySet())
 				{
-					Hat hat = null; 
-					Robe robe = null; 
-					Boot boot = null; 
-					Wand wand = null; 
-					Athame athame = null; 
-					Amulet amulet = null; 
-					Ring ring = null; 
-					Deck deck = null; 
-					String saveWizard = ""; 
-					for(String wizard: gearSets.keySet())
+					String word = keywords.get(number).get(i); 
+					String gearName = gearSets.get(wizard).get(i); 
+
+					System.out.println(word); 
+					System.out.println(gearName); 
+
+					if(word.equals("aeon"))
 					{
-						int i = 0; 
-						int schoolIndex = 3; 
-						while(i < 8 && schoolIndex >= 0)
-						{
-							String[] listItems = {"hats", "robes", "boots", "wands", "athames", "amulets", "rings", "decks", "pets"};
-							String gearItem = gearSets.get(wizard).get(i);
-							System.out.println("GearItem: " + gearItem); 
-							
-
-							if(listItems[i].equals("hats"))
-							{
-								String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3 FROM wizard_schema.aeon_hats WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-									int health = Integer.parseInt(rs.getString("health")); 
-									int powerPip = Integer.parseInt(rs.getString("power_pip")); 
-									int block = Integer.parseInt(rs.getString("block")); 
-									int resist = Integer.parseInt(rs.getString("resist")); 
-									int accuracy = Integer.parseInt(rs.getString("accuracy")); 
-									int pierce = Integer.parseInt(rs.getString("pierce")); 
-									int critical = Integer.parseInt(rs.getString("critical"));
-									int damage = Integer.parseInt(rs.getString("damage")); 
-									String school = rs.getString("school"); 
-									String socket1 = rs.getString("socket1"); 
-									String socket2 = rs.getString("socket2"); 
-									String socket3 = rs.getString("socket3"); 
-									String shadowRating = rs.getString("shadowRating"); 
-
-									Socket firstSocket = new Socket("", "shield", firstTeamSchools[schoolIndex], socket1); 
-									Socket secondSocket = new Socket("", "sword", firstTeamSchools[schoolIndex], socket2); 
-									Socket thirdSocket = new Socket("", "sword", firstTeamSchools[schoolIndex], socket3); 
-
-									AeonHatStats.health = health; 
-									AeonHatStats.power_pip = powerPip; 
-									AeonHatStats.block = block; 
-									AeonHatStats.resist = resist; 
-									AeonHatStats.accuracy = accuracy; 
-									AeonHatStats.pierce = pierce; 
-									AeonHatStats.critical = critical; 
-									AeonHatStats.damage = damage; 
-									AeonHatStats.school = school; 
-									AeonHatStats.shadowRating = shadowRating;
-									AeonHatStats.socket1 = firstSocket; 
-									AeonHatStats.socket2 = secondSocket; 
-									AeonHatStats.socket3 = thirdSocket; 
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonHatStats.socket1 = firstSocket;
-									secondSocket = createSocketAttachment(secondSocket);
-									AeonHatStats.socket2 = secondSocket;
-									thirdSocket = createSocketAttachment(thirdSocket);
-									AeonHatStats.socket3 = thirdSocket;
-
-								}	
-								hat = new Hat(gearItem); 
-								hat.statsInformation();
-							}
-							if(listItems[i].equals("robes"))
-							{
-								String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3 FROM wizard_schema.aeon_robes WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-
-									int health = Integer.parseInt(rs.getString("health")); 
-									int powerPip = Integer.parseInt(rs.getString("power_pip")); 
-									int block = Integer.parseInt(rs.getString("block")); 
-									int resist = Integer.parseInt(rs.getString("resist")); 
-									int accuracy = Integer.parseInt(rs.getString("accuracy")); 
-									int pierce = Integer.parseInt(rs.getString("pierce")); 
-									int critical = Integer.parseInt(rs.getString("critical")); 
-									int damage = Integer.parseInt(rs.getString("damage")); 
-									String school = rs.getString("school"); 
-									String socket1 = rs.getString("socket1"); 
-									String socket2 = rs.getString("socket2"); 
-									String socket3 = rs.getString("socket3"); 
-
-									Socket firstSocket = new Socket("", "sword", firstTeamSchools[schoolIndex], socket1); 
-									Socket secondSocket = new Socket("", "power", firstTeamSchools[schoolIndex], socket2); 
-									Socket thirdSocket = new Socket("", "sword", firstTeamSchools[schoolIndex], socket3); 
-
-									AeonRobeStats.health = health; 
-									AeonRobeStats.power_pip = powerPip; 
-									AeonRobeStats.block = block; 
-									AeonRobeStats.resist = resist; 
-									AeonRobeStats.accuracy = accuracy; 
-									AeonRobeStats.pierce = pierce; 
-									AeonRobeStats.critical = critical;
-									AeonRobeStats.damage = damage; 
-									AeonRobeStats.school = school; 
-									AeonRobeStats.socket1 = firstSocket; 
-									AeonRobeStats.socket2 = secondSocket; 
-									AeonRobeStats.socket3 = thirdSocket; 
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonRobeStats.socket1 = firstSocket;
-									secondSocket = createSocketAttachment(secondSocket);
-									AeonRobeStats.socket2 = secondSocket;
-									thirdSocket = createSocketAttachment(thirdSocket);
-									AeonRobeStats.socket3 = thirdSocket;
-
-								}
-								robe = new Robe(gearItem); 
-								robe.statsInformation();
-							}	
-							if(listItems[i].equals("boots"))
-							{
-
-								String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3 FROM wizard_schema.aeon_boots WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-
-									int health = Integer.parseInt(rs.getString("health")); 
-									int powerPip = Integer.parseInt(rs.getString("power_pip")); 
-									int block = Integer.parseInt(rs.getString("block")); 
-									int resist = Integer.parseInt(rs.getString("resist")); 
-									int accuracy = Integer.parseInt(rs.getString("accuracy")); 
-									int pierce = Integer.parseInt(rs.getString("pierce")); 
-									int critical = Integer.parseInt(rs.getString("critical")); 
-									int damage = Integer.parseInt(rs.getString("damage")); 
-									String school = rs.getString("school"); 
-									String socket1 = rs.getString("socket1"); 
-									String socket2 = rs.getString("socket2"); 
-									String socket3 = rs.getString("socket3"); 
-
-									Socket firstSocket = new Socket("", "sword", firstTeamSchools[schoolIndex], socket1); 
-									Socket secondSocket = new Socket("", "power", firstTeamSchools[schoolIndex], socket2); 
-									Socket thirdSocket = new Socket("", "sword", firstTeamSchools[schoolIndex], socket3); 
-
-									AeonBootsStats.health = health; 
-									AeonBootsStats.power_pip = powerPip; 
-									AeonBootsStats.block = block; 
-									AeonBootsStats.resist = resist; 
-									AeonBootsStats.accuracy = accuracy; 
-									AeonBootsStats.pierce = pierce; 
-									AeonBootsStats.critical = critical; 
-									AeonBootsStats.damage = damage; 
-									AeonBootsStats.school = school; 
-									AeonBootsStats.socket1 = firstSocket; 
-									AeonBootsStats.socket2 = secondSocket; 
-									AeonBootsStats.socket3 = thirdSocket; 
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonBootsStats.socket1 = firstSocket;
-									secondSocket = createSocketAttachment(secondSocket);
-									AeonBootsStats.socket2 = secondSocket;
-									thirdSocket = createSocketAttachment(thirdSocket);
-									AeonBootsStats.socket3 = thirdSocket;
-
-								}
-								boot = new Boot(gearItem); 
-								boot.statsInformation();
-							}	
-							if(listItems[i].equals("wands"))
-							{
-								String sql = "SELECT block, pierce, critical, damage, pip_conversion, critical_school, school_damage1, school_damage2, pip_gain, school, socket1 FROM wizard_schema.aeon_wands WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-
-									int block = Integer.parseInt(rs.getString("block")); 
-									int pierce = Integer.parseInt(rs.getString("pierce")); 
-									int critical = Integer.parseInt(rs.getString("critical")); 
-									int damage = Integer.parseInt(rs.getString("damage")); 
-									int pip_conversion = Integer.parseInt(rs.getString("pip_conversion")); 
-									String critical_school = rs.getString("critical_school"); 
-									String school_damage1 = rs.getString("school_damage1"); 
-									String school_damage2 = rs.getString("school_damage2"); 
-									String pip_gain = rs.getString("pip_gain"); 
-									String school = rs.getString("school"); 
-									String block1 = rs.getString("block_1"); 
-									String block2 = rs.getString("block_2"); 
-									String socket1 = rs.getString("socket1"); 
-									String accuracy = rs.getString("accuracy"); 
-
-									Socket firstSocket = new Socket("", "square", firstTeamSchools[schoolIndex], socket1); 
-
-									AeonWandStats.block = block; 
-									AeonWandStats.pierce = pierce; 
-									AeonWandStats.critical = critical; 
-									AeonWandStats.damage = damage; 
-									AeonWandStats.pip_conversion = pip_conversion; 
-									AeonWandStats.critical_school = critical_school;
-									AeonWandStats.school_damage1 = school_damage1; 
-									AeonWandStats.school_damage2 = school_damage2; 
-									AeonWandStats.block1 = block1;
-									AeonWandStats.block2 = block2; 
-									AeonWandStats.accuracy = accuracy;
-									AeonWandStats.pip_gain = pip_gain; 
-									AeonWandStats.school = school;
-									AeonWandStats.socket1 = firstSocket; 
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonWandStats.socket1 = firstSocket;
-
-								}
-								wand = new Wand(gearItem); 
-								wand.statsInformation();
-							}	
-							if(listItems[i].equals("athames"))
-							{
-								String sql = "SELECT health, mana, power_pip, block, damage, school_damage1, school, socket1, socket2, socket3, socket4 FROM wizard_schema.aeon_athames WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-									
-									int health = Integer.parseInt(rs.getString("health")); 
-									int mana = Integer.parseInt(rs.getString("mana")); 
-									int power_pip = Integer.parseInt(rs.getString("power_pip")); 
-									int block = Integer.parseInt(rs.getString("block")); 
-									int damage = Integer.parseInt(rs.getString("damage")); 
-									String school_damage1 = rs.getString("school_damage1"); 
-									String school = rs.getString("school"); 
-									String socket1 = rs.getString("socket1"); 
-									String socket2 = rs.getString("socket2"); 
-									String socket3 = rs.getString("socket3");
-									String socket4 = rs.getString("socket4"); 
-									String block1 = rs.getString("block1"); 
-
-									Socket firstSocket = new Socket("", "tear", firstTeamSchools[schoolIndex], socket1); 
-									Socket secondSocket = new Socket("", "circle", firstTeamSchools[schoolIndex], socket2); 
-									Socket thirdSocket = new Socket("", "circle", firstTeamSchools[schoolIndex], socket3); 
-									Socket fourthSocket = new Socket("", "triangle", firstTeamSchools[schoolIndex], socket4); 
-
-
-									AeonAthameStats.health = health; 
-									AeonAthameStats.mana = mana; 
-									AeonAthameStats.power_pip = power_pip; 
-									AeonAthameStats.block = block; 
-									AeonAthameStats.damage = damage; 
-									AeonAthameStats.school_damage1 = school_damage1; 
-									AeonAthameStats.school = school; 
-									AeonAthameStats.block1 = block1; 
-									AeonAthameStats.socket1 = firstSocket; 
-									AeonAthameStats.socket2 = secondSocket; 
-									AeonAthameStats.socket3 = thirdSocket; 
-									AeonAthameStats.socket4 = fourthSocket; 
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonAthameStats.socket1 = firstSocket;
-									secondSocket = createSocketAttachment(secondSocket);
-									AeonAthameStats.socket2 = secondSocket;
-									thirdSocket = createSocketAttachment(thirdSocket);
-									AeonAthameStats.socket3 = thirdSocket;
-									fourthSocket = createSocketAttachment(fourthSocket);
-									AeonAthameStats.socket4 = fourthSocket;
-
-								}
-								athame = new Athame(gearItem); 
-								athame.statsInformation();
-
-							}	
-							if(listItems[i].equals("amulets"))
-							{
-								String sql = "SELECT block, resist, pip_conversion, health, socket1, socket2, school FROM wizard_schema.aeon_amulets WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-
-									int block = Integer.parseInt(rs.getString("block")); 
-									int resist = Integer.parseInt(rs.getString("resist"));
-									int pip_conversion = Integer.parseInt(rs.getString("pip_conversion"));
-									int health = Integer.parseInt(rs.getString("health")); 
-									String school = rs.getString("school"); 
-									String socket1 = rs.getString("socket1"); 
-									String socket2 = rs.getString("socket2"); 
-
-									Socket firstSocket = new Socket("", "square", firstTeamSchools[schoolIndex], socket1); 
-									Socket secondSocket = new Socket("", "square", firstTeamSchools[schoolIndex], socket2); 
-
-									AeonAmuletStats.block = block; 
-									AeonAmuletStats.resist = resist; 
-									AeonAmuletStats.pip_conversion = pip_conversion; 
-									AeonAmuletStats.health = health; 
-									AeonAmuletStats.school = school; 
-									AeonAmuletStats.socket1 = firstSocket; 
-									AeonAmuletStats.socket2 = secondSocket; 
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonAmuletStats.socket1 = firstSocket;
-									secondSocket = createSocketAttachment(secondSocket);
-									AeonAmuletStats.socket2 = secondSocket;
-								}
-								amulet = new Amulet(gearItem); 
-								amulet.statsInformation();
-							}	
-							if(listItems[i].equals("rings"))
-							{
-								String sql = "SELECT health, mana, power_pip, critical, damage, school_damage1, school, socket1, socket2, socket3 FROM wizard_schema.aeon_rings WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-
-									int health = Integer.parseInt(rs.getString("health")); 
-									int mana = Integer.parseInt(rs.getString("mana")); 
-									int power_pip = Integer.parseInt(rs.getString("power_pip")); 
-									int critical = Integer.parseInt(rs.getString("critical"));
-									int damage = Integer.parseInt(rs.getString("damage")); 
-									String school_damage1 = rs.getString("school_damage1"); 
-									String school = rs.getString("school"); 
-									String socket1 = rs.getString("socket1"); 
-									String socket2 = rs.getString("socket2"); 
-									String socket3 = rs.getString("socket3");
-									String outgoing = rs.getString("outgoing"); 
-
-									Socket firstSocket = new Socket("", "tear", firstTeamSchools[schoolIndex], socket1); 
-									Socket secondSocket = new Socket("", "circle", firstTeamSchools[schoolIndex], socket2); 
-									Socket thirdSocket = new Socket("", "square", firstTeamSchools[schoolIndex], socket3); 
-
-
-									AeonRingStats.health = health; 
-									AeonRingStats.mana = mana; 
-									AeonRingStats.power_pip = power_pip; 
-									AeonRingStats.critical = critical; 
-									AeonRingStats.damage = damage; 
-									AeonRingStats.school_damage1 = school_damage1; 
-									AeonRingStats.school = school; 
-									AeonRingStats.outgoing = outgoing; 
-									AeonRingStats.socket1 = firstSocket; 
-									AeonRingStats.socket2 = secondSocket; 
-									AeonRingStats.socket3 = thirdSocket; 
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonRingStats.socket1 = firstSocket;
-									secondSocket = createSocketAttachment(secondSocket);
-									AeonRingStats.socket2 = secondSocket;
-									thirdSocket = createSocketAttachment(thirdSocket);
-									AeonRingStats.socket3 = thirdSocket;
-
-								}
-								ring = new Ring(gearItem); 
-								ring.statsInformation();
-							}	
-							if(listItems[i].equals("decks"))
-							{
-								String sql = "SELECT max_spells, max_copies, max_schoolcopies, sideboard, health, block, critical, school, pip_gain, archmastery_rating, socket1 FROM wizard_schema.aeon_decks WHERE name = ?";								
-								PreparedStatement stmt = conn1.prepareStatement(sql); 
-								stmt.setString(1, gearItem); 
-								ResultSet rs = stmt.executeQuery();
-								while(rs.next())
-								{
-
-									int max_spells = Integer.parseInt(rs.getString("max_spells")); 
-									int max_copies = Integer.parseInt(rs.getString("max_copies")); 
-									int max_schoolCopies = Integer.parseInt(rs.getString("max_schoolcopies")); 
-									int sideboard = Integer.parseInt(rs.getString("sideboard")); 
-									int health = Integer.parseInt(rs.getString("health")); 
-									int block = Integer.parseInt(rs.getString("block")); 
-									int critical = Integer.parseInt(rs.getString("critical")); 
-									String school = rs.getString("school");
-									String pip_gain = rs.getString("pip_gain"); 
-									int archmasteryRating = Integer.parseInt(rs.getString("archmastery_rating"));
-									String socket1 = rs.getString("socket1");
-									String pip_conversion = rs.getString("pip_conversion"); 
-
-									Socket firstSocket = new Socket("", "tear", firstTeamSchools[schoolIndex], socket1); 
-
-									AeonDeckStats.max_spells = max_spells;
-									AeonDeckStats.max_copies = max_copies; 
-									AeonDeckStats.max_schoolCopies = max_schoolCopies;
-									AeonDeckStats.sideboard = sideboard; 
-									AeonDeckStats.health = health; 
-									AeonDeckStats.block = block;
-									AeonDeckStats.critical = critical;
-									AeonDeckStats.pip_conversion = pip_conversion; 
-									AeonDeckStats.school = school; 
-									AeonDeckStats.pip_gain = pip_gain; 
-									AeonDeckStats.archmastery_rating = archmasteryRating;
-									AeonDeckStats.socket1 = firstSocket;
-
-
-									firstSocket = createSocketAttachment(firstSocket);
-									AeonDeckStats.socket1 = firstSocket;
-
-								}
-								deck = new Deck(gearItem); 
-								deck.statsInformation();
-							}
-							i = i + 1; 
-							if(schoolIndex != 0)
-							{
-								schoolIndex = schoolIndex - 1; 
-							}
-						}
-						Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, null);
-						gear.calculateFinalStats(wizard);
-					}		
-				}
-			}catch(SQLException e)
-			{
-				System.out.println("Sorry, an exception occurred."); 
-			}
-		}*/
-
-	private Socket createSocketAttachment(Socket socket) {
-
-		if(socket.getDescription().equals("unused"))
-		{
-			try {
-				Connection conn1 = null; 
-				String url1 = "jdbc:mysql://localhost:3306/wizard_schema";
-				String user = "srik6724";
-				String password = "28892K0shair!";
-
-				if (WizCredentials.authenticate(user, password)) {
-					System.out.println("Authentication successful");
-				} else {
-					System.out.println("Authentication failed");
-				}
-	
-				conn1 = DriverManager.getConnection(url1, user, password); 
-
-				if(conn1 != null)
-				{
-					Scanner sc = new Scanner(System.in); 
-
-					String firstInput; 
-					String addAttachment; 
-					System.out.println("Would you like to add socket attachments to your gear?"); 
-					System.out.println("Keep in mind, you can only add sockets of type: " + socket.getType()); 
-					System.out.println("You will have to use the exact name for the time being. So, please make sure to spell it correctly.");
-					firstInput = sc.nextLine(); 
-					if(firstInput.equals("NO"))
-					{
-						if(!(sc.hasNextLine()))
-						{
-							sc.close();
-						}
-						return socket;
+						new AeonClass(gearName, listItems[i]); 
 					}
-					else 
+					else if(word.equals("eternal"))
 					{
-						boolean cont = true; 
-						String nameOfSocket = ""; 
-						String school = ""; 
-						String description = ""; 
-						while(cont && firstInput.equals("YES"))
-						{
-							System.out.println("Choose a socket of type " + socket.getType()); 
-							addAttachment = sc.nextLine(); 
-							if(!(sc.hasNextLine()))
-							{
-								sc.close();
-							}
-							Statement statement = conn1.createStatement();
-							String sqlString = "SELECT * FROM wizard_schema." + socket.getType() + "_sockets";
-							ResultSet rs = statement.executeQuery(sqlString); 
-							while(rs.next())
-							{
-								nameOfSocket = rs.getString("name"); 
-								school = rs.getString("school");
-								description = rs.getString("description"); 
-								if(nameOfSocket.toLowerCase().equals(addAttachment.toLowerCase()) && socket.getSchool().toLowerCase().equals(school.toLowerCase()))
-								{
-									cont = false;
-									break; 
-								}
-							}
-							if(!(nameOfSocket.equals(addAttachment)))
-							{
-								System.out.println("Name of socket in database: " + nameOfSocket + " does not match " + addAttachment);
-								System.out.println("Try again."); 
-								cont = true; 
-							}
-							else 
-							{
-								System.out.println("Name of socket in database: " + nameOfSocket + " matches " + addAttachment); 
-								if(!(socket.getSchool().toLowerCase().equals(school)))
-								{
-									System.out.println("Name of socket school in database: " + school + " does not match " + socket.getSchool());
-									System.out.println("Try again."); 
-									cont = true; 
-								}
-								else 
-								{
-									System.out.println("Name of socket school in database: " + school + " matches " + socket.getSchool()); 
-								}
-							}
-						}
-						socket.setDescription(description);
-						socket = new Socket(nameOfSocket, socket.getType(), socket.getSchool(), socket.getDescription()); 
-						System.out.println("Socket of type " + socket.getType() + " of school " + socket.getSchool() + " and of description " + socket.getDescription() + " added."); 
-						return socket;
+						new EternalClass(gearName, listItems[i]); 
+					}
+					else if(word.equals("dragoon"))
+					{
+						new DragoonClass(gearName, listItems[i]); 
+					}
+					else if(word.equals("spooky"))
+					{
+						new SpookyClass(gearName, listItems[i]); 
+					}
+					else if(word.equals("night mire"))
+					{
+						new NightMireClass(gearName, listItems[i]); 
 					}
 				}
-				return null;
-			}
-			catch(SQLException e)
-			{
-				System.out.println("An exception occurred here."); 
-				return null;
-			}
+			}	
 		}
-		else 
-		{
-			return socket;
-		}
-
 	}
-
 
 	public String cutPartOfString(String str, String gearString)
 	{
@@ -1578,7 +1055,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return createNewString; 
 	}
 
-	public Object instantiateGearPiece(String gearName, String school, int level, HashMap<Integer,String> gearKeyWords)
+	public Object instantiateGearPiece(String gearName, String school, int level, String extractGearType)
 	{
 		String hatName; 
 		String robeName; 
@@ -1608,29 +1085,28 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					sc.close(); 
 				}
-				String extractGearType = ""; 
 				boolean isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(hatName)); 
 				boolean check1 = hatName.contains("Aeon"); 
 				boolean check2 = hatName.contains("Eternal"); 
 				boolean check3 = hatName.contains("Dragoon"); 
 				boolean check4 = hatName.contains("Spooky"); 
+				boolean check5 = hatName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, hatName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, hatName); 
 				}
 				boolean res1 = checkGearName(hatName, gearName, extractGearType, school, level); 
 				if(res1 == true)
 				{
 					Hat hat = new Hat(hatName); 
 					System.out.println("Hat: " + hatName + " created."); 
-					gearKeyWords.put(1, extractGearType); 
 					return hat; 
 				}
-				Hat hat = (Hat)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Hat hat = (Hat)instantiateGearPiece(gearName, school, level, extractGearType);
 				return hat;
 			case "robe": 
 				robeName = sc.nextLine();
@@ -1643,23 +1119,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check2 = robeName.contains("Eternal"); 
 				check3 = robeName.contains("Dragoon"); 
 				check4 = robeName.contains("Spooky");
+				check5 = robeName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, robeName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, robeName); 
 				} 
 				boolean res2 = checkGearName(robeName, gearName, extractGearType, school, level); 
 				if(res2 == true)
 				{
 					Robe robe = new Robe(robeName); 
 					System.out.println("Robe: " + robeName + " created."); 
-					gearKeyWords.put(2, extractGearType); 
 					return robe;
 				}
-				Robe robe = (Robe)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Robe robe = (Robe)instantiateGearPiece(gearName, school, level,  extractGearType);
 				return robe;
 			case "boot": 
 				bootName = sc.nextLine();
@@ -1672,23 +1148,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check2 = bootName.contains("Eternal"); 
 				check3 = bootName.contains("Dragoon"); 
 				check4 = bootName.contains("Spooky"); 
+				check5 = bootName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, bootName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, bootName); 
 				}
 				boolean res3 = checkGearName(bootName, gearName, extractGearType, school, level); 
 				if(res3 == true)
 				{
 					Boot boot = new Boot(bootName); 
 					System.out.println("Boot: " + bootName + " created."); 
-					gearKeyWords.put(3, extractGearType); 
 					return boot;
 				}
-				Boot boot = (Boot)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Boot boot = (Boot)instantiateGearPiece(gearName, school, level, extractGearType);
 				return boot;
 			case "wand": 
 				wandName = sc.nextLine();
@@ -1701,23 +1177,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check2 = wandName.contains("Eternal"); 
 				check3 = wandName.contains("Dragoon"); 
 				check4 = wandName.contains("Spooky"); 
+				check5 = wandName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, wandName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, wandName); 
 				}
 				boolean res4 = checkGearName(wandName, gearName, extractGearType, school, level); 
 				if(res4 == true)
 				{
 					Wand wand = new Wand(wandName); 
 					System.out.println("Boot: " + wandName + " created."); 
-					gearKeyWords.put(4, extractGearType); 
 					return wand;
 				}
-				Wand wand = (Wand)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Wand wand = (Wand)instantiateGearPiece(gearName, school, level, extractGearType);
 				return wand;
 			case "athame": 
 				athameName = sc.nextLine();
@@ -1730,23 +1206,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check2 = athameName.contains("Eternal"); 
 				check3 = athameName.contains("Dragoon"); 
 				check4 = athameName.contains("Spooky"); 
+				check5 = athameName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, athameName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, athameName); 
 				}
 				boolean res5 = checkGearName(athameName, gearName, extractGearType, school, level); 
 				if(res5 == true)
 				{
 					Athame athame = new Athame(athameName); 
 					System.out.println("Athame: " + athameName + " created."); 
-					gearKeyWords.put(5, extractGearType); 
 					return athame;
 				}
-				Athame athame = (Athame)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Athame athame = (Athame)instantiateGearPiece(gearName, school, level, extractGearType);
 				return athame;
 			case "amulet": 
 				amuletName = sc.nextLine();
@@ -1759,23 +1235,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check2 = amuletName.contains("Eternal"); 
 				check3 = amuletName.contains("Dragoon"); 
 				check4 = amuletName.contains("Spooky"); 
+				check5 = amuletName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, amuletName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, amuletName); 
 				}
 				boolean res6 = checkGearName(amuletName, gearName, extractGearType, school, level); 
 				if(res6 == true)
 				{
 					Amulet amulet = new Amulet(amuletName); 
-					System.out.println("Amulet: " + amuletName + " created.");
-					gearKeyWords.put(6, extractGearType); 
+					System.out.println("Amulet: " + amuletName + " created."); 
 					return amulet;
 				}
-				Amulet amulet = (Amulet)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Amulet amulet = (Amulet)instantiateGearPiece(gearName, school, level, extractGearType);
 				return amulet;
 			case "ring": 
 				ringName = sc.nextLine();
@@ -1788,23 +1264,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check2 = ringName.contains("Eternal"); 
 				check3 = ringName.contains("Dragoon"); 
 				check4 = ringName.contains("Spooky"); 
+				check5 = ringName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, ringName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, ringName); 
 				}
 				boolean res7 = checkGearName(ringName, gearName, extractGearType, school, level); 
 				if(res7 == true)
 				{
 					Ring ring = new Ring(ringName); 
 					System.out.println("Ring: " + ringName + " created.");
-					gearKeyWords.put(7, extractGearType); 
 					return ring;
 				}
-				Ring ring = (Ring)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Ring ring = (Ring)instantiateGearPiece(gearName, school, level, extractGearType);
 				return ring;
 			case "deck": 
 				deckName = sc.nextLine(); 
@@ -1817,23 +1293,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check2 = deckName.contains("Eternal"); 
 				check3 = deckName.contains("Dragoon"); 
 				check4 = deckName.contains("Spooky"); 
+				check5 = deckName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
 					extractGearType = "jade"; 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, deckName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, deckName); 
 				}
 				boolean res8 = checkGearName(deckName, gearName, extractGearType, school, level);
 				if(res8 == true)
 				{
 					Deck deck = new Deck(deckName); 
-					System.out.println("Deck: " + deckName + " created."); 
-					gearKeyWords.put(8, extractGearType); 
+					System.out.println("Deck: " + deckName + " created.");  
 					return deck;
 				}
-				Deck deck = (Deck)instantiateGearPiece(gearName, school, level, gearKeyWords);
+				Deck deck = (Deck)instantiateGearPiece(gearName, school, level, extractGearType);
 				return deck;
 			case "pet": 
 				petName = sc.nextLine(); 
@@ -1848,7 +1324,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 					System.out.println("Pet: " + petName + " created."); 
 					return pet; 
 				}
-				Pet pet = (Pet)instantiateGearPiece(gearName, school, level, gearKeyWords); 
+				Pet pet = (Pet)instantiateGearPiece(gearName, school, level, extractGearType); 
 				return pet; 
 		}
 		sc.close();
@@ -1939,6 +1415,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 						stmt = (CallableStatement) conn1.prepareCall("{call extractSpookyGear(?,?,?,?,?)}"); 
 						level = 130; 
 					}
+					else if(gearType.toLowerCase().equals("night mire"))
+					{
+						stmt = (CallableStatement) conn1.prepareCall("{call extractNightMireGear(?,?,?,?,?)}"); 
+						level = 160;
+					}
 					else if(gearType.toLowerCase().equals("jade"))
 					{
 						stmt = (CallableStatement) conn1.prepareCall("{call extractJadeGear(?,?,?,?,?)}"); 
@@ -1999,7 +1480,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return var; 
 	}
 
-	public String filterByKeyword(boolean check1, boolean check2, boolean check3, boolean check4, String name)
+	public String filterByKeyword(boolean check1, boolean check2, boolean check3, boolean check4, boolean check5, String name)
 	{
 		String toCheckfor = ""; 
 		String extractGearType = ""; 
@@ -2023,6 +1504,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					toCheckfor = "Spooky"; 
 					stopCharacter = "y"; 
+				}
+				else if(check5 == true)
+				{
+					toCheckfor = "Night Mire"; 
+					stopCharacter = "e"; 
 				}
 				int findWordIndex = name.indexOf(toCheckfor); 
 				if(findWordIndex != -1)

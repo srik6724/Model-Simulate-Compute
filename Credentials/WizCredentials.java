@@ -63,4 +63,19 @@ public class WizCredentials {
         
         return null;
     }
+
+    public static String getDB_URL()
+    {
+        return DB_URL; 
+    }
+
+    public static String getDB_USERNAME()
+    {
+        return DB_USERNAME; 
+    }
+
+    public static String getDB_PASSWORD()
+    {
+        return DB_PASSWORD; 
+    }
 }

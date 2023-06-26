@@ -1,7 +1,6 @@
 package ItemCards;
 
 public class ItemCard {
-  
   private String nameOfCard; 
   private String description; 
   private int number; 
@@ -21,6 +20,11 @@ public class ItemCard {
   public String getDescription()
   {
     return description; 
+  }
+
+  public void setDescription(String description)
+  {
+    this.description = description; 
   }
 
   public int getNumber()

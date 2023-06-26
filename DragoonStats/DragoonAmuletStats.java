@@ -1,4 +1,4 @@
-package EternalStats;
+package DragoonStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,18 +12,17 @@ import Gear.Amulet;
 import Gear.StatsInfo;
 import Sockets.Socket;
 
-public class EternalAmuletStats extends Amulet implements StatsInfo {
-  private int health;
-  private int resist; 
-  private int pip_conversion; 
+public class DragoonAmuletStats extends Amulet implements StatsInfo {
+  private int health; 
   private int block; 
-  private String school; 
-  private int level; 
+  private int resist; 
   private Socket socket1; 
   private Socket socket2; 
+  private int level; 
+  private String school; 
   private Connection conn1; 
-
-  public EternalAmuletStats(String name)
+  
+  public DragoonAmuletStats(String name)
   {
     super(name); 
     try
@@ -45,24 +44,23 @@ public class EternalAmuletStats extends Amulet implements StatsInfo {
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, resist, pip_conversion, block, school, level, socket1, socket2 FROM wizard_schema.eternal_amulets WHERE name = " + name; 
+        String sql = "SELECT health, block, resist, socket1, socket2, level, school FROM wizard_schema.dragoon_amulets WHERE name = " + name; 
         Statement stmt = conn1.createStatement(); 
         ResultSet rs = stmt.executeQuery(sql); 
 
         while(rs.next())
         {
           health = Integer.parseInt(rs.getString("health")); 
-          resist = Integer.parseInt(rs.getString("resist")); 
-          pip_conversion = Integer.parseInt(rs.getString("pip_conversion")); 
           block = Integer.parseInt(rs.getString("block")); 
-          school = rs.getString("school"); 
-          level = Integer.parseInt(rs.getString("level")); 
+          resist = Integer.parseInt(rs.getString("resist")); 
           socket1.setDescription(rs.getString("socket1"));
           socket2.setDescription(rs.getString("socket2"));
+          level = Integer.parseInt(rs.getString("level")); 
+          school = rs.getString("school"); 
         }
-        EternalAmuletStats createObj = new EternalAmuletStats(name, health, resist, pip_conversion, block, school, level, socket1, socket2); 
+
+        DragoonAmuletStats createObj = new DragoonAmuletStats(name, health, block, resist, socket1, socket2, level, school); 
         createObj.createSocketAttachment(socket1); 
-        createObj.createSocketAttachment(socket2);
         createObj.statsInformation();
       }
     }
@@ -72,30 +70,26 @@ public class EternalAmuletStats extends Amulet implements StatsInfo {
     }
   }
 
-  public EternalAmuletStats(String name, int health, int resist, int pip_conversion, int block, String school, int level, Socket socket1, Socket socket2)
+  public DragoonAmuletStats(String name, int health, int block, int resist, Socket socket1, Socket socket2, int level, String school)
   {
     super(name); 
     this.health = health; 
-    this.resist = resist; 
-    this.pip_conversion = pip_conversion; 
     this.block = block; 
-    this.school = school; 
-    this.level = level; 
+    this.resist = resist; 
     this.socket1 = socket1; 
     this.socket2 = socket2; 
   }
 
   @Override
   public void statsInformation() {
-    System.out.println("Here is the following information about your amulet."); 
-    System.out.println("Block: " + block); 
+    System.out.println("Here is the following information about the amulet chosen."); 
+    System.out.println("Health: " + health); 
+    System.out.println("Block: "  + block); 
     System.out.println("Resist: " + resist); 
-    System.out.println("Pip Conversion: " + pip_conversion);  
-    System.out.println("Health: " + health);
-    System.out.println("School: " + school); 
+    System.out.println("Socket 1: " + socket1.getDescription()); 
+    System.out.println("Socket 2: " + socket2.getDescription()); 
     System.out.println("Level: " + level); 
-    System.out.println("Socket 1: " + socket1); 
-    System.out.println("Socket 2: " + socket2); 
+    System.out.println("School: " + school); 
   }
 
   private Socket createSocketAttachment(Socket socket) {
@@ -192,5 +186,5 @@ public class EternalAmuletStats extends Amulet implements StatsInfo {
 
 	}
 
-
+  
 }

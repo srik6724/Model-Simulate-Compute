@@ -1,4 +1,4 @@
-package EternalStats;
+package NightMireStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,24 +8,29 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
-import Gear.Amulet;
+import Gear.Robe;
 import Gear.StatsInfo;
 import Sockets.Socket;
 
-public class EternalAmuletStats extends Amulet implements StatsInfo {
-  private int health;
-  private int resist; 
-  private int pip_conversion; 
+public class NightMireCoatStats extends Robe implements StatsInfo {
+
+  private int health; 
+  private int power_pip; 
+  private int accuracy; 
+  private int critical; 
   private int block; 
-  private String school; 
-  private int level; 
+  private int damage; 
+  private int resist; 
+  private int pierce; 
   private Socket socket1; 
   private Socket socket2; 
+  private Socket socket3; 
+  private int level; 
+  private String school; 
   private Connection conn1; 
 
-  public EternalAmuletStats(String name)
-  {
-    super(name); 
+  public NightMireCoatStats(String name) {
+    super(name);
     try
     {
       String db_url = WizCredentials.getDB_URL(); 
@@ -41,28 +46,33 @@ public class EternalAmuletStats extends Amulet implements StatsInfo {
         System.out.println("Authentication failed"); 
       }
 
-      Connection conn1 = DriverManager.getConnection(db_url, user, password);
+      conn1 = DriverManager.getConnection(db_url, user, password);
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, resist, pip_conversion, block, school, level, socket1, socket2 FROM wizard_schema.eternal_amulets WHERE name = " + name; 
+        String sql = "SELECT health, power_pip, accuracy, critical, block, damage, resist, pierce, socket1, socket2, socket3, level, school FROM wizard_schema.nightmire_robes WHERE name = " + name; 
         Statement stmt = conn1.createStatement(); 
         ResultSet rs = stmt.executeQuery(sql); 
 
         while(rs.next())
         {
           health = Integer.parseInt(rs.getString("health")); 
-          resist = Integer.parseInt(rs.getString("resist")); 
-          pip_conversion = Integer.parseInt(rs.getString("pip_conversion")); 
+          power_pip = Integer.parseInt(rs.getString("power_pip")); 
           block = Integer.parseInt(rs.getString("block")); 
+          resist = Integer.parseInt(rs.getString("resist")); 
+          accuracy = Integer.parseInt(rs.getString("accuracy")); 
+          critical = Integer.parseInt(rs.getString("critical")); 
+          damage = Integer.parseInt(rs.getString("damage")); 
           school = rs.getString("school"); 
-          level = Integer.parseInt(rs.getString("level")); 
+          level = Integer.parseInt("level"); 
           socket1.setDescription(rs.getString("socket1"));
           socket2.setDescription(rs.getString("socket2"));
+          socket3.setDescription(rs.getString("socket3"));
         }
-        EternalAmuletStats createObj = new EternalAmuletStats(name, health, resist, pip_conversion, block, school, level, socket1, socket2); 
+        NightMireCoatStats createObj = new NightMireCoatStats(name, health, power_pip, accuracy, critical, block, damage, resist, pierce, socket1, socket2, socket3, level, school); 
         createObj.createSocketAttachment(socket1); 
-        createObj.createSocketAttachment(socket2);
+        createObj.createSocketAttachment(socket2); 
+        createObj.createSocketAttachment(socket3); 
         createObj.statsInformation();
       }
     }
@@ -72,32 +82,42 @@ public class EternalAmuletStats extends Amulet implements StatsInfo {
     }
   }
 
-  public EternalAmuletStats(String name, int health, int resist, int pip_conversion, int block, String school, int level, Socket socket1, Socket socket2)
+  public NightMireCoatStats(String name, int health, int power_pip, int accuracy, int critical, int block, int damage, int resist, int pierce, Socket socket1, Socket socket2, Socket socket3, int level, String school)
   {
     super(name); 
     this.health = health; 
-    this.resist = resist; 
-    this.pip_conversion = pip_conversion; 
+    this.power_pip = power_pip; 
+    this.accuracy = accuracy; 
+    this.critical = critical; 
     this.block = block; 
-    this.school = school; 
-    this.level = level; 
+    this.damage = damage; 
+    this.resist = resist; 
+    this.pierce = pierce; 
     this.socket1 = socket1; 
     this.socket2 = socket2; 
+    this.socket3 = socket3; 
+    this.level = level; 
+    this.school = school; 
   }
 
   @Override
   public void statsInformation() {
-    System.out.println("Here is the following information about your amulet."); 
+    System.out.println("Here is the following information about the robe chosen."); 
+    System.out.println("Health: " + health); 
+    System.out.println("Power Pip: " + power_pip); 
+    System.out.println("Accuracy: " + accuracy); 
+    System.out.println("Critical: " + critical); 
     System.out.println("Block: " + block); 
+    System.out.println("Damage: " + damage); 
     System.out.println("Resist: " + resist); 
-    System.out.println("Pip Conversion: " + pip_conversion);  
-    System.out.println("Health: " + health);
-    System.out.println("School: " + school); 
+    System.out.println("Pierce: " + pierce); 
+    System.out.println("Socket 1: " + socket1.getDescription()); 
+    System.out.println("Socket 2: " + socket2.getDescription()); 
+    System.out.println("Socket 3: " + socket3.getDescription()); 
     System.out.println("Level: " + level); 
-    System.out.println("Socket 1: " + socket1); 
-    System.out.println("Socket 2: " + socket2); 
+    System.out.println("School: " + school); 
   }
-
+  
   private Socket createSocketAttachment(Socket socket) {
 
 		if(socket.getDescription().equals("unused"))
@@ -192,5 +212,5 @@ public class EternalAmuletStats extends Amulet implements StatsInfo {
 
 	}
 
-
+  
 }
