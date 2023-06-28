@@ -9,6 +9,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -406,6 +407,17 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println(gearSets.get(wizard).get(7)); 
 		}
 		System.out.println("Computing stats information now."); 
+		for(int number: keywords.keySet())
+		{
+			System.out.println(keywords.get(number).get(0)); 
+			System.out.println(keywords.get(number).get(1)); 
+			System.out.println(keywords.get(number).get(2)); 
+			System.out.println(keywords.get(number).get(3)); 
+			System.out.println(keywords.get(number).get(4)); 
+			System.out.println(keywords.get(number).get(5)); 
+			System.out.println(keywords.get(number).get(6)); 
+			System.out.println(keywords.get(number).get(7)); 
+		}
 		computeStatsInformation(gearSets, keywords);
 		
 		
@@ -949,29 +961,37 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	
 	public String computePlayerInformation(String wizard, String school, int level, HashMap<Integer, List<String>> keywords)
 	{
-		String gearType1 = ""; 
-		String gearType2 = ""; 
-		String gearType3 = ""; 
-		String gearType4 = ""; 
-		String gearType5 = ""; 
-		String gearType6 = ""; 
-		String gearType7 = ""; 
-		String gearType8 = ""; 
+		StringBuilder gearType1 = new StringBuilder(""); 
+		StringBuilder gearType2 = new StringBuilder(""); 
+		StringBuilder gearType3 = new StringBuilder(""); 
+		StringBuilder gearType4 = new StringBuilder(""); 
+		StringBuilder gearType5 = new StringBuilder(""); 
+		StringBuilder gearType6 = new StringBuilder(""); 
+		StringBuilder gearType7 = new StringBuilder(""); 
+		StringBuilder gearType8 = new StringBuilder(""); 
 
 		String[] listGear = {"hat", "robe", "boot", "wand", "athame", "amulet", "ring", "deck", "pet"};  
 		int count = 1; 
 
 		Hat hat = (Hat)instantiateGearPiece(listGear[0], school, level, gearType1); 
+		System.out.println("Hat gearType: " + gearType1); 
 		Robe robe = (Robe)instantiateGearPiece(listGear[1], school, level, gearType2); 
+		System.out.println("Robe gearType: " + gearType2); 
 		Boot boot = (Boot)instantiateGearPiece(listGear[2], school, level, gearType3);
+		System.out.println("Boot gearType: " + gearType3); 
 		Wand wand = (Wand)instantiateGearPiece(listGear[3], school, level, gearType4); 
+		System.out.println("Wand gearType: " + gearType4); 
 		Athame athame = (Athame)instantiateGearPiece(listGear[4], school, level, gearType5);
+		System.out.println("Athame gearType: " + gearType5); 
 		Amulet amulet = (Amulet)instantiateGearPiece(listGear[5], school, level, gearType6); 
+		System.out.println("Amulet gearType: " + gearType6); 
 		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level, gearType7); 
+		System.out.println("Ring gearType: " + gearType7); 
 		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level, gearType8); 
+		System.out.println("Deck gearType: " + gearType8); 
 		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level, gearType1);
 		
-		keywords.put(count, Arrays.asList(gearType1, gearType2, gearType3, gearType4, gearType5, gearType6, gearType7, gearType8)); 
+		keywords.put(count, Arrays.asList(gearType1.toString(), gearType2.toString(), gearType3.toString(), gearType4.toString(), gearType5.toString(), gearType6.toString(), gearType7.toString(), gearType8.toString())); 
 		count++; 
 		
 
@@ -991,45 +1011,50 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 	public void computeStatsInformation(HashMap<String, List<String>> gearSets, HashMap<Integer, List<String>> keywords)
 	{
-		int index = 0; 
+		System.out.println("Before the loop.");
+		String[] listItems = {"hat", "robe", "boots", "wand", "athame", "amulet", "ring", "deck"};
+
+		Iterator<Integer> numberIterator = keywords.keySet().iterator(); 
+		Iterator<String> wizardIterator = gearSets.keySet().iterator(); 
 		int i = 0; 
+		int index = 0; 
 
 		while(index <= 3)
 		{
-			String[] listItems = {"hat", "robe", "boots", "wand", "athame", "amulet", "ring", "deck"};
-
-			for(int number: keywords.keySet())
+			while(numberIterator.hasNext() && wizardIterator.hasNext())
 			{
-				for(String wizard: gearSets.keySet())
+				int number = numberIterator.next(); 
+				String wizard = wizardIterator.next(); 
+				String word = keywords.get(number).get(i); 
+				String gearName = gearSets.get(wizard).get(i); 
+
+				System.out.println(word); 
+				System.out.println(gearName); 
+
+				if(word.toLowerCase().equals("aeon"))
 				{
-					String word = keywords.get(number).get(i); 
-					String gearName = gearSets.get(wizard).get(i); 
-
-					System.out.println(word); 
-					System.out.println(gearName); 
-
-					if(word.equals("aeon"))
-					{
-						new AeonClass(gearName, listItems[i]); 
-					}
-					else if(word.equals("eternal"))
-					{
-						new EternalClass(gearName, listItems[i]); 
-					}
-					else if(word.equals("dragoon"))
-					{
-						new DragoonClass(gearName, listItems[i]); 
-					}
-					else if(word.equals("spooky"))
-					{
-						new SpookyClass(gearName, listItems[i]); 
-					}
-					else if(word.equals("night mire"))
-					{
-						new NightMireClass(gearName, listItems[i]); 
-					}
+					new AeonClass(gearName, listItems[i]); 
 				}
-			}	
+				else if(word.toLowerCase().equals("eternal"))
+				{
+					new EternalClass(gearName, listItems[i]); 
+				}
+				else if(word.toLowerCase().equals("dragoon"))
+				{
+					new DragoonClass(gearName, listItems[i]); 
+				}	
+				else if(word.toLowerCase().equals("spooky"))
+				{
+					new SpookyClass(gearName, listItems[i]); 
+				}
+				else if(word.toLowerCase().equals("night mire"))
+				{
+					new NightMireClass(gearName, listItems[i]); 
+				}	
+				i++; 
+			}
+			i = 0; 
+			index++; 
 		}
 	}
 
@@ -1055,7 +1080,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return createNewString; 
 	}
 
-	public Object instantiateGearPiece(String gearName, String school, int level, String extractGearType)
+	public Object instantiateGearPiece(String gearName, String school, int level, StringBuilder extractGearType)
 	{
 		String hatName; 
 		String robeName; 
@@ -1093,11 +1118,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				boolean check5 = hatName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade"); 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, hatName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, hatName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				}
 				boolean res1 = checkGearName(hatName, gearName, extractGearType, school, level); 
 				if(res1 == true)
@@ -1122,11 +1148,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check5 = robeName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade"); 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, robeName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, robeName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				} 
 				boolean res2 = checkGearName(robeName, gearName, extractGearType, school, level); 
 				if(res2 == true)
@@ -1151,11 +1178,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check5 = bootName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade");  
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, bootName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, bootName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				}
 				boolean res3 = checkGearName(bootName, gearName, extractGearType, school, level); 
 				if(res3 == true)
@@ -1180,11 +1208,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check5 = wandName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade"); 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, wandName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, wandName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				}
 				boolean res4 = checkGearName(wandName, gearName, extractGearType, school, level); 
 				if(res4 == true)
@@ -1209,11 +1238,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check5 = athameName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade");  
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, athameName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, athameName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				}
 				boolean res5 = checkGearName(athameName, gearName, extractGearType, school, level); 
 				if(res5 == true)
@@ -1238,11 +1268,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check5 = amuletName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade"); 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, amuletName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, amuletName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				}
 				boolean res6 = checkGearName(amuletName, gearName, extractGearType, school, level); 
 				if(res6 == true)
@@ -1267,11 +1298,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check5 = ringName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade");  
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, ringName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, ringName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				}
 				boolean res7 = checkGearName(ringName, gearName, extractGearType, school, level); 
 				if(res7 == true)
@@ -1296,11 +1328,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check5 = deckName.contains("Night Mire"); 
 				if(isJadeGear == true)
 				{
-					extractGearType = "jade"; 
+					extractGearType.append("jade"); 
 				}
 				else 
 				{
-					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, deckName); 
+					extractGearType = filterByKeyword(check1, check2, check3, check4, check5, deckName, extractGearType); 
+					System.out.println("Gear Type here: " + extractGearType);
 				}
 				boolean res8 = checkGearName(deckName, gearName, extractGearType, school, level);
 				if(res8 == true)
@@ -1333,7 +1366,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return null;
 	}
 
-	public boolean checkGearName(String gearName, String pieceOfGear, String gearType, String school, int level)
+	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level)
 	{
 		//Open connection to database 
 		try {
@@ -1397,30 +1430,30 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					CallableStatement stmt = null;
 					System.out.println(gearType); 
-					if(gearType.toLowerCase().equals("aeon"))
+					if(gearType.toString().toLowerCase().equals("aeon"))
 					{
 						stmt = (CallableStatement) conn1.prepareCall("{call extractgear(?,?,?,?,?)}"); 
 					}
-					else if(gearType.toLowerCase().equals("eternal"))
+					else if(gearType.toString().toLowerCase().equals("eternal"))
 					{
 						stmt = (CallableStatement) conn1.prepareCall("{call extractEternalGear(?,?,?,?,?)}"); 
 					}
-					else if(gearType.toLowerCase().equals("dragoon"))
+					else if(gearType.toString().toLowerCase().equals("dragoon"))
 					{
 						stmt = (CallableStatement) conn1.prepareCall("{call extractDragoonGear(?,?,?,?,?)}"); 
 						level = 130; 
 					}
-					else if(gearType.toLowerCase().equals("spooky"))
+					else if(gearType.toString().toLowerCase().equals("spooky"))
 					{
 						stmt = (CallableStatement) conn1.prepareCall("{call extractSpookyGear(?,?,?,?,?)}"); 
 						level = 130; 
 					}
-					else if(gearType.toLowerCase().equals("night mire"))
+					else if(gearType.toString().toLowerCase().equals("night mire"))
 					{
 						stmt = (CallableStatement) conn1.prepareCall("{call extractNightMireGear(?,?,?,?,?)}"); 
 						level = 160;
 					}
-					else if(gearType.toLowerCase().equals("jade"))
+					else if(gearType.toString().toLowerCase().equals("jade"))
 					{
 						stmt = (CallableStatement) conn1.prepareCall("{call extractJadeGear(?,?,?,?,?)}"); 
 						if(gearName.equals("Stone Of The Other Side") || gearName.equals("Pepper Grass Blade") || gearName.equals("Celestian Sliver Of Power") || gearName.equals("Ring Of The Dying Star"))
@@ -1480,10 +1513,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return var; 
 	}
 
-	public String filterByKeyword(boolean check1, boolean check2, boolean check3, boolean check4, boolean check5, String name)
+	public StringBuilder filterByKeyword(boolean check1, boolean check2, boolean check3, boolean check4, boolean check5, String name, StringBuilder extractGearType)
 	{
 		String toCheckfor = ""; 
-		String extractGearType = ""; 
 		String stopCharacter = ""; 
 		if(check1 == true)
 				{
@@ -1516,7 +1548,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 					int findNextSpace = name.indexOf(stopCharacter, findWordIndex); 
 					if(findNextSpace != -1)
 					{
-						extractGearType = name.substring(findWordIndex, findNextSpace+1); 
+						extractGearType.append(name.substring(findWordIndex, findNextSpace+1)); 
 						return extractGearType;
 					}
 					return null;

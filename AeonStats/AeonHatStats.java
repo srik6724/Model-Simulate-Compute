@@ -2,6 +2,7 @@ package AeonStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,7 +13,7 @@ import Gear.Hat;
 import Gear.StatsInfo;
 import Sockets.Socket;
 
-public class AeonHatStats extends Hat implements StatsInfo{
+public class AeonHatStats extends Hat implements StatsInfo {
 
   private int health; 
   private int power_pip; 
@@ -50,9 +51,12 @@ public class AeonHatStats extends Hat implements StatsInfo{
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3 FROM wizard_schema.aeon_hats WHERE name = " + name; 
-        Statement stmt = conn1.createStatement(); 
-        ResultSet rs = stmt.executeQuery(sql); 
+        System.out.println("Inside if statement."); 
+        String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3 FROM wizard_schema.aeon_hats WHERE name = ?"; 
+        PreparedStatement stmt = conn1.prepareStatement(sql); 
+        System.out.println(name); 
+        stmt.setString(1, name);
+        ResultSet rs = stmt.executeQuery(); 
 
         while(rs.next())
         {
@@ -65,9 +69,9 @@ public class AeonHatStats extends Hat implements StatsInfo{
           critical = Integer.parseInt(rs.getString("critical")); 
           damage = Integer.parseInt(rs.getString("damage")); 
           school = rs.getString("school");
-          socket1.setDescription(rs.getString("socket1"));
-          socket2.setDescription(rs.getString("socket2"));
-          socket3.setDescription(rs.getString("socket3"));
+          socket1 = new Socket(rs.getString("socket1"));
+          socket2 = new Socket(rs.getString("socket2"));
+          socket3 = new Socket(rs.getString("socket3"));
         }
 
         AeonHatStats createObj = new AeonHatStats(name, health, power_pip, block, resist, accuracy, pierce, critical, damage, sql, socket1, socket2, socket3); 
