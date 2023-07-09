@@ -13,10 +13,11 @@ public class Socket {
     System.out.println("Socket class created.");
   }
 
-  public Socket(String description)
+  public Socket(String description, String type, String school)
   {
-    System.out.println("Constructor for if socket description is unused."); 
     this.description = description; 
+    this.type = type; 
+    this.school = school; 
   }
 
   public Socket(String name, String type, String school, String description)
@@ -50,5 +51,10 @@ public class Socket {
   public void setDescription(String description)
   {
     this.description = description; 
+  }
+
+  public void setSchool(String school)
+  {
+    this.school = school; 
   }
 }

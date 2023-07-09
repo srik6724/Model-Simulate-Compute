@@ -2,6 +2,7 @@ package NightMireStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,9 +51,11 @@ public class NightMireHatStats extends Hat implements StatsInfo {
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, power_pip, block, resist, accuracy, critical, damage, school, level, socket1, socket2, socket3 FROM wizard_schema.nightmire_hats WHERE name = " + name; 
-        Statement stmt = conn1.createStatement(); 
-        ResultSet rs = stmt.executeQuery(sql); 
+        String sql = "SELECT health, power_pip, block, resist, accuracy, critical, damage, school, level, socket1, socket2, socket3 FROM wizard_schema.nightmire_hats WHERE name = ?"; 
+        PreparedStatement stmt = conn1.prepareStatement(sql); 
+        System.out.println(name); 
+        stmt.setString(1, name);
+        ResultSet rs = stmt.executeQuery(); 
 
         while(rs.next())
         {
@@ -65,9 +68,9 @@ public class NightMireHatStats extends Hat implements StatsInfo {
           damage = Integer.parseInt(rs.getString("damage")); 
           school = rs.getString("school"); 
           level = Integer.parseInt("level"); 
-          socket1.setDescription(rs.getString("socket1"));
-          socket2.setDescription(rs.getString("socket2"));
-          socket3.setDescription(rs.getString("socket3"));
+          socket1 = new Socket(rs.getString("socket1"), "shield", school);
+          socket2 = new Socket(rs.getString("socket2"), "sword", school);
+          socket3 = new Socket(rs.getString("socket3"), "sword", school);
         }
         NightMireHatStats createObj = new NightMireHatStats(name, health, power_pip, accuracy, critical, block, damage, resist, pierce, socket1, socket2, socket3, level, school); 
         createObj.createSocketAttachment(socket1); 
@@ -164,7 +167,7 @@ public class NightMireHatStats extends Hat implements StatsInfo {
 								nameOfSocket = rs.getString("name"); 
 								school = rs.getString("school");
 								description = rs.getString("description"); 
-								if(nameOfSocket.toLowerCase().equals(addAttachment.toLowerCase()) && socket.getSchool().toLowerCase().equals(school.toLowerCase()))
+								if(nameOfSocket.toLowerCase().equals(addAttachment.toLowerCase()))
 								{
 									cont = false;
 									break; 
@@ -179,7 +182,11 @@ public class NightMireHatStats extends Hat implements StatsInfo {
 							else 
 							{
 								System.out.println("Name of socket in database: " + nameOfSocket + " matches " + addAttachment); 
-								if(!(socket.getSchool().toLowerCase().equals(school)))
+                if(school.equals("Any School"))
+                {
+                  System.out.println("Name of socket school in database: " + " is compatible with any school."); 
+                }
+								else if(!(socket.getSchool().toLowerCase().equals(school.toLowerCase())))
 								{
 									System.out.println("Name of socket school in database: " + school + " does not match " + socket.getSchool());
 									System.out.println("Try again."); 

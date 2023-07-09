@@ -2,6 +2,7 @@ package AeonStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -48,9 +49,11 @@ public class AeonWandStats extends Wand implements StatsInfo {
 
       if(conn1 != null)
       {
-        String sql = "SELECT block, pierce, critical, damage, pip_conversion, critical_school, school_damage1, school_damage2, pip_gain, school, socket1 FROM wizard_schema.aeon_wands WHERE name = " + name; 
-        Statement stmt = conn1.createStatement(); 
-        ResultSet rs = stmt.executeQuery(sql); 
+        String sql = "SELECT block, pierce, critical, damage, pip_conversion, critical_school, school_damage1, school_damage2, pip_gain, school, socket1 FROM wizard_schema.aeon_wands WHERE name = ?"; 
+        PreparedStatement stmt = conn1.prepareStatement(sql); 
+        System.out.println(name); 
+        stmt.setString(1, name);
+        ResultSet rs = stmt.executeQuery(); 
 
         while(rs.next())
         {
@@ -64,13 +67,13 @@ public class AeonWandStats extends Wand implements StatsInfo {
           school_damage2 = rs.getString("school_damage2"); 
           pip_gain = rs.getString("pip_gain"); 
           school = rs.getString("school");
-          socket1.setDescription(rs.getString("socket1"));
+          socket1 = new Socket(rs.getString("socket1"), "square", school);
         }
-
         AeonWandStats createObj = new AeonWandStats(name, block, pierce, critical, damage, pip_conversion, critical_school, school_damage1, school_damage2, pip_gain, school, socket1); 
         createObj.createSocketAttachment(socket1); 
         createObj.statsInformation();
       }
+      conn1.close(); 
     }
     catch(SQLException e)
     {
@@ -96,7 +99,7 @@ public class AeonWandStats extends Wand implements StatsInfo {
 
   @Override
   public void statsInformation() {
-    System.out.println("Here is the following information about the hat chosen."); 
+    System.out.println("Here is the following information about the wand chosen."); 
     System.out.println("Block: " + block); 
     System.out.println("Pierce: " + pierce); 
     System.out.println("Critical: " + critical);
@@ -113,10 +116,27 @@ public class AeonWandStats extends Wand implements StatsInfo {
 
   private Socket createSocketAttachment(Socket socket)
   {
+    if(socket.getDescription().equals("unused"))
+    {
     try
     {
+      String db_url = WizCredentials.getDB_URL(); 
+      String user = WizCredentials.getDB_USERNAME(); 
+      String password = WizCredentials.getDB_PASSWORD(); 
+
+      if(WizCredentials.authenticate(user, password))
+      {
+        System.out.println("Authentication successful"); 
+      }
+      else 
+      {
+        System.out.println("Authentication failed"); 
+      }
+
+      conn1 = DriverManager.getConnection(db_url, user, password);
+
       if(conn1 != null)
-    {
+      {
           Scanner sc = new Scanner(System.in); 
 					String firstInput; 
 					String addAttachment; 
@@ -131,6 +151,7 @@ public class AeonWandStats extends Wand implements StatsInfo {
 						{
 							sc.close();
 						}
+            conn1.close(); 
 						return socket;
 					}
           else 
@@ -170,7 +191,11 @@ public class AeonWandStats extends Wand implements StatsInfo {
 							else 
 							{
 								System.out.println("Name of socket in database: " + nameOfSocket + " matches " + addAttachment); 
-								if(!(socket.getSchool().toLowerCase().equals(school)))
+                if(school.equals("Any School"))
+                {
+                  System.out.println("Name of socket school in database: " + " is compatible with any school."); 
+                }
+								else if(!(socket.getSchool().toLowerCase().equals(school.toLowerCase())))
 								{
 									System.out.println("Name of socket school in database: " + school + " does not match " + socket.getSchool());
 									System.out.println("Try again."); 
@@ -185,15 +210,22 @@ public class AeonWandStats extends Wand implements StatsInfo {
 						socket.setDescription(description);
 						socket = new Socket(nameOfSocket, socket.getType(), socket.getSchool(), socket.getDescription()); 
 						System.out.println("Socket of type " + socket.getType() + " of school " + socket.getSchool() + " and of description " + socket.getDescription() + " added."); 
+            conn1.close(); 
 						return socket;
 					}
 		}
+    conn1.close();
 		return null;
     }catch(SQLException e)
     {
-      System.out.println("Sorry, an exception occurred."); 
+      System.out.println("Sorry, an exception occurred.");
       return null; 
     }
+  }
+  else 
+  {
+    return socket; 
+  }
   }
 
   

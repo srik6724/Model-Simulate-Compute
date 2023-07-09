@@ -21,5 +21,9 @@ private void retrieveStatsInfo(String gearName, String gearType) {
     {
       new NightMireCoatStats(gearName); 
     }
+    else if(gearType.equals("boots"))
+    {
+      new NightMireBootsStats(gearName);
+    }
   }
 }

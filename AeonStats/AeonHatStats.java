@@ -14,7 +14,6 @@ import Gear.StatsInfo;
 import Sockets.Socket;
 
 public class AeonHatStats extends Hat implements StatsInfo {
-
   private int health; 
   private int power_pip; 
   private int block; 
@@ -51,7 +50,6 @@ public class AeonHatStats extends Hat implements StatsInfo {
 
       if(conn1 != null)
       {
-        System.out.println("Inside if statement."); 
         String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3 FROM wizard_schema.aeon_hats WHERE name = ?"; 
         PreparedStatement stmt = conn1.prepareStatement(sql); 
         System.out.println(name); 
@@ -69,17 +67,17 @@ public class AeonHatStats extends Hat implements StatsInfo {
           critical = Integer.parseInt(rs.getString("critical")); 
           damage = Integer.parseInt(rs.getString("damage")); 
           school = rs.getString("school");
-          socket1 = new Socket(rs.getString("socket1"));
-          socket2 = new Socket(rs.getString("socket2"));
-          socket3 = new Socket(rs.getString("socket3"));
+          socket1 = new Socket(rs.getString("socket1"), "shield", school);
+          socket2 = new Socket(rs.getString("socket2"), "sword", school);
+          socket3 = new Socket(rs.getString("socket3"), "sword", school);
         }
-
-        AeonHatStats createObj = new AeonHatStats(name, health, power_pip, block, resist, accuracy, pierce, critical, damage, sql, socket1, socket2, socket3); 
+        AeonHatStats createObj = new AeonHatStats(name, health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3); 
         createObj.createSocketAttachment(socket1); 
         createObj.createSocketAttachment(socket2); 
         createObj.createSocketAttachment(socket3); 
         createObj.statsInformation();
       }
+      conn1.close(); 
     }
     catch(SQLException e)
     {
@@ -122,10 +120,27 @@ public class AeonHatStats extends Hat implements StatsInfo {
 
   private Socket createSocketAttachment(Socket socket)
   {
+    if(socket.getDescription().equals("unused"))
+    {
     try
     {
+      String db_url = WizCredentials.getDB_URL(); 
+      String user = WizCredentials.getDB_USERNAME(); 
+      String password = WizCredentials.getDB_PASSWORD(); 
+
+      if(WizCredentials.authenticate(user, password))
+      {
+        System.out.println("Authentication successful"); 
+      }
+      else 
+      {
+        System.out.println("Authentication failed"); 
+      }
+
+      conn1 = DriverManager.getConnection(db_url, user, password);
+
       if(conn1 != null)
-    {
+      {
           Scanner sc = new Scanner(System.in); 
 					String firstInput; 
 					String addAttachment; 
@@ -140,6 +155,7 @@ public class AeonHatStats extends Hat implements StatsInfo {
 						{
 							sc.close();
 						}
+            conn1.close(); 
 						return socket;
 					}
           else 
@@ -164,7 +180,7 @@ public class AeonHatStats extends Hat implements StatsInfo {
 								nameOfSocket = rs.getString("name"); 
 								school = rs.getString("school");
 								description = rs.getString("description"); 
-								if(nameOfSocket.toLowerCase().equals(addAttachment.toLowerCase()) && socket.getSchool().toLowerCase().equals(school.toLowerCase()))
+								if(nameOfSocket.toLowerCase().equals(addAttachment.toLowerCase()))
 								{
 									cont = false;
 									break; 
@@ -179,7 +195,11 @@ public class AeonHatStats extends Hat implements StatsInfo {
 							else 
 							{
 								System.out.println("Name of socket in database: " + nameOfSocket + " matches " + addAttachment); 
-								if(!(socket.getSchool().toLowerCase().equals(school)))
+                if(school.equals("Any School"))
+                {
+                  System.out.println("Name of socket school in database: " + " is compatible with any school."); 
+                }
+								else if(!(socket.getSchool().toLowerCase().equals(school.toLowerCase())))
 								{
 									System.out.println("Name of socket school in database: " + school + " does not match " + socket.getSchool());
 									System.out.println("Try again."); 
@@ -194,14 +214,21 @@ public class AeonHatStats extends Hat implements StatsInfo {
 						socket.setDescription(description);
 						socket = new Socket(nameOfSocket, socket.getType(), socket.getSchool(), socket.getDescription()); 
 						System.out.println("Socket of type " + socket.getType() + " of school " + socket.getSchool() + " and of description " + socket.getDescription() + " added."); 
+            conn1.close(); 
 						return socket;
 					}
 		}
+    conn1.close();
 		return null;
     }catch(SQLException e)
     {
-      System.out.println("Sorry, an exception occurred."); 
+      System.out.println("Sorry, an exception occurred.");
       return null; 
     }
   }
+  else 
+  {
+    return socket; 
+  }
+}
 }

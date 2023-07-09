@@ -1,4 +1,4 @@
-package EternalStats;
+package NightMireStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,28 +9,29 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
-import Gear.Athame;
+import Gear.Boot;
 import Gear.StatsInfo;
 import Sockets.Socket;
 
-public class EternalAthameStats extends Athame implements StatsInfo {
+public class NightMireBootsStats extends Boot implements StatsInfo {
+
   private int health; 
-  private int mana; 
   private int power_pip; 
   private int block; 
+  private int resist; 
+  private int accuracy; 
+  private int pierce; 
+  private int critical; 
   private int damage; 
-  private String block1; 
-  private String school; 
-  private int level; 
   private Socket socket1; 
   private Socket socket2; 
   private Socket socket3; 
-  private Socket socket4; 
+  private int level; 
+  private String school; 
   private Connection conn1; 
 
-  public EternalAthameStats(String name)
-  {
-    super(name); 
+  public NightMireBootsStats(String name) {
+    super(name);
     try
     {
       String db_url = WizCredentials.getDB_URL(); 
@@ -50,7 +51,7 @@ public class EternalAthameStats extends Athame implements StatsInfo {
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, mana, power_pip, block, damage, block1, school, level, socket1, socket2, socket3, socket4 FROM wizard_schema.eternal_athames WHERE name = ?"; 
+        String sql = "SELECT health, power_pip, accuracy, critical, block, damage, resist, pierce, socket1, socket2, socket3, level, school FROM wizard_schema.nightmire_robes WHERE name = ?"; 
         PreparedStatement stmt = conn1.prepareStatement(sql); 
         System.out.println(name); 
         stmt.setString(1, name);
@@ -59,23 +60,22 @@ public class EternalAthameStats extends Athame implements StatsInfo {
         while(rs.next())
         {
           health = Integer.parseInt(rs.getString("health")); 
-          mana = Integer.parseInt(rs.getString("mana")); 
-          power_pip = Integer.parseInt(rs.getString("power_pip"));
+          power_pip = Integer.parseInt(rs.getString("power_pip")); 
           block = Integer.parseInt(rs.getString("block")); 
+          resist = Integer.parseInt(rs.getString("resist")); 
+          accuracy = Integer.parseInt(rs.getString("accuracy")); 
+          critical = Integer.parseInt(rs.getString("critical")); 
           damage = Integer.parseInt(rs.getString("damage")); 
-          block1 = rs.getString("block1"); 
-          school = rs.getString("school");
-          level = Integer.parseInt(rs.getString("level")); 
-          socket1 = new Socket(rs.getString("socket1"), "tear", school);
-          socket2 = new Socket(rs.getString("socket2"), "circle", school);
-          socket3 = new Socket(rs.getString("socket3"), "circle", school);
-          socket4 = new Socket(rs.getString("socket3"), "triangle", school);
+          school = rs.getString("school"); 
+          level = Integer.parseInt("level"); 
+          socket1 = new Socket(rs.getString("socket1"), "shield", school);
+          socket2 = new Socket(rs.getString("socket2"), "power", school);
+          socket3 = new Socket(rs.getString("socket3"), "sword", school);
         }
-        EternalAthameStats createObj = new EternalAthameStats(name, health, mana, power_pip, block, damage, block1, school, level, socket1, socket2, socket3, socket4); 
+        NightMireBootsStats createObj = new NightMireBootsStats(name, health, power_pip, block, resist, accuracy, pierce, critical, damage, socket1, socket2, socket3, level, school); 
         createObj.createSocketAttachment(socket1); 
         createObj.createSocketAttachment(socket2); 
         createObj.createSocketAttachment(socket3); 
-        createObj.createSocketAttachment(socket4); 
         createObj.statsInformation();
       }
     }
@@ -85,40 +85,42 @@ public class EternalAthameStats extends Athame implements StatsInfo {
     }
   }
 
-  public EternalAthameStats(String name, int health, int mana, int power_pip, int block, int damage, String block1, String school, int level, Socket socket1, Socket socket2, Socket socket3, Socket socket4)
+  public NightMireBootsStats(String name, int health, int power_pip, int block, int resist, int accuracy, int pierce, int critical, int damage, Socket socket1, Socket socket2, Socket socket3, int level, String school)
   {
     super(name); 
     this.health = health; 
-    this.mana = mana; 
     this.power_pip = power_pip; 
     this.block = block; 
+    this.resist = resist; 
+    this.accuracy = accuracy; 
+    this.pierce = pierce; 
+    this.critical = critical; 
     this.damage = damage; 
-    this.block1 = block1;  
-    this.school = school; 
-    this.level = level; 
     this.socket1 = socket1; 
     this.socket2 = socket2; 
     this.socket3 = socket3; 
-    this.socket4 = socket4; 
+    this.level = level; 
+    this.school = school; 
   }
 
   @Override
   public void statsInformation() {
-    System.out.println("Here is the following information about your athame."); 
+    System.out.println("Here is the following information about the robe chosen."); 
     System.out.println("Health: " + health); 
-    System.out.println("Mana: " + mana); 
     System.out.println("Power Pip: " + power_pip); 
+    System.out.println("Accuracy: " + accuracy); 
+    System.out.println("Critical: " + critical); 
     System.out.println("Block: " + block); 
     System.out.println("Damage: " + damage); 
-    System.out.println("Block 1: " + block1); 
-    System.out.println("School: " + school); 
-    System.out.println("Level: " + level); 
+    System.out.println("Resist: " + resist); 
+    System.out.println("Pierce: " + pierce); 
     System.out.println("Socket 1: " + socket1.getDescription()); 
-    System.out.println("Socket 2: " + socket2.getDescription());
-    System.out.println("Socket 3: " + socket3.getDescription());
-    System.out.println("Socket 4: " + socket4.getDescription()); 
+    System.out.println("Socket 2: " + socket2.getDescription()); 
+    System.out.println("Socket 3: " + socket3.getDescription()); 
+    System.out.println("Level: " + level); 
+    System.out.println("School: " + school); 
   }
-
+  
   private Socket createSocketAttachment(Socket socket) {
     if(socket.getDescription().equals("unused"))
     {
@@ -199,7 +201,7 @@ public class EternalAthameStats extends Athame implements StatsInfo {
                 {
                   System.out.println("Name of socket school in database: " + " is compatible with any school."); 
                 }
-								else if(!(socket.getSchool().toLowerCase().equals(school)))
+								else if(!(socket.getSchool().toLowerCase().equals(school.toLowerCase())))
 								{
 									System.out.println("Name of socket school in database: " + school + " does not match " + socket.getSchool());
 									System.out.println("Try again."); 
@@ -230,8 +232,8 @@ public class EternalAthameStats extends Athame implements StatsInfo {
   {
     return socket; 
   }
-	}
-
-  
+	
+}
 
 }
+

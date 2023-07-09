@@ -2,6 +2,7 @@ package EternalStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -50,9 +51,11 @@ public class EternalHatStats extends Hat implements StatsInfo {
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, power_pip, block, resist, accuracy, critical, damage, school, level, socket1, socket2, socket3 FROM wizard_schema.eternal_hats WHERE name = " + name; 
-        Statement stmt = conn1.createStatement(); 
-        ResultSet rs = stmt.executeQuery(sql); 
+        String sql = "SELECT health, power_pip, block, resist, accuracy, critical, damage, school, level, socket1, socket2, socket3 FROM wizard_schema.eternal_hats WHERE name = ?"; 
+        PreparedStatement stmt = conn1.prepareStatement(sql); 
+        System.out.println(name); 
+        stmt.setString(1, name);
+        ResultSet rs = stmt.executeQuery(); 
 
         while(rs.next())
         {
@@ -66,9 +69,9 @@ public class EternalHatStats extends Hat implements StatsInfo {
           shadowRating = Integer.parseInt(rs.getString("shadowRating"));
           school = rs.getString("school"); 
           level = Integer.parseInt("level"); 
-          socket1.setDescription(rs.getString("socket1"));
-          socket2.setDescription(rs.getString("socket2"));
-          socket3.setDescription(rs.getString("socket3"));
+          socket1 = new Socket(rs.getString("socket1"), "shield", school);
+          socket2 = new Socket(rs.getString("socket2"), "sword", school);
+          socket3 = new Socket(rs.getString("socket3"), "sword", school);
         }
         EternalHatStats createObj = new EternalHatStats(name, health, power_pip, block, resist, accuracy, critical, damage, shadowRating, school, socket1, socket2, socket3); 
         createObj.createSocketAttachment(socket1); 
@@ -113,36 +116,51 @@ public class EternalHatStats extends Hat implements StatsInfo {
     System.out.println("Shadow Rating: " + shadowRating); 
     System.out.println("School: " + school); 
     System.out.println("Level: " + level); 
-    System.out.println("Socket 1: " + socket1); 
-    System.out.println("Socket 2: " + socket2); 
-    System.out.println("Socket 3: " + socket3); 
+    System.out.println("Socket 1: " + socket1.getDescription()); 
+    System.out.println("Socket 2: " + socket2.getDescription()); 
+    System.out.println("Socket 3: " + socket3.getDescription()); 
   }
 
   private Socket createSocketAttachment(Socket socket) {
+    if(socket.getDescription().equals("unused"))
+    {
+    try
+    {
+      String db_url = WizCredentials.getDB_URL(); 
+      String user = WizCredentials.getDB_USERNAME(); 
+      String password = WizCredentials.getDB_PASSWORD(); 
 
-		if(socket.getDescription().equals("unused"))
-		{
-			try {
+      if(WizCredentials.authenticate(user, password))
+      {
+        System.out.println("Authentication successful"); 
+      }
+      else 
+      {
+        System.out.println("Authentication failed"); 
+      }
 
-				if(conn1 != null)
-				{
-					Scanner sc = new Scanner(System.in); 
+      conn1 = DriverManager.getConnection(db_url, user, password);
 
+      if(conn1 != null)
+      {
+          Scanner sc = new Scanner(System.in); 
 					String firstInput; 
 					String addAttachment; 
 					System.out.println("Would you like to add socket attachments to your gear?"); 
 					System.out.println("Keep in mind, you can only add sockets of type: " + socket.getType()); 
 					System.out.println("You will have to use the exact name for the time being. So, please make sure to spell it correctly.");
-					firstInput = sc.nextLine(); 
+
+          firstInput = sc.nextLine(); 
 					if(firstInput.equals("NO"))
 					{
 						if(!(sc.hasNextLine()))
 						{
 							sc.close();
 						}
+            conn1.close(); 
 						return socket;
 					}
-					else 
+          else 
 					{
 						boolean cont = true; 
 						String nameOfSocket = ""; 
@@ -164,7 +182,7 @@ public class EternalHatStats extends Hat implements StatsInfo {
 								nameOfSocket = rs.getString("name"); 
 								school = rs.getString("school");
 								description = rs.getString("description"); 
-								if(nameOfSocket.toLowerCase().equals(addAttachment.toLowerCase()) && socket.getSchool().toLowerCase().equals(school.toLowerCase()))
+								if(nameOfSocket.toLowerCase().equals(addAttachment.toLowerCase()))
 								{
 									cont = false;
 									break; 
@@ -179,7 +197,11 @@ public class EternalHatStats extends Hat implements StatsInfo {
 							else 
 							{
 								System.out.println("Name of socket in database: " + nameOfSocket + " matches " + addAttachment); 
-								if(!(socket.getSchool().toLowerCase().equals(school)))
+                if(school.equals("Any School"))
+                {
+                  System.out.println("Name of socket school in database: " + " is compatible with any school."); 
+                }
+								else if(!(socket.getSchool().toLowerCase().equals(school.toLowerCase())))
 								{
 									System.out.println("Name of socket school in database: " + school + " does not match " + socket.getSchool());
 									System.out.println("Try again."); 
@@ -194,22 +216,22 @@ public class EternalHatStats extends Hat implements StatsInfo {
 						socket.setDescription(description);
 						socket = new Socket(nameOfSocket, socket.getType(), socket.getSchool(), socket.getDescription()); 
 						System.out.println("Socket of type " + socket.getType() + " of school " + socket.getSchool() + " and of description " + socket.getDescription() + " added."); 
+            conn1.close(); 
 						return socket;
 					}
-				}
-				return null;
-			}
-			catch(SQLException e)
-			{
-				System.out.println("An exception occurred here."); 
-				return null;
-			}
 		}
-		else 
-		{
-			return socket;
-		}
-
+    conn1.close();
+		return null;
+    }catch(SQLException e)
+    {
+      System.out.println("Sorry, an exception occurred.");
+      return null; 
+    }
+  }
+  else 
+  {
+    return socket; 
+  }
 	}
 
 

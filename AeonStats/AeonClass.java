@@ -13,6 +13,7 @@ public class AeonClass {
 
   private void retrieveStatsInfo(String gearName, String gearType)
   {
+    System.out.println(gearType); 
     if(gearType.equals("hat"))
     {
       new AeonHatStats(gearName); 

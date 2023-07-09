@@ -56,7 +56,6 @@ public class DragoonHatStats extends Hat implements StatsInfo
           damage = Integer.parseInt(rs.getString("damage")); 
           shadowRating = Integer.parseInt(rs.getString("shadowRating")); 
         }
-
         DragoonHatStats createObj = new DragoonHatStats(name, health, power_pip, accuracy, pierce, critical, damage, shadowRating); 
         createObj.statsInformation();
       }
