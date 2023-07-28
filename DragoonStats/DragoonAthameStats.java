@@ -106,7 +106,7 @@ public class DragoonAthameStats extends Athame implements StatsInfo {
     System.out.println("Health: " + health); 
     System.out.println("Block: " + block); 
     System.out.println("Damage: " + damage); 
-    System.out.println("Healing Type: " + healing.getType() + "," + "Healing Amount: " + healing.getAmount()); 
+    System.out.println("Healing Description: " + healing.getDescription()); 
     System.out.println("Socket 1: " + socket1.getDescription()); 
     System.out.println("Socket 2: " + socket2.getDescription()); 
     System.out.println("Socket 3: " + socket3.getDescription()); 

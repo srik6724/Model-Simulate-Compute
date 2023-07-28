@@ -1,4 +1,4 @@
-package EternalStats;
+package JadeStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,27 +9,23 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
-import Gear.Hat;
+import Gear.Ring;
 import Gear.StatsInfo;
+import Healing.Healing;
 import Sockets.Socket;
 
-public class EternalHatStats extends Hat implements StatsInfo {
+public class JadeRingOption2Stats extends Ring implements StatsInfo {
   private int health; 
+  private int mana; 
   private int power_pip; 
   private int block; 
-  private int resist; 
-  private int accuracy; 
-  private int critical; 
-  private int damage; 
-  private int shadowRating; 
-  private String school; 
-  private int level; 
+  private Healing healing; 
   private Socket socket1; 
-  private Socket socket2; 
-  private Socket socket3;
+  private int level; 
+  private String school; 
   private Connection conn1; 
 
-  public EternalHatStats(String name)
+  public JadeRingOption2Stats(String name)
   {
     super(name); 
     try
@@ -51,7 +47,7 @@ public class EternalHatStats extends Hat implements StatsInfo {
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, power_pip, block, resist, accuracy, critical, damage, shadowRating, school, level, socket1, socket2, socket3 FROM wizard_schema.eternal_hats WHERE name = ?"; 
+        String sql = "SELECT health, mana, power_pip, block, outgoing, school, level, socket1 FROM wizard_schema.jade_ring_option2 WHERE name = ?"; 
         PreparedStatement stmt = conn1.prepareStatement(sql); 
         System.out.println(name); 
         stmt.setString(1, name);
@@ -60,26 +56,18 @@ public class EternalHatStats extends Hat implements StatsInfo {
         while(rs.next())
         {
           health = Integer.parseInt(rs.getString("health")); 
+          mana = Integer.parseInt(rs.getString("mana")); 
           power_pip = Integer.parseInt(rs.getString("power_pip")); 
           block = Integer.parseInt(rs.getString("block")); 
-          resist = Integer.parseInt(rs.getString("resist")); 
-          accuracy = Integer.parseInt(rs.getString("accuracy")); 
-          critical = Integer.parseInt(rs.getString("critical")); 
-          damage = Integer.parseInt(rs.getString("damage")); 
-          shadowRating = Integer.parseInt(rs.getString("shadowRating"));
+          healing = new Healing(rs.getString("outgoing")); 
           school = rs.getString("school"); 
           level = Integer.parseInt(rs.getString("level")); 
           socket1 = new Socket(rs.getString("socket1"), "shield", school);
-          socket2 = new Socket(rs.getString("socket2"), "sword", school);
-          socket3 = new Socket(rs.getString("socket3"), "sword", school);
         }
-        EternalHatStats createObj = new EternalHatStats(name, health, power_pip, block, resist, accuracy, critical, damage, shadowRating, school, level, socket1, socket2, socket3); 
+        JadeRingOption2Stats createObj = new JadeRingOption2Stats(name, health, mana, power_pip, block, healing, school, level, socket1); 
         createObj.createSocketAttachment(socket1); 
-        createObj.createSocketAttachment(socket2); 
-        createObj.createSocketAttachment(socket3); 
         createObj.statsInformation();
       }
-      conn1.close(); 
     }
     catch(SQLException e)
     {
@@ -87,82 +75,70 @@ public class EternalHatStats extends Hat implements StatsInfo {
     }
   }
 
-  public EternalHatStats(String name, int health, int power_pip, int block, int resist, int accuracy, int critical, int damage, int shadowRating, String school, int level, Socket socket1, Socket socket2, Socket socket3)
+  public JadeRingOption2Stats(String name, int health, int mana, int power_pip, int block, Healing healing, String school, int level, Socket socket1)
   {
     super(name); 
     this.health = health; 
+    this.mana = mana; 
     this.power_pip = power_pip; 
-    this.block = block; 
-    this.resist = resist; 
-    this.accuracy = accuracy; 
-    this.critical = critical; 
-    this.damage = damage; 
-    this.shadowRating = shadowRating; 
+    this.block = block;
+    this.healing = healing; 
     this.school = school; 
-    this.level = level;
+    this.level = level; 
     this.socket1 = socket1; 
-    this.socket2 = socket2; 
-    this.socket3 = socket3; 
   }
 
   @Override
   public void statsInformation() {
-    System.out.println("Here is the following information about your hat.");
+    System.out.println("Here is the information about the ring chosen.");
     System.out.println("Health: " + health); 
+    System.out.println("Mana: " + mana); 
     System.out.println("Power Pip: " + power_pip); 
     System.out.println("Block: " + block); 
-    System.out.println("Resist: " + resist); 
-    System.out.println("Accuracy: " + accuracy); 
-    System.out.println("Critical: " + critical); 
-    System.out.println("Damage: " + damage); 
-    System.out.println("Shadow Rating: " + shadowRating); 
-    System.out.println("School: " + school); 
+    System.out.println("Healing Description: " + healing.getDescription());
+    System.out.println("School: " + school);
     System.out.println("Level: " + level); 
     System.out.println("Socket 1: " + socket1.getDescription()); 
-    System.out.println("Socket 2: " + socket2.getDescription()); 
-    System.out.println("Socket 3: " + socket3.getDescription()); 
   }
 
   private Socket createSocketAttachment(Socket socket) {
-    if(socket.getDescription().equals("unused"))
-    {
-    try
-    {
-      String db_url = WizCredentials.getDB_URL(); 
-      String user = WizCredentials.getDB_USERNAME(); 
-      String password = WizCredentials.getDB_PASSWORD(); 
 
-      if(WizCredentials.authenticate(user, password))
-      {
-        System.out.println("Authentication successful"); 
-      }
-      else 
-      {
-        System.out.println("Authentication failed"); 
-      }
+		if(socket.getDescription().equals("unused"))
+		{
+			try {
+        String db_url = WizCredentials.getDB_URL(); 
+        String user = WizCredentials.getDB_USERNAME(); 
+        String password = WizCredentials.getDB_PASSWORD(); 
 
-      conn1 = DriverManager.getConnection(db_url, user, password);
+        if(WizCredentials.authenticate(user, password))
+        {
+          System.out.println("Authentication successful"); 
+        }
+        else 
+        {
+          System.out.println("Authentication failed"); 
+        }
 
-      if(conn1 != null)
-      {
-          Scanner sc = new Scanner(System.in); 
+        conn1 = DriverManager.getConnection(db_url, user, password);
+				if(conn1 != null)
+				{
+					Scanner sc = new Scanner(System.in); 
+
 					String firstInput; 
 					String addAttachment; 
 					System.out.println("Would you like to add socket attachments to your gear?"); 
 					System.out.println("Keep in mind, you can only add sockets of type: " + socket.getType()); 
 					System.out.println("You will have to use the exact name for the time being. So, please make sure to spell it correctly.");
-
-          firstInput = sc.nextLine(); 
+					firstInput = sc.nextLine(); 
 					if(firstInput.equals("NO"))
 					{
 						if(!(sc.hasNextLine()))
 						{
 							sc.close();
 						}
-            conn1.close(); 
 						return socket;
 					}
-          else 
+					else 
 					{
 						boolean cont = true; 
 						String nameOfSocket = ""; 
@@ -218,23 +194,22 @@ public class EternalHatStats extends Hat implements StatsInfo {
 						socket.setDescription(description);
 						socket = new Socket(nameOfSocket, socket.getType(), socket.getSchool(), socket.getDescription()); 
 						System.out.println("Socket of type " + socket.getType() + " of school " + socket.getSchool() + " and of description " + socket.getDescription() + " added."); 
-            conn1.close(); 
 						return socket;
 					}
+				}
+				return null;
+			}
+			catch(SQLException e)
+			{
+				System.out.println("An exception occurred here."); 
+				return null;
+			}
 		}
-    conn1.close();
-		return null;
-    }catch(SQLException e)
-    {
-      System.out.println("Sorry, an exception occurred.");
-      return null; 
-    }
-  }
-  else 
-  {
-    return socket; 
-  }
+		else 
+		{
+			return socket;
+		}
+
 	}
-
-
+  
 }

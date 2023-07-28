@@ -2,9 +2,9 @@ package DragoonStats;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import Credentials.WizCredentials;
 import Gear.Robe;
@@ -43,9 +43,11 @@ public class DragoonRobeStats extends Robe implements StatsInfo {
 
       if(conn1 != null)
       {
-        String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, healing, shadowRating FROM wizard_schema.dragoon_robes WHERE name = " + name; 
-        Statement stmt = conn1.createStatement(); 
-        ResultSet rs = stmt.executeQuery(sql); 
+        String sql = "SELECT health, power_pip, block, resist, accuracy, pierce, healing, shadowRating FROM wizard_schema.dragoon_robes WHERE name = ?"; 
+        PreparedStatement stmt = conn1.prepareStatement(sql); 
+        System.out.println(name); 
+        stmt.setString(1, name); 
+        ResultSet rs = stmt.executeQuery(); 
 
         while(rs.next())
         {
@@ -56,10 +58,9 @@ public class DragoonRobeStats extends Robe implements StatsInfo {
           accuracy = Integer.parseInt(rs.getString("accuracy")); 
           pierce = Integer.parseInt(rs.getString("pierce")); 
           String healing_description = rs.getString("healing"); 
-          healing.setDescription(healing_description);
+          healing = new Healing(healing_description);
           shadowRating = Integer.parseInt(rs.getString("shadowRating")); 
         }
-
         DragoonRobeStats createObj = new DragoonRobeStats(name, health, power_pip, block, resist, accuracy, pierce, healing, shadowRating); 
         createObj.statsInformation();
       }
@@ -91,7 +92,7 @@ public class DragoonRobeStats extends Robe implements StatsInfo {
     System.out.println("Resist: " + resist); 
     System.out.println("Accuracy: " + accuracy); 
     System.out.println("Pierce: " + pierce); 
-    System.out.println("Healing Type: " + healing.getType() + "," + "Healing Amount: " + healing.getAmount()); 
+    System.out.println("Healing Description: " + healing.getDescription()); 
     System.out.println("Shadow Rating: " + shadowRating); 
   }
   

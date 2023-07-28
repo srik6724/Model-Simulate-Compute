@@ -73,7 +73,7 @@ public class AeonBootsStats extends Boot implements StatsInfo {
           socket3 = new Socket(rs.getString("socket3"), "sword", school);
         }
 
-        AeonBootsStats createObj = new AeonBootsStats(name, health, power_pip, block, resist, accuracy, pierce, critical, damage, sql, socket1, socket2, socket3); 
+        AeonBootsStats createObj = new AeonBootsStats(name, health, power_pip, block, resist, accuracy, pierce, critical, damage, school, socket1, socket2, socket3); 
         createObj.createSocketAttachment(socket1); 
         createObj.createSocketAttachment(socket2); 
         createObj.createSocketAttachment(socket3); 

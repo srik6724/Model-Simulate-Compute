@@ -1,25 +1,16 @@
 package Healing;
 
 public class Healing {
-  
-  private String type; 
-  private int amount; 
   public String description; 
 
-  public Healing(String type, int amount)
+  public Healing(String description)
   {
-    this.type = type; 
-    this.amount = amount; 
+    this.description = description; 
   }
 
-  public String getType()
+  public String getDescription()
   {
-    return type; 
-  }
-
-  public int getAmount()
-  {
-    return amount; 
+    return description; 
   }
 
   public void setDescription(String description)

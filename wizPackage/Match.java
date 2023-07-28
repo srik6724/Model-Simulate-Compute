@@ -1,4 +1,5 @@
 package wizPackage;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,9 +15,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
-
-import com.mysql.cj.jdbc.CallableStatement;
-import com.mysql.cj.x.protobuf.MysqlxPrepare.Prepare;
 
 import AeonStats.AeonAmuletStats;
 import AeonStats.AeonAthameStats;
@@ -40,8 +38,10 @@ import Pets.Pet;
 import Gear.Ring;
 import Gear.Robe;
 import Gear.Wand;
+import JadeStats.JadeClass;
 import NightMireStats.NightMireClass;
 import wizPackage.LinkedList.Node;
+import wiz_threading.Team1vsTeam2;
 import PlayerStats.Player;
 import SchoolSpells.Spell;
 import SchoolSpells.schoolSpells;
@@ -391,6 +391,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			count = count + 1; 
 		}
 		modified_wizardName = current.wizard + " " + count; 
+		list.deleteAllNodeData();
 		gearSets.put(modified_wizardName, current.data); 
 		gearSets.remove(saveDuplicateKey); 
 		for(String wizard: gearSets.keySet())
@@ -722,7 +723,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				check = false; 
 			}
 		}
-		
 		return check; 
 	}
 	
@@ -761,38 +761,24 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 	
 	public void matchCountDown(String firstTeamName, String secondTeamName)
-	{
-		int randomNumberGenerated = (int) (Math.random() * 6) + 1;  
-		
-		Scanner sc = new Scanner(System.in);
-		
+	{	
 		System.out.println("It is official."); 
 		System.out.println("Team " + firstTeam + " will be versing " + secondTeam); 
 		
-		System.out.println("You start the countdown from 10 to 1 for when you want the match to begin."); 
-		System.out.println("Make sure to do this; Otherwise, the match will not START."); 
+		System.out.println("Setting thread here for the countdown from 15 to 1.");
+		System.out.println("Just for personal note, potential data analysis will be conducted there.");
+		System.out.println("Also look into separate terminals for threading."); 
 		
-		boolean startAtRightCount = true; 
-			
-		while(startAtRightCount)
-		{
-			System.out.println("Start countdown at " + countDownNumber);
-			startCountDown = sc.nextInt(); 
-				
-			if(startCountDown == countDownNumber && startCountDown != 0 && countDownNumber != 0)
-			{
-				countDownNumber = countDownNumber - 1; 
-				addSpectator(randomNumberGenerated);
-				startAtRightCount = true; 
-			}
-				
-			if(countDownNumber == 0 && startCountDown == 0)
-			{
-				addSpectator(randomNumberGenerated);
-				System.out.println("Match has started."); 
-				startAtRightCount = false; 
-			}
-		}
+		Thread th = new Thread(new Team1vsTeam2());
+    th.start(); 
+
+    try {
+      th.join(); 
+    }catch(InterruptedException e)
+    {
+      //System.out.println("Execution will now resume in the main thread."); 
+    }
+
 		int numberOfSpectators = countSpectators(); 
 		System.out.println("We will have " + numberOfSpectators + " spectators " + "watching the match. "); 
 		boolean checkPlausibleBets = placeBets(); 
@@ -1048,7 +1034,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 
 	private void findGearClass(String word, String gearName, String pieceOfGear) {
-		if(word.toLowerCase().equals("aeon"))
+				if(word.toLowerCase().equals("aeon"))
 				{
 					new AeonClass(gearName, pieceOfGear); 
 				}
@@ -1067,6 +1053,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				else if(word.toLowerCase().equals("night mire"))
 				{
 					new NightMireClass(gearName, pieceOfGear); 
+				}
+				else if(word.toLowerCase().equals("jade"))
+				{
+					new JadeClass(gearName, pieceOfGear);
 				}
 	}
 

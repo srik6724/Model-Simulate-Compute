@@ -126,7 +126,20 @@ public class NightMireHatStats extends Hat implements StatsInfo {
 		if(socket.getDescription().equals("unused"))
 		{
 			try {
+        String db_url = WizCredentials.getDB_URL(); 
+        String user = WizCredentials.getDB_USERNAME(); 
+        String password = WizCredentials.getDB_PASSWORD(); 
 
+        if(WizCredentials.authenticate(user, password))
+        {
+          System.out.println("Authentication successful"); 
+        }
+        else 
+        {
+          System.out.println("Authentication failed"); 
+        }
+
+        conn1 = DriverManager.getConnection(db_url, user, password);
 				if(conn1 != null)
 				{
 					Scanner sc = new Scanner(System.in); 

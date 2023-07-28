@@ -40,6 +40,11 @@ public class LinkedList {
 
   void printNodeData()
   {
+    if(head == null)
+    {
+      System.out.println("List is fully cleared.");
+      return; 
+    }
     Node current = head; 
     while(current.next != null)
     {
@@ -49,6 +54,11 @@ public class LinkedList {
     }
     System.out.println(current.wizard); 
     System.out.println(current.data); 
+  }
+
+  void deleteAllNodeData()
+  {
+    head = null;
   }
 
   public static void main(String[]args)
@@ -67,6 +77,9 @@ public class LinkedList {
 
     list.printNodeData(); 
 
+    list.deleteAllNodeData();
+
+    list.printNodeData();
     
     
   }

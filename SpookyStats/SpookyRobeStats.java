@@ -59,7 +59,8 @@ public class SpookyRobeStats extends Robe implements StatsInfo {
           accuracy = Integer.parseInt(rs.getString("accuracy")); 
           block = Integer.parseInt(rs.getString("block"));
           resist = Integer.parseInt(rs.getString("resist")); 
-          healing.setDescription(rs.getString("healing"));
+          String healing_description = rs.getString("healing"); 
+          healing = new Healing(healing_description);
           card.setDescription(rs.getString("item_card"));
           level = Integer.parseInt(rs.getString("level")); 
           school = rs.getString("school"); 
@@ -96,7 +97,7 @@ public class SpookyRobeStats extends Robe implements StatsInfo {
     System.out.println("Accuracy: " + accuracy); 
     System.out.println("Block: " + block); 
     System.out.println("Resist: " + resist); 
-    System.out.println("Healing Type: " + healing.getType() + "," + "Healing Amount: " + healing.getAmount()); 
+    System.out.println("Healing Description: " + healing.getDescription()); 
     System.out.println("Card: " + card.getDescription()); 
     System.out.println("Level: " + level); 
     System.out.println("School: " + school); 

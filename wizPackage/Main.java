@@ -31,6 +31,7 @@ public class Main {
 		Match match = new Match(); 
 		match.enroll2Teams();
 		
+		
 	}
 
 	

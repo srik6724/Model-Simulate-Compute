@@ -40,7 +40,7 @@ public class DragoonBootsStats extends Boot implements StatsInfo {
     System.out.println("Resist: " + resist); 
     System.out.println("Critical: " + critical);
     System.out.println("Damage: " + damage);  
-    System.out.println("Healing Type: " + healing.getType() + "," + "Healing Amount: " + healing.getAmount());  
+    System.out.println("Healing Description: " + healing.getDescription());   
     System.out.println("Shadow Rating: " + shadowRating); 
   }
   
