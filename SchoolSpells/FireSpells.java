@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import dataStructures.WizHeap;
@@ -91,48 +92,51 @@ public class FireSpells {
 		return modifiedSpells;
 	}*/
 	
-	public void deckInformation(List<List<Spell>> spells)
+	public void deckInformation(List<Map<String,List<String>>> setOfSpells)
 	{
-		Set<String> TCInfo = computeTCInformation(spells); 
-		Set<String> mainDeckInfo = computeMainDeckInformation(spells); 
-		
-		for(Spell spell: spells.get(0))
+		if(setOfSpells != null)
 		{
-			int capacity = 40; 
-			countOfEachSpell(spell.getName(), spells.get(0), capacity); 
-		}
-		
-		for(Spell spell: spells.get(1))
-		{
-			int capacity = 64;  
-			countOfEachSpell(spell.getName(), spells.get(1), capacity); 
+			//computeTCInformation(setOfSpells); 
+			computeMainDeckInformation(setOfSpells); 
 		}
 		
 	}
 	
-	public Set<String> computeTCInformation(List<List<Spell>> spells)
+	public Set<String> computeTCInformation(List<Map<String,List<String>>> setOfSpells)
 	{
-		Set<String> uniqueSpellsTC = new HashSet<String>(); 
-		
-		for(Spell spell: spells.get(0))
+		if(setOfSpells != null)
 		{
-			uniqueSpellsTC.add(spell.getName()); 
+			for(String spell: setOfSpells.get(0).keySet())
+			{
+				System.out.println("Spell Name: " + spell); 
+				System.out.println("Count of Spell: " + setOfSpells.get(0).get(spell).get(0)); 
+				System.out.println("Pip Chance: " + setOfSpells.get(0).get(spell).get(1)); 
+				System.out.println("Pips of Spell: " + setOfSpells.get(0).get(spell).get(2)); 
+				System.out.println("School Name: " + setOfSpells.get(0).get(spell).get(3));
+				System.out.println("---------------------------------------------------------"); 
+			}
 		}
-		
-		return uniqueSpellsTC;
-		
+		return null; 
 	}
 	
-	public Set<String> computeMainDeckInformation(List<List<Spell>> spells)
+	public Set<String> computeMainDeckInformation(List<Map<String,List<String>>> setOfSpells)
 	{
-		Set<String> uniqueSpellsMain = new HashSet<String>(); 
-		
-		for(Spell spell: spells.get(1))
+		if(setOfSpells != null)
 		{
-			uniqueSpellsMain.add(spell.getName()); 
+			int cardNumber = 0; 
+			for(String spellName: setOfSpells.get(0).keySet())
+			{
+				cardNumber = cardNumber + Integer.parseInt(setOfSpells.get(0).get(spellName).get(0)); 
+				System.out.println("Spell Name: " + spellName); 
+				System.out.println("Count Of Spell: " + setOfSpells.get(0).get(spellName).get(0)); 
+				System.out.println("Pip Chance: " + setOfSpells.get(0).get(spellName).get(1)); 
+				System.out.println("Pips Of Spell: " + setOfSpells.get(0).get(spellName).get(2)); 
+				System.out.println("School Name: " + setOfSpells.get(0).get(spellName).get(3)); 
+				System.out.println(cardNumber + "/" + "64 main deck spells"); 
+				System.out.println("---------------------------------------------------------"); 
+			}
 		}
-		
-		return uniqueSpellsMain;
+		return null; 
 	}
 	
 	public void countOfEachSpell(String name, List<Spell> spells, int capacity)
@@ -150,7 +154,7 @@ public class FireSpells {
 	
 	public static void main(String[]args)
 	{
-		//FireSpells spells = new FireSpells(); 
+		new FireSpells(); 
 	}
 	
 	

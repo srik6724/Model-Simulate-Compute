@@ -443,10 +443,9 @@ public class WizHeap {
 		/*WizHeap hp = new WizHeap(); 
 		System.out.println(hp.mainDeckSpells.size()); 
 		System.out.println(hp.tcDeckSpells.size()); 
-		hp.selectNOoption("balance", "NO");*/
-		//hp.fillMainDeck(hp.mainDeckSpells, "balance");
-		//hp.fillTcDeck(hp.tcDeckSpells, "balance");
-
+		hp.selectNOoption("balance", "NO");
+		hp.fillMainDeck(hp.mainDeckSpells, "balance");
+		hp.fillTcDeck(hp.tcDeckSpells, "balance");*/
 
 	}
 

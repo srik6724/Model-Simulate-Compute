@@ -60,8 +60,8 @@ public class IceSpells {
 								if(givenIceSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
-										//System.out.println("Here is the following information about your main Deck, tc Deck"); 
-										deckInformation(createdIceSpells, givenIceSpells); 
+									//System.out.println("Here is the following information about your main Deck, tc Deck"); 
+									deckInformation(createdIceSpells, givenIceSpells); 
 									}
             		System.out.println("Execution is done.");
             	}
@@ -109,7 +109,6 @@ public class IceSpells {
 	
 	public void deckInformation(List<List<Spell>> spells, List<Map<String, List<String>>> setOfSpells)
 	{
-
 		/*if(spells != null)
 		{
 
@@ -131,63 +130,44 @@ public class IceSpells {
 		}*/
 		if(setOfSpells != null)
 		{
-			computeMainDeckInformation(spells, setOfSpells); 
-			computeTCInformation(spells, setOfSpells); 
+			computeMainDeckInformation(setOfSpells); 
+			computeTCInformation(setOfSpells); 
 		}
 	}
 	
-	public Set<String> computeTCInformation(List<List<Spell>> spells, List<Map<String,List<String>>> setOfSpells)
+	public Set<String> computeTCInformation(List<Map<String,List<String>>> setOfSpells)
 	{
-		if(spells != null)
-		{
-			Set<String> uniqueSpellsTC = new HashSet<String>(); 
-		
-			/*for(Spell spell: spells.get(0))
-			{
-				uniqueSpellsTC.add(spell.getName()); 
-			}*/
-		
-			return uniqueSpellsTC;
-		}
-		else if(setOfSpells != null)
+		if(setOfSpells != null)
 		{
 			for(String spell: setOfSpells.get(0).keySet())
 			{
 				System.out.println("Spell Name: " + spell); 
-				System.out.println("Pips of Spell: " + setOfSpells.get(0).get(spell).get(2)); 
 				System.out.println("Count of Spell: " + setOfSpells.get(0).get(spell).get(0)); 
+				System.out.println("Pip Chance: " + setOfSpells.get(0).get(spell).get(1)); 
+				System.out.println("Pips of Spell: " + setOfSpells.get(0).get(spell).get(2)); 
+				System.out.println("School Name: " + setOfSpells.get(0).get(spell).get(3)); 
 				System.out.println("---------------------------------------------------------"); 
 			}
-		
-			return null;
 		}
 		return null; 
 	}
 	
-	public Set<String> computeMainDeckInformation(List<List<Spell>> spells, List<Map<String,List<String>>> setOfSpells)
+	public Set<String> computeMainDeckInformation(List<Map<String,List<String>>> setOfSpells)
 	{
-		if(spells != null)
+		if(setOfSpells != null)
 		{
-			Set<String> mainDeckSpells = new HashSet<String>(); 
-		
-			/*for(Spell spell: spells.get(0))
+			int cardNumber = 0; 
+			for(String spellName: setOfSpells.get(0).keySet())
 			{
-				uniqueSpellsTC.add(spell.getName()); 
-			}*/
-		
-			return mainDeckSpells; 
-		}
-		else if(setOfSpells != null)
-		{
-		
-			/*for(String spellName: setOfSpells.get(0).keySet())
-			{
+				cardNumber = cardNumber + Integer.parseInt(setOfSpells.get(0).get(spellName).get(0)); 
 				System.out.println("Spell Name: " + spellName); 
 				System.out.println("Count Of Spell: " + setOfSpells.get(0).get(spellName).get(0)); 
+				System.out.println("Pip Chance: " + setOfSpells.get(0).get(spellName).get(1)); 
 				System.out.println("Pips Of Spell: " + setOfSpells.get(0).get(spellName).get(2)); 
-			}*/
-		
-			return null; 
+				System.out.println("School Name: " + setOfSpells.get(0).get(spellName).get(3)); 
+				System.out.println(cardNumber + "/" + "64 main deck spells"); 
+				System.out.println("---------------------------------------------------------"); 
+			}
 		}
 		return null; 
 	}

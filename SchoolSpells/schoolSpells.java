@@ -8,7 +8,7 @@ public class schoolSpells {
 	public static ArrayList<List<Spell>> allSchoolSpells = new ArrayList<List<Spell>>(); 
 	
 	ArrayList<Spell> balanceSpells = new BalanceSpells().retrieveBalanceSpells();
-	//ArrayList<Spell> lifeSpells = new LifeSpells().retrieveLifeSpells(); 
+	ArrayList<Spell> lifeSpells = new LifeSpells().retrieveLifeSpells(); 
 	ArrayList<Spell> deathSpells = new DeathSpells().retrieveDeathSpells(); 
 	ArrayList<Spell> iceSpells = new IceSpells().retrieveIceSpells(); 
 	//ArrayList<Spell> stormSpells = new FireSpells().retrieveFireSpells(); 
@@ -24,7 +24,7 @@ public class schoolSpells {
 	public schoolSpells()
 	{
 		allSchoolSpells.add(balanceSpells); 
-		//allSchoolSpells.add(lifeSpells); 
+		allSchoolSpells.add(lifeSpells); 
 		allSchoolSpells.add(deathSpells); 
 		allSchoolSpells.add(iceSpells); 
 		//allSchoolSpells.add(stormSpells);

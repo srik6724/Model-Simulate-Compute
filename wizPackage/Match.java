@@ -40,8 +40,10 @@ import Gear.Robe;
 import Gear.Wand;
 import JadeStats.JadeClass;
 import NightMireStats.NightMireClass;
-import wizPackage.LinkedList.Node;
+import wizPackage.LinkedListTeam1.Node;
+import wiz_threading.Team1Runnable;
 import wiz_threading.Team1vsTeam2;
+import wiz_threading.Team2Runnable;
 import PlayerStats.Player;
 import SchoolSpells.Spell;
 import SchoolSpells.schoolSpells;
@@ -113,14 +115,16 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	String T2fourthPlayer; 
 	String T2fourthPlayerLevel; 
 	String T2fourthPlayerSchool;
-	
+
+	private static int countTeamsRegistered = 1; 
+	private static int firstIteration = 1; 
 	
 	public void enroll2Teams()
 	{
 		String[] teamStr = {"First", "Second"};  
 		for(int i = 0; i < 2; i++)
 		{
-			enrollTeamPlayers(teamStr[i]);
+			enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered);
 		}
 		System.out.println(retrieveFirstTeamName + " will be competing against " + retrieveSecondTeamName); 
 		randomizeArenaSelection(); 
@@ -130,7 +134,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 	
 	
-	public void enrollTeamPlayers(String str)
+	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered)
 	{
 		Scanner sc = new Scanner(System.in);
 		
@@ -295,12 +299,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		
 		int index = 0; 
 		createDeck(firstTeamSchools[0]);
-		/*while(index < firstTeamSchools.length)
-		{
-			createDeck(firstTeamSchools[index]); 
-			System.out.println("Deck created for " + firstTeamSchools[index]); 
-			index = index + 1; 
-		}*/
+
+
 		System.out.println("The decks are now created for all schools specified.");
 		System.out.println();
 		System.out.println(); 
@@ -312,9 +312,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		int iter = 4; 
 		HashMap<String, List<String>> gearSets = new HashMap<String, List<String>>(); 
 		int place = 0; 
-		int firstIteration = 1; 
+		firstIteration = 1; 
 		String saveDuplicateKey = ""; 
-		LinkedList list = new LinkedList(); 
+		LinkedListTeam1 list1 = new LinkedListTeam1(); 
+		LinkedListTeam2 list2 = new LinkedListTeam2(); 
 		HashMap<Integer, List<String>> keywords = new HashMap<Integer, List<String>>(); 
 		for(int i = 0; i < firstTeam.length; i++)
 		{
@@ -356,16 +357,24 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					saveDuplicateKey = firstTeam[i]; 
 					List<String> gearItems = retrieveDuplicateKeyInfo(gearSets, firstTeam[i]);
-					LinkedList.Node node = new LinkedList.Node(firstTeam[i], gearItems); 
-					list.insert(node); 
-					LinkedList.Node anotherNode = new LinkedList.Node(firstTeam[i], storeGearPieces); 
-					list.insert(anotherNode); 
+					LinkedListTeam1.Node node = new LinkedListTeam1.Node(firstTeam[i], gearItems); 
+					list1.insert(node); 
+					LinkedListTeam1.Node anotherNode = new LinkedListTeam1.Node(firstTeam[i], storeGearPieces); 
+					list1.insert(anotherNode); 
 					firstIteration = 0; 
 				}
 				else 
 				{
-					LinkedList.Node node = new LinkedList.Node(firstTeam[i], storeGearPieces); 
-					list.insert(node); 
+					if(countTeamsRegistered == 1)
+					{
+						LinkedListTeam1.Node node = new LinkedListTeam1.Node(firstTeam[i], storeGearPieces); 
+						list1.insert(node); 
+					}
+					else 
+					{
+						LinkedListTeam2.Node node = new LinkedListTeam2.Node(firstTeam[i], storeGearPieces); 
+						list2.insert(node); 
+					}
 				}
 				/*if(LinkedList.root != null)
 				{
@@ -379,21 +388,42 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				gearSets.put(firstTeam[i], storeGearPieces);
 			}
 		}
-		list.printNodeData();
-		Node current = LinkedList.head; 
-		int count = 1; 
-		String modified_wizardName = ""; 
-		while(current.next != null)
+		LinkedListTeam1.Node current1;
+		LinkedListTeam2.Node current2;
+		if(countTeamsRegistered == 1)
 		{
-			modified_wizardName = current.wizard + " " + count; 
-			gearSets.put(modified_wizardName, current.data); 
-			current = current.next; 
-			count = count + 1; 
+			list1.printNodeData();
+			current1 = LinkedListTeam1.head; 
+			int count = 1; 
+			String modified_wizardName = ""; 
+			while(current1.next != null)
+			{
+				modified_wizardName = current1.wizard + " " + count; 
+				gearSets.put(modified_wizardName, current1.data); 
+				current1 = current1.next; 
+				count = count + 1; 
+			}
+			modified_wizardName = current1.wizard + " " + count;
+			gearSets.put(modified_wizardName, current1.data); 
+			gearSets.remove(saveDuplicateKey); 
 		}
-		modified_wizardName = current.wizard + " " + count; 
-		list.deleteAllNodeData();
-		gearSets.put(modified_wizardName, current.data); 
-		gearSets.remove(saveDuplicateKey); 
+		else
+		{
+			list2.printNodeData();
+			current2 = LinkedListTeam2.head; 
+			int count = 1; 
+			String modified_wizardName = ""; 
+			while(current2.next != null)
+			{
+				modified_wizardName = current2.wizard + " " + count; 
+				gearSets.put(modified_wizardName, current2.data); 
+				current2 = current2.next; 
+				count = count + 1; 
+			}
+			modified_wizardName = current2.wizard + " " + count;
+			gearSets.put(modified_wizardName, current2.data); 
+		}
+		
 		for(String wizard: gearSets.keySet())
 		{
 			System.out.println(wizard); 
@@ -474,6 +504,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			start = start + 1; 
 		}
 		System.out.println("Congratulations, team " + retrieveFirstTeamName + " is enrolled officially.");
+		countTeamsRegistered++; 
 		
 	}
 	
@@ -579,9 +610,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 
 
-	private void createDeck(String str) {
+	private HashMap<String, List<Spell>> createDeck(String str) {
 		
-		schoolSpells spells = new schoolSpells(); 
+		new schoolSpells(); 
 		
 		switch(str.toLowerCase()) {
 		
@@ -600,31 +631,31 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("Success, ice deck is in!"); 
 			break;
 		
-		/*case "life": 
+		case "life": 
 			decks.put("life", schoolSpells.allSchoolSpells.get(3)); 
 			System.out.println("Success, life deck is in!"); 
-			break;*/
+			break;
 		
 		case "death": 
 			decks.put("death", schoolSpells.allSchoolSpells.get(4)); 
 			System.out.println("Success, death deck is in!"); 
 			break;
 		
-		/*case "storm": 
+		case "storm": 
 			decks.put("storm", schoolSpells.allSchoolSpells.get(5));
 			System.out.println("Success, storm deck is in!"); 
-			break;*/
+			break;
 			
-		/*case "myth": 
+		case "myth": 
 			decks.put("myth", schoolSpells.allSchoolSpells.get(6)); 
 			System.out.println("Success, myth deck is in!"); 
-			break;*/
+			break;
+
 		default: 
 			TypeException ex = new TypeException(); 
 			ex.message(str); 
-		
 		}
-		
+		return decks;
 		
 	}
 
@@ -763,7 +794,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	public void matchCountDown(String firstTeamName, String secondTeamName)
 	{	
 		System.out.println("It is official."); 
-		System.out.println("Team " + firstTeam + " will be versing " + secondTeam); 
+		System.out.println("Team " + firstTeamName + " will be versing " + secondTeamName); 
 		
 		System.out.println("Setting thread here for the countdown from 15 to 1.");
 		System.out.println("Just for personal note, potential data analysis will be conducted there.");
