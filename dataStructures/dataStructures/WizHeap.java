@@ -66,6 +66,8 @@ public class WizHeap {
 							e.pipChance = mD[mainDeckCounter].getPipChance(); 
 							e.pips = mD[mainDeckCounter].getPips(); 
 							e.count = mD[mainDeckCounter].getCount();
+							e.description = mD[mainDeckCounter].getDescription();
+							e.typeSpell = mD[mainDeckCounter].getTypeSpell();
 							mainDeckCounter++;
 						}
 						int tcDeckCounter = 0; 
@@ -75,13 +77,13 @@ public class WizHeap {
 							e.pipChance = tC[tcDeckCounter].getPipChance();
 							e.pips = tC[tcDeckCounter].getPips(); 
 							e.count = tC[tcDeckCounter].getCount();
+							e.description = tC[tcDeckCounter].getDescription();
+							e.typeSpell = tC[tcDeckCounter].getTypeSpell(); 
 							tcDeckCounter++; 
 						}
 						buildHeap(mainDeckElements); 
 						buildHeap(tcDeckElements); 
 				}
-
-
 			}
 		else if(input.equals("DD"))
 			if(mainDeck.getElements() != null && tcDeck.getElements() != null)
@@ -161,6 +163,19 @@ public class WizHeap {
 		for(int i = (int)Math.floor(elements.length/2); i >= 1; i--)
 		{
 			minHeapify(elements, i); 
+		}
+		System.out.println("Let's see the changes to our spells."); 
+		System.out.println("Filtering spells by pip count from lowest to highest."); 
+		System.out.println("Here it goes."); 
+		for(Element e: elements)
+		{
+			System.out.println("Spell Name: " + e.spellName); 
+			System.out.println("Count: " + e.count); 
+			System.out.println("Description: " + e.description); 
+			System.out.println("Pip Chance: " + e.pipChance); 
+			System.out.println("Pips: " + e.pips); 
+			System.out.println("School: "  + e.school); 
+			System.out.println("Type of Spell: " + e.typeSpell); 
 		}
 		return elements; 
 	}
