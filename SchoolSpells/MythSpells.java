@@ -41,9 +41,9 @@ public class MythSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
-            			String myth_typeSpell = rs.getString("myth_typeSpell"); 
+            			String myth_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, myth_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, myth_typeSpell); 
             			
             			mythSpells.add(spell); 
 

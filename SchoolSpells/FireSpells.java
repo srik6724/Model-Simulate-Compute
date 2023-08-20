@@ -41,9 +41,9 @@ public class FireSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
-            			String fire_typeSpell = rs.getString("fire_typeSpell"); 
+            			String fire_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, fire_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1,fire_typeSpell); 
             			
             			fireSpells.add(spell); 
             			 

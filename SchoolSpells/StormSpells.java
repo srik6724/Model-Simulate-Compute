@@ -42,7 +42,7 @@ public class StormSpells {
             			String pips = rs.getString("pips"); 
             			String storm_typeSpell = rs.getString("storm_typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, storm_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, storm_typeSpell); 
             			
             			stormSpells.add(spell); 
             			 

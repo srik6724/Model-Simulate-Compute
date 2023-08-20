@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -18,111 +19,199 @@ import SchoolSpells.Spell;
 import deckBuild.DarkmoorDeck;
 
 public class WizHeap {
-	
-	public HashMap<String, List<String>> mainDeckSpells = new HashMap<String,List<String>>(); 
-	public HashMap<String, List<String>> tcDeckSpells = new HashMap<String, List<String>>(); 
+	public Map<String, List<String>> mainDeckSpells = new HashMap<String,List<String>>(); 
+	public Map<String, List<String>> tcDeckSpells = new HashMap<String, List<String>>(); 
+	private HeapInfo mainDeck; 
+	private HeapInfo tcDeck; 
 
 	
 	public WizHeap()
 	{
 		System.out.println("WizHeap constructor called."); 
 	}
-	
-	/*public void minHeapify(Spell[]spells, int index)
+
+	public String findDeckType()
 	{
-		int leftIndex = index * 2; 
-		int rightIndex = (index * 2) + 1; 
-		int smallestIndex = 0; 
-		
-		if(!(spells[index-1].getPips().equals("X") && spells[leftIndex-1].getPips().equals("X")))
+		System.out.println("Select whether you created custom deck or default deck. Type CD or DD."); 
+		Scanner sc = new Scanner(System.in); 
+		String optionSelected = sc.nextLine(); 
+		switch(optionSelected)
 		{
-			if(leftIndex <= spells.length && Integer.parseInt(spells[leftIndex-1].getPips()) <= Integer.parseInt(spells[index-1].getPips()))
-			{
-				smallestIndex = leftIndex; 
-			}
-		}
-		else 
-		{
-			System.out.println("Any number of pips to be specified here. Will take care of function later."); 
-		}
-		
-		if(!(spells[rightIndex-1].getPips().equals("X")))
-		{
-			if(rightIndex <= spells.length && Integer.parseInt(spells[rightIndex-1].getPips()) <= Integer.parseInt(spells[smallestIndex-1].getPips()))
-			{
-				smallestIndex = rightIndex; 
-			}
-		}
-		
-		if(smallestIndex != index)
-		{
-			//Swap operation between index and smallestIndex is performed. 
-			Spell tempVariable = spells[index-1]; 	
-			spells[index-1] = spells[smallestIndex-1];
-			spells[smallestIndex-1] = tempVariable;
-		}
-		else 
-		{
-			System.out.println("Any number of pips to be specified here. Will take care of function later."); 
-		}
-		
-	}
-	
-	public Spell[] buildHeap(Spell[] spells)
-	{
-		for(int i = (int)Math.floor(spells.length/2); i > 1; i--)
-		{
-			minHeapify(spells, i); 
-		}
-		
-		return spells;
-	}
-	
-	public List<List<Spell>> buildDeckYESoption(Spell[]spells, String identity)
-	{
-		TypeException exception = new TypeException(); 
-		Scanner sc = new Scanner(System.in);
-		String input; 
-		String[] array = {"YES", "NO"}; 
-		String[] deckFormats = {"Producer's Hazmat Box", "Darkmoor Deck"}; 
-		String deckFormatInput = ""; 
-		List<List<Spell>> fullDeck = new ArrayList<List<Spell>>(); 
-		
-		String typeOfInput = deckFormatInput.getClass().getName(); 
-		
-		System.out.println("Here is the chance for you to build your deck."); 
-		
-		System.out.println("If you would like to make your own deck, select YES. Otherwise, select NO."); 
-		
-		/*input = sc.nextLine(); 
-		if(input.equals("YES"))
-		{	
-			boolean var = true; 
-			while(var)
-			{
-				System.out.println("Specify the following deck formats: Producer's Hazmat Box or Darkmoor Deck");
-				deckFormatInput = sc.nextLine(); 
-				if(deckFormatInput instanceof String && deckFormatInput.equals("Darkmoor Deck"))
-				{
-					DarkmoorDeck deck = new DarkmoorDeck(identity); 
-					
-					Spell[] tcDeck = deck.fillTcDeck(spells);
-					Spell[] mainDeck = deck.fillMainDeck(spells); 
-					
-					fullDeck.add(Arrays.asList(tcDeck)); 
-					fullDeck.add(Arrays.asList(mainDeck)); 
-					
-					var = false; 
-					
-				}
-				else 
-				{
-					exception.message(typeOfInput); 
-				}
-			}
-		}
+			case "CD": 
+				break;
+			case "DD": 
+				break;
+			default: 
+				System.out.println("Sorry option you selected could not be found."); 
+				break;
+ 		}
 		sc.close(); 
-		return fullDeck; */
+		return optionSelected; 
+	}
+
+	public void storeSpellsInHeap(String input, Spell[]mD, Spell[]tC)
+	{
+		if(input.equals("CD"))
+			if(mainDeck.getElements() != null && tcDeck.getElements() != null)
+			{
+				Element[] mainDeckElements = mainDeck.getElements(); 
+				Element[] tcDeckElements = tcDeck.getElements(); 
+
+				if(mainDeckElements.length == mD.length && tcDeckElements.length == tC.length)
+				{
+						int mainDeckCounter = 0; 
+						for(Element e: mainDeckElements)
+						{
+							e.spellName = mD[mainDeckCounter].getName();
+							e.pipChance = mD[mainDeckCounter].getPipChance(); 
+							e.pips = mD[mainDeckCounter].getPips(); 
+							e.count = mD[mainDeckCounter].getCount();
+							mainDeckCounter++;
+						}
+						int tcDeckCounter = 0; 
+						for(Element e: tcDeckElements)
+						{
+							e.spellName = tC[tcDeckCounter].getName(); 
+							e.pipChance = tC[tcDeckCounter].getPipChance();
+							e.pips = tC[tcDeckCounter].getPips(); 
+							e.count = tC[tcDeckCounter].getCount();
+							tcDeckCounter++; 
+						}
+						buildHeap(mainDeckElements); 
+						buildHeap(tcDeckElements); 
+				}
+
+
+			}
+		else if(input.equals("DD"))
+			if(mainDeck.getElements() != null && tcDeck.getElements() != null)
+			{
+				Element[] mainDeckElements = mainDeck.getElements(); 
+				Element[] tcDeckElements = tcDeck.getElements(); 
+
+				if(mainDeckElements.length == mainDeckSpells.size() && tcDeckElements.length == tcDeckSpells.size())
+				{
+					//int trackMainDeck = 0; 
+					Iterator<String> mainDeckIterator = mainDeckSpells.keySet().iterator(); 
+					Iterator<String> tcDeckIterator = tcDeckSpells.keySet().iterator();
+					for(Element e: mainDeckElements)
+					{
+						while(mainDeckIterator.hasNext())
+						{
+							String mainDeckSpellName = mainDeckIterator.next(); 
+							e.spellName = mainDeckSpellName;
+							e.count = Integer.parseInt(mainDeckSpells.get(mainDeckSpellName).get(0));
+							e.pipChance = mainDeckSpells.get(mainDeckSpellName).get(1);
+							e.pips = mainDeckSpells.get(mainDeckSpellName).get(2);
+							e.school = mainDeckSpells.get(mainDeckSpellName).get(3);
+						}
+						//trackMainDeck++; 
+					}
+					buildHeap(mainDeckElements); 
+					//int trackTcDeck = 0; 
+					for(Element e: tcDeckElements)
+					{
+						while(tcDeckIterator.hasNext())
+						{
+							String tcDeckSpellName = tcDeckIterator.next(); 
+							e.spellName = tcDeckSpellName;
+							e.count = Integer.parseInt(mainDeckSpells.get(tcDeckSpellName).get(0));
+							e.pipChance = mainDeckSpells.get(tcDeckSpellName).get(1);
+							e.pips = mainDeckSpells.get(tcDeckSpellName).get(2);
+							e.school = mainDeckSpells.get(tcDeckSpellName).get(3);
+						}
+						//trackTcDeck++; 
+					}
+					buildHeap(tcDeckElements); 
+				}
+				
+			}
+			
+	}
+
+	public void minHeapify(Element[]elements, int i)
+	{
+		int leftIndex = 2 * i; 
+		int rightIndex = (2 * i) + 1; 
+		int smallestIndex; 
+
+		if(leftIndex <= elements.length && Integer.parseInt(elements[leftIndex-1].pips) < Integer.parseInt(elements[i-1].pips))
+		{
+			smallestIndex = leftIndex; 
+		}
+		else 
+		{
+			smallestIndex = i; 
+		}
+		if(rightIndex <= elements.length && Integer.parseInt(elements[rightIndex-1].pips) < Integer.parseInt(elements[smallestIndex-1].pips))
+		{
+			smallestIndex = rightIndex;
+		}
+		if(smallestIndex != i)
+		{
+			Element storePipNumber = elements[i-1];
+			elements[i-1] = elements[smallestIndex-1]; 
+			elements[smallestIndex-1] = storePipNumber; 
+			minHeapify(elements, smallestIndex);
+		}
+	}
+
+	public Element[] buildHeap(Element[]elements)
+	{
+		for(int i = (int)Math.floor(elements.length/2); i >= 1; i--)
+		{
+			minHeapify(elements, i); 
+		}
+		return elements; 
+	}
+
+	public void selectYESOption(String identity, String input)
+	{
+		Scanner sc = new Scanner(System.in); 
+		Spell[] mainDeck;
+		Spell[] tcDeck;
+
+		if(input.toLowerCase().equals("yes"))
+		{
+			System.out.println("Starting process to create custom deck"); 
+			System.out.println("Select a Wizard101 world, and a deck chosen from there will be given to you.");
+			String world = sc.nextLine(); 
+			
+			switch(world)
+			{
+				case "Celestia": 
+					new DarkmoorDeck(identity); 
+				case "Zafaria": 
+					new DarkmoorDeck(identity); 
+				case "Avalon": 
+					new DarkmoorDeck(identity); 
+				case "Azteca": 
+					new DarkmoorDeck(identity); 
+				case "Khrysalis": 
+					new DarkmoorDeck(identity); 
+				case "Darkmoor": 
+					new DarkmoorDeck(identity); 
+					mainDeck = DarkmoorDeck.getMainDeck();
+					tcDeck = DarkmoorDeck.getTcDeck(); 
+					storeSpellsInHeap("CD", mainDeck, tcDeck);
+				case "Polaris": 
+					new DarkmoorDeck(identity); 
+				case "Mirage": 
+					new DarkmoorDeck(identity); 
+				case "Empyrea": 
+					new DarkmoorDeck(identity); 
+				case "Karamelle": 
+					new DarkmoorDeck(identity); 
+				case "Lemuria": 
+					new DarkmoorDeck(identity); 
+				case "Novus": 
+					new DarkmoorDeck(identity);
+				default: 
+					System.out.println("Sorry, world could not be found."); 
+			}
+		}
+	}
+	
 	public List<Map<String, List<String>>> selectNOoption(String identity, String input)
 	{
 		List<Map<String, List<String>>> fullDeck = new ArrayList<>();
@@ -170,7 +259,11 @@ public class WizHeap {
 				tcDeckSpells.put("Weakness", Arrays.asList("4", "100%", "0", "Balance"));
 
 				fillMainDeck(mainDeckSpells, identity);
+				String inputMainDeck = findDeckType(); 
+				storeSpellsInHeap(inputMainDeck, null, null);
 				fillTcDeck(tcDeckSpells, identity);
+				String inputTcDeck = findDeckType(); 
+				storeSpellsInHeap(inputTcDeck, null, null);
 
 				fullDeck.add(mainDeckSpells); 
 				fullDeck.add(tcDeckSpells); 
@@ -325,7 +418,7 @@ public class WizHeap {
 		return null;
 	}
 	
-	public void fillTcDeck(HashMap<String,List<String>> spells, String identity)
+	public void fillTcDeck(Map<String,List<String>> spells, String identity)
 	{
 		try {
 			Connection conn1 = null; 
@@ -381,7 +474,7 @@ public class WizHeap {
 	 }
 	}
 	
-	public void fillMainDeck(HashMap<String,List<String>> spells, String identity)
+	public void fillMainDeck(Map<String,List<String>> spells, String identity)
 	{
 		try {
 			Connection conn1 = null; 

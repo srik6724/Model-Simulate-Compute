@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import dataStructures.WizHeap;
@@ -41,9 +42,9 @@ public class BalanceSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
-            			String balance_typeSpell = rs.getString("balance_typeSpell"); 
+            			String balance_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, balance_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, balance_typeSpell); 
             			
             			balanceSpells.add(spell); 
 
@@ -56,12 +57,22 @@ public class BalanceSpells {
             		}
 								conn1.close();
 								List<List<Spell>> createdBalanceSpells = null; 
-								List<Map<String, List<String>>> givenBalanceSpells = anotherDefaultDeck(balanceSpells); 
-								if(givenBalanceSpells != null)
+								Scanner sc = new Scanner(System.in); 
+								System.out.println("Select YES for custom deck, or NO for default deck."); 
+								String input = sc.nextLine();
+								if(input.equals("YES"))
 								{
-									System.out.println("Deck has been successfully created."); 
+									customDeck(balanceSpells, input);
+								}
+								else if(input.equals("NO"))
+								{
+									List<Map<String, List<String>>> givenBalanceSpells = defaultDeck(balanceSpells, input); 
+									if(givenBalanceSpells != null)
+									{
+										System.out.println("Deck has been successfully created."); 
 										//System.out.println("Here is the following information about your main Deck, tc Deck"); 
-									deckInformation(createdBalanceSpells, givenBalanceSpells); 
+										deckInformation(createdBalanceSpells, givenBalanceSpells); 
+									}
 								}
             		System.out.println("Execution is done.");
             	}
@@ -93,19 +104,17 @@ public class BalanceSpells {
 		
 	}*/
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells)
+	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, String input)
 	{
 		List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Balance", "NO"); 
 
 		return givenDeck;
 	}
-	
-	/*public Spell[] performHeapOperations(Spell[] spells)
+
+	public void customDeck(ArrayList<Spell>spells, String input)
 	{
-		Spell[] modifiedSpells = hp.buildHeap(spells); 
-		
-		return modifiedSpells;
-	}*/
+		new WizHeap().selectYESOption("Balance", "YES"); 
+	}
 	
 	public void deckInformation(List<List<Spell>> spells, List<Map<String, List<String>>> setOfSpells)
 	{

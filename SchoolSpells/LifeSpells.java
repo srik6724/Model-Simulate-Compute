@@ -41,9 +41,9 @@ public class LifeSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
-            			String life_typeSpell = rs.getString("life_typeSpell"); 
+            			String life_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, life_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, life_typeSpell); 
             			
             			lifeSpells.add(spell); 
 

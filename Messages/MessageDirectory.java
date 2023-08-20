@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
+import CustomExceptions.EmptyStringException;
 import CustomExceptions.TypeException;
 
 public class MessageDirectory {
@@ -26,7 +27,7 @@ public class MessageDirectory {
    * 
    * 
    */
-  public synchronized void initialize() {
+  public synchronized void initialize() throws EmptyStringException {
     System.out.println("A place to access list of messages either retrieved from database or created by user."); 
     System.out.println("You will have the option to create your own custom message, or to choose one from the database."); 
 
@@ -40,7 +41,11 @@ public class MessageDirectory {
       if(optionSelected.equals("CM"))
       {
         System.out.println("Enter your custom message."); 
-        String customMessage = sc.nextLine(); 
+        String customMessage = sc.nextLine();
+        if(customMessage.isEmpty())
+        {
+          throw new EmptyStringException();
+        }
         if(customMessage instanceof String)
         {
           Message message = new Message(customMessage); 
@@ -96,7 +101,14 @@ public class MessageDirectory {
   }
 
   {
-    initialize();
+    try 
+    {
+      initialize();
+    }catch(EmptyStringException e)
+    {
+      e.printStackTrace();
+      e.printMessage();
+    }
     System.out.println("Initialization method completed."); 
   }
 
