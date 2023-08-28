@@ -6,16 +6,24 @@ public class HeapInfo {
   private static int heapifyCalls;
   private Element[] elements; 
 
-  public HeapInfo(int size, int capacity, int[]arr)
+  public HeapInfo(int size, int capacity)
   {
     this.size = size; 
     this.capacity = capacity;
     if(compareSizeToCapacity(size, capacity))
-      System.out.println("Size: "  + size + " is less than or equal to " + capacity); 
+    {
+      System.out.println("Size: " + size + " is less than or equal to " + capacity); 
+    }
     else
+    {
       System.out.println("Size: " + size + " is greater than " + capacity); 
       System.exit(1);
+    }
     elements = new Element[size]; 
+    for(int i = 0; i < elements.length; i++)
+    {
+      elements[i] = new Element("Insert SpellName Here", 0, "Insert Description Here", "Insert Pip Chance Here", "Insert Number Of Pips Here", "Insert School Name Here", "Insert Type Of Spell Here");
+    }
     extractHeapInfo();
   }
 

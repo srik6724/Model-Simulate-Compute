@@ -17,12 +17,14 @@ import java.util.Scanner;
 import CustomExceptions.TypeException;
 import SchoolSpells.Spell;
 import deckBuild.DarkmoorDeck;
+import deckBuild.MainDeck;
+import deckBuild.TreasureCardSideDeck;
 
 public class WizHeap {
 	public Map<String, List<String>> mainDeckSpells = new HashMap<String,List<String>>(); 
 	public Map<String, List<String>> tcDeckSpells = new HashMap<String, List<String>>(); 
-	private HeapInfo mainDeck; 
-	private HeapInfo tcDeck; 
+	private HeapInfo mainDeckInfo; 
+	private HeapInfo tcDeckInfo; 
 
 	
 	public WizHeap()
@@ -49,36 +51,36 @@ public class WizHeap {
 		return optionSelected; 
 	}
 
-	public void storeSpellsInHeap(String input, Spell[]mD, Spell[]tC)
+	public void storeSpellsInHeap(String input, Spell[]mD, Spell[]tC) throws InterruptedException
 	{
 		if(input.equals("CD"))
-			if(mainDeck.getElements() != null && tcDeck.getElements() != null)
+			if(mainDeckInfo.getElements() != null && tcDeckInfo.getElements() != null)
 			{
-				Element[] mainDeckElements = mainDeck.getElements(); 
-				Element[] tcDeckElements = tcDeck.getElements(); 
+				Element[] mainDeckElements = mainDeckInfo.getElements(); 
+				Element[] tcDeckElements = tcDeckInfo.getElements(); 
 
 				if(mainDeckElements.length == mD.length && tcDeckElements.length == tC.length)
 				{
 						int mainDeckCounter = 0; 
 						for(Element e: mainDeckElements)
 						{
-							e.spellName = mD[mainDeckCounter].getName();
-							e.pipChance = mD[mainDeckCounter].getPipChance(); 
-							e.pips = mD[mainDeckCounter].getPips(); 
-							e.count = mD[mainDeckCounter].getCount();
-							e.description = mD[mainDeckCounter].getDescription();
-							e.typeSpell = mD[mainDeckCounter].getTypeSpell();
+							e.setSpellName(mD[mainDeckCounter].getName());
+							e.setPipChance(mD[mainDeckCounter].getPipChance());
+							e.setPips(mD[mainDeckCounter].getPips());
+							e.setCount(mD[mainDeckCounter].getCount());
+							e.setDescription(mD[mainDeckCounter].getDescription());
+							e.setTypeSpell(mD[mainDeckCounter].getTypeSpell());
 							mainDeckCounter++;
 						}
 						int tcDeckCounter = 0; 
 						for(Element e: tcDeckElements)
 						{
-							e.spellName = tC[tcDeckCounter].getName(); 
-							e.pipChance = tC[tcDeckCounter].getPipChance();
-							e.pips = tC[tcDeckCounter].getPips(); 
-							e.count = tC[tcDeckCounter].getCount();
-							e.description = tC[tcDeckCounter].getDescription();
-							e.typeSpell = tC[tcDeckCounter].getTypeSpell(); 
+							e.setSpellName(mD[tcDeckCounter].getName());
+							e.setPipChance(mD[tcDeckCounter].getPipChance());
+							e.setPips(mD[tcDeckCounter].getPips());
+							e.setCount(mD[tcDeckCounter].getCount());
+							e.setDescription(mD[tcDeckCounter].getDescription());
+							e.setTypeSpell(mD[tcDeckCounter].getTypeSpell()); 
 							tcDeckCounter++; 
 						}
 						buildHeap(mainDeckElements); 
@@ -86,10 +88,10 @@ public class WizHeap {
 				}
 			}
 		else if(input.equals("DD"))
-			if(mainDeck.getElements() != null && tcDeck.getElements() != null)
+			if(mainDeckInfo.getElements() != null && tcDeckInfo.getElements() != null)
 			{
-				Element[] mainDeckElements = mainDeck.getElements(); 
-				Element[] tcDeckElements = tcDeck.getElements(); 
+				Element[] mainDeckElements = mainDeckInfo.getElements(); 
+				Element[] tcDeckElements = tcDeckInfo.getElements(); 
 
 				if(mainDeckElements.length == mainDeckSpells.size() && tcDeckElements.length == tcDeckSpells.size())
 				{
@@ -101,11 +103,11 @@ public class WizHeap {
 						while(mainDeckIterator.hasNext())
 						{
 							String mainDeckSpellName = mainDeckIterator.next(); 
-							e.spellName = mainDeckSpellName;
-							e.count = Integer.parseInt(mainDeckSpells.get(mainDeckSpellName).get(0));
-							e.pipChance = mainDeckSpells.get(mainDeckSpellName).get(1);
-							e.pips = mainDeckSpells.get(mainDeckSpellName).get(2);
-							e.school = mainDeckSpells.get(mainDeckSpellName).get(3);
+							//e.spellName = mainDeckSpellName;
+							//e.count = Integer.parseInt(mainDeckSpells.get(mainDeckSpellName).get(0));
+							//e.pipChance = mainDeckSpells.get(mainDeckSpellName).get(1);
+							//e.pips = mainDeckSpells.get(mainDeckSpellName).get(2);
+							//e.school = mainDeckSpells.get(mainDeckSpellName).get(3);
 						}
 						//trackMainDeck++; 
 					}
@@ -116,11 +118,11 @@ public class WizHeap {
 						while(tcDeckIterator.hasNext())
 						{
 							String tcDeckSpellName = tcDeckIterator.next(); 
-							e.spellName = tcDeckSpellName;
-							e.count = Integer.parseInt(mainDeckSpells.get(tcDeckSpellName).get(0));
-							e.pipChance = mainDeckSpells.get(tcDeckSpellName).get(1);
-							e.pips = mainDeckSpells.get(tcDeckSpellName).get(2);
-							e.school = mainDeckSpells.get(tcDeckSpellName).get(3);
+							//e.spellName = tcDeckSpellName;
+							//e.count = Integer.parseInt(mainDeckSpells.get(tcDeckSpellName).get(0));
+							//e.pipChance = mainDeckSpells.get(tcDeckSpellName).get(1);
+							//e.pips = mainDeckSpells.get(tcDeckSpellName).get(2);
+							//e.school = mainDeckSpells.get(tcDeckSpellName).get(3);
 						}
 						//trackTcDeck++; 
 					}
@@ -133,54 +135,62 @@ public class WizHeap {
 
 	public void minHeapify(Element[]elements, int i)
 	{
-		int leftIndex = 2 * i; 
-		int rightIndex = (2 * i) + 1; 
-		int smallestIndex; 
+		try{
+			int leftIndex = 2 * i; 
+			int rightIndex = (2 * i) + 1; 
+			int smallestIndex = i;
+			if(leftIndex <= elements.length && Integer.parseInt(elements[leftIndex-1].getPips()) < Integer.parseInt(elements[i-1].getPips()))
+			{
+				smallestIndex = leftIndex; 
+			}
+			else 
+			{
+				smallestIndex = i; 
+			}
+			if(rightIndex <= elements.length && Integer.parseInt(elements[rightIndex-1].getPips()) < Integer.parseInt(elements[smallestIndex-1].getPips()))
+			{
+				smallestIndex = rightIndex;
+			}
+			if(smallestIndex != i)
+			{
+				Element storePipNumber = elements[i-1];
+				elements[i-1] = elements[smallestIndex-1]; 
+				elements[smallestIndex-1] = storePipNumber; 
+				minHeapify(elements, smallestIndex);
+			}
+		}catch(Exception e)
+		{
 
-		if(leftIndex <= elements.length && Integer.parseInt(elements[leftIndex-1].pips) < Integer.parseInt(elements[i-1].pips))
-		{
-			smallestIndex = leftIndex; 
-		}
-		else 
-		{
-			smallestIndex = i; 
-		}
-		if(rightIndex <= elements.length && Integer.parseInt(elements[rightIndex-1].pips) < Integer.parseInt(elements[smallestIndex-1].pips))
-		{
-			smallestIndex = rightIndex;
-		}
-		if(smallestIndex != i)
-		{
-			Element storePipNumber = elements[i-1];
-			elements[i-1] = elements[smallestIndex-1]; 
-			elements[smallestIndex-1] = storePipNumber; 
-			minHeapify(elements, smallestIndex);
 		}
 	}
 
-	public Element[] buildHeap(Element[]elements)
+	public Element[] buildHeap(Element[]elements) throws InterruptedException
 	{
 		for(int i = (int)Math.floor(elements.length/2); i >= 1; i--)
 		{
 			minHeapify(elements, i); 
 		}
 		System.out.println("Let's see the changes to our spells."); 
+		Thread.sleep(1000);
 		System.out.println("Filtering spells by pip count from lowest to highest."); 
+		Thread.sleep(1000); 
 		System.out.println("Here it goes."); 
+		Thread.sleep(1000); 
 		for(Element e: elements)
 		{
-			System.out.println("Spell Name: " + e.spellName); 
-			System.out.println("Count: " + e.count); 
-			System.out.println("Description: " + e.description); 
-			System.out.println("Pip Chance: " + e.pipChance); 
-			System.out.println("Pips: " + e.pips); 
-			System.out.println("School: "  + e.school); 
-			System.out.println("Type of Spell: " + e.typeSpell); 
+			System.out.println("Spell Name: " + e.getSpellName()); 
+			System.out.println("Count: " + e.getCount()); 
+			System.out.println("Description: " + e.getDescription()); 
+			System.out.println("Pip Chance: " + e.getPipChance()); 
+			System.out.println("Pips: " + e.getPips()); 
+			System.out.println("School: "  + e.getSchool()); 
+			System.out.println("Type of Spell: " + e.getTypeSpell()); 
+			System.out.println("---------------------------------------"); 
 		}
 		return elements; 
 	}
 
-	public void selectYESOption(String identity, String input)
+	public void selectYESOption(String identity, String input) throws InterruptedException
 	{
 		Scanner sc = new Scanner(System.in); 
 		Spell[] mainDeck;
@@ -207,7 +217,19 @@ public class WizHeap {
 				case "Darkmoor": 
 					new DarkmoorDeck(identity); 
 					mainDeck = DarkmoorDeck.getMainDeck();
+					for(Spell spell: mainDeck)
+					{
+						System.out.println("Spell Name: " + spell.getName()); 
+						break;
+					}
 					tcDeck = DarkmoorDeck.getTcDeck(); 
+					for(Spell spell: tcDeck)
+					{
+						System.out.println("Spell Name: " + spell.getName()); 
+						break;
+					}
+					mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
+					tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
 					storeSpellsInHeap("CD", mainDeck, tcDeck);
 				case "Polaris": 
 					new DarkmoorDeck(identity); 
@@ -227,7 +249,7 @@ public class WizHeap {
 		}
 	}
 	
-	public List<Map<String, List<String>>> selectNOoption(String identity, String input)
+	public List<Map<String, List<String>>> selectNOoption(String identity, String input) throws InterruptedException
 	{
 		List<Map<String, List<String>>> fullDeck = new ArrayList<>();
 

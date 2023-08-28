@@ -115,6 +115,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	String T2fourthPlayer; 
 	String T2fourthPlayerLevel; 
 	String T2fourthPlayerSchool;
+	public char[] randomVariable;
 
 	private static int countTeamsRegistered = 1; 
 	private static int firstIteration = 1; 

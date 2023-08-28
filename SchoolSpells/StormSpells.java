@@ -73,6 +73,10 @@ public class StormSpells {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
         }
+				catch(InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 	}
 	
 	public ArrayList<Spell> retrieveStormSpells()
@@ -80,7 +84,7 @@ public class StormSpells {
 		return stormSpells; 
 	}
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells)
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
 	{
 		List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Storm", "NO"); 
 

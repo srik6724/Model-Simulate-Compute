@@ -54,6 +54,11 @@ public class Spell {
 	{
 		return type_Spell; 
 	}
+
+	public void setCount(int count)
+	{
+		this.count = count; 
+	}
 	
 }
 

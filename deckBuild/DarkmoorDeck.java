@@ -18,6 +18,7 @@ import SchoolSpells.Spell;
 public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	private static Spell[] mainDeck; 
 	private static Spell[] tcDeck;
+	static int decksMade = 1; 
 	private static HashMap<String, Integer> countOfEachSpell = new HashMap<String, Integer>();
 	String tcDeckType = "tcDeck"; 
 	String mainDeckType = "mainDeck"; 
@@ -25,9 +26,10 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	public DarkmoorDeck(String identity)
 	{
 		String retrieveDeckName = DarkmoorDeckName(identity);
-		System.out.println("Darkmoor Deck Name: " + retrieveDeckName);
-		fillMainDeck();
-		fillTcDeck(); 
+		System.out.println("Darkmoor Deck Name: " + retrieveDeckName + " for Wizard " + DarkmoorDeck.decksMade);
+		mainDeck = fillMainDeck();
+		tcDeck = fillTcDeck(); 
+		DarkmoorDeck.decksMade++; 
 	}
 	
 	public String DarkmoorDeckName(String identity)
@@ -77,7 +79,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 
 	public static Spell[] getTcDeck()
 	{
-		return tcDeck; 
+		return tcDeck;
 	}
 	
 	public Spell[] fillTcDeck()
@@ -96,12 +98,19 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 			spellInput = sc.nextLine(); 
 			if(spellInput instanceof String)
 			{
-				Spell spell = retrieveSpell(spellInput, (Spell[])spellList.toArray()); 
-				spellList.add(spell); 
-				System.out.println("The following spell has been added: " + spell.getName()); 
-				i = i + 1; 
-				System.out.println(i + "/" + retrieveCapacity + " spells added.");
-				check = true; 
+				Spell spell = retrieveSpell(spellInput, spellList); 
+				if(spell != null)
+				{
+					spellList.add(spell); 
+					System.out.println("The following spell has been added: " + spell.getName()); 
+					i = i + 1; 
+					System.out.println(i + "/" + retrieveCapacity + " spells added.");
+					check = true;
+				} 
+				else 
+				{
+					System.out.println("Spell: " + spellInput + " does not exist. Try again."); 
+				}
 			}
 			else 
 			{
@@ -110,14 +119,14 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 			}		
 		}
 		sc.close();
-		return (Spell[])spellList.toArray();
+		return spellList.toArray(new Spell[spellList.size()]); 
 	}
 	
-	private int countSpell(Spell[]spellList, HashMap<String, Integer> countOfEachSpell2, String spellName) {
-		int count = 0; 
-		for(int i = 0; i < spellList.length; i++)
+	private Spell countSpell(List<Spell> spellList, HashMap<String, Integer> countOfEachSpell2, String spellName) {
+		Spell spell = null; 
+		for(int i = 0; i < spellList.size(); i++)
 		{
-			if(!(spellList[i].getName().equals(spellName)))
+			if(!(spellList.get(i).getName().equals(spellName)))
 			{ 
 				continue; 
 			}
@@ -126,13 +135,12 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				int keyChange = countOfEachSpell2.get(spellName); 
 				keyChange++; 
 				countOfEachSpell2.put(spellName, keyChange); 
-				count = keyChange; 
-				return count; 
+				return spell; 
 			}
 		}
 		System.out.println("Occurrence of spell never located: " + spellName); 
 		countOfEachSpell2.put(spellName, 1);
-		return 1;
+		return spell; 
 	}
 
 	public Spell[] fillMainDeck()
@@ -151,12 +159,19 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 			spellInput = sc.nextLine(); 
 			if(spellInput instanceof String)
 			{
-				Spell spell = retrieveSpell(spellInput, (Spell[])spellList.toArray()); 
-				spellList.add(spell); 
-				System.out.println("The following spell has been added: " + spell.getName()); 
-				i = i + 1; 
-				System.out.println(i + "/" + retrieveCapacity + " spells added.");
-				check = true; 
+				Spell spell = retrieveSpell(spellInput, spellList); 
+				if(spell != null)
+				{
+					spellList.add(spell); 
+					System.out.println("The following spell has been added: " + spell.getName()); 
+					i = i + 1; 
+					System.out.println(i + "/" + retrieveCapacity + " spells added.");
+					check = true;
+				} 
+				else 
+				{
+					System.out.println("Spell: " + spellInput + " does not exist. Try again."); 
+				}
 			}
 			else 
 			{
@@ -164,7 +179,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				check = true; 
 			}	
 		}	
-		return (Spell[])spellList.toArray(); 
+		return spellList.toArray(new Spell[spellList.size()]); 
 	}
 
 	public static Spell[] getMainDeck()
@@ -172,7 +187,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		return mainDeck; 
 	}
 	
-	public Spell retrieveSpell(String spellInput, Spell[] spellList)
+	public Spell retrieveSpell(String spellInput, List<Spell> spellList)
 	{
 		if(!(spellInput instanceof String))
 		{
@@ -194,6 +209,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				String sql5 = "SELECT * FROM wizard_schema.death_spells WHERE name = ?"; 
 				String sql6 = "SELECT * FROM wizard_schema.fire_spells WHERE name = ?"; 
 				String sql7 = "SELECT * FROM wizard_schema.storm_spells WHERE name = ?"; 
+				String sql8 = "SELECT * FROM wizard_schema.astral_spells WHERE name = ?"; 
 				sqlTests.put(1, sql1); 
 				sqlTests.put(2, sql2); 
 				sqlTests.put(3, sql3);
@@ -201,6 +217,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				sqlTests.put(5, sql5);
 				sqlTests.put(6, sql6); 
 				sqlTests.put(7, sql7);
+				sqlTests.put(8, sql8); 
 				Outer: 
 				for(int num: sqlTests.keySet())
 				{
@@ -218,9 +235,15 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 						String school_typeSpell = rs.getString("typeSpell");
 						if(name != null && level != null && description != null && pip_chance != null && school_typeSpell != null)
 						{
-							int count = countSpell(spellList, countOfEachSpell, spellInput); 
-							createSpell = new Spell(name, level, description, pip_chance, pips, count, school_typeSpell); 
-							break Outer; 
+							createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
+							if(createSpell == null)
+							{
+								createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+							}
+							else 
+							{
+								createSpell.setCount(new Integer(1 + createSpell.getCount()));
+							}
 						}
 					}
 				}

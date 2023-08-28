@@ -85,6 +85,10 @@ public class BalanceSpells {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
         }
+				catch(InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 	}
 	
 	public ArrayList<Spell> retrieveBalanceSpells()
@@ -104,14 +108,14 @@ public class BalanceSpells {
 		
 	}*/
 
-	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, String input)
+	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, String input) throws InterruptedException
 	{
 		List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Balance", "NO"); 
 
 		return givenDeck;
 	}
 
-	public void customDeck(ArrayList<Spell>spells, String input)
+	public void customDeck(ArrayList<Spell>spells, String input) throws InterruptedException
 	{
 		new WizHeap().selectYESOption("Balance", "YES"); 
 	}

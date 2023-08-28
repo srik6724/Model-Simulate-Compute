@@ -1,7 +1,6 @@
 package wizPackage;
 
 public class Main {
-	
 	public static void main(String[]args)
 	{
 		/*Wizard101LinkedList list = new Wizard101LinkedList(); 
@@ -27,11 +26,11 @@ public class Main {
 		Wizard newWizard = wizard1.constructNewWizard("TW 2.0", "Balance", 900, 1); 
 		System.out.println(newWizard.getIdentity());
 		newWizard.DefaultMessage();*/
-				
+
+		//Main main = new Main(); 
+		//System.out.println("Value: " + main.randomVariable); 
 		Match match = new Match(); 
 		match.enroll2Teams();
-		
-		
 	}
 
 	

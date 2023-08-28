@@ -74,6 +74,10 @@ public class LifeSpells {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
         }
+				catch(InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 	}
 	
 	public ArrayList<Spell> retrieveLifeSpells()
@@ -93,7 +97,7 @@ public class LifeSpells {
 		
 	}*/
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells)
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
 	{
 		List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Life", "NO"); 
 
