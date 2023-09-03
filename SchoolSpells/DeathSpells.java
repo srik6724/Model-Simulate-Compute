@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import dataStructures.WizHeap;
@@ -79,9 +80,22 @@ public class DeathSpells {
 
 	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
 	{
-		List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Death", "NO"); 
+		String input; 
+		Scanner sc = new Scanner(System.in); 
+		System.out.println("Select CD for custom deck, DD for default deck"); 
+		input = sc.nextLine(); 
 
-		return givenDeck;
+		if(input.equals("CD"))
+		{
+			hp.selectYESOption("Death", "YES"); 
+			return null;
+		}
+		else if(input.equals("DD"))
+		{
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Death", "NO"); 
+			return givenDeck;
+		}
+		return null;
 	}
 	
 	public void deckInformation(List<List<Spell>> spells, List<Map<String, List<String>>> setOfSpells)

@@ -231,6 +231,7 @@ public class WizHeap {
 					mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
 					tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
 					storeSpellsInHeap("CD", mainDeck, tcDeck);
+					break;
 				case "Polaris": 
 					new DarkmoorDeck(identity); 
 				case "Mirage": 

@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import dataStructures.WizHeap;
@@ -46,13 +47,6 @@ public class MythSpells {
             			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, myth_typeSpell); 
             			
             			mythSpells.add(spell); 
-
-									/*if(createdBalanceSpells != null)
-									{
-										System.out.println("Deck has been successfully created."); 
-            				System.out.println("Here is the following information about your main Deck, tc Deck"); 
-										deckInformation(createdBalanceSpells, givenBalanceSpells); 
-									}*/
             		}
 								conn1.close();
 								List<Map<String, List<String>>> givenMythSpells = anotherDefaultDeck(mythSpells); 
@@ -81,9 +75,22 @@ public class MythSpells {
 
 	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
 	{
-		List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Myth", "NO"); 
+		String input; 
+		Scanner sc = new Scanner(System.in); 
+		System.out.println("Select CD for custom deck, DD for default deck"); 
+		input = sc.nextLine(); 
 
-		return givenDeck;
+		if(input.equals("CD"))
+		{
+			hp.selectYESOption("Myth", "YES"); 
+			return null;
+		}
+		else if(input.equals("DD"))
+		{
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Myth", "NO"); 
+			return givenDeck;
+		}
+		return null;
 	}
 	
 	public ArrayList<Spell> retrieveMythSpells()

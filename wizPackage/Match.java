@@ -1,4 +1,5 @@
 package wizPackage;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -48,7 +49,8 @@ import PlayerStats.Player;
 import SchoolSpells.Spell;
 import SchoolSpells.schoolSpells;
 import Sockets.Socket;
-import SpookyStats.SpookyClass; 
+import SpookyStats.SpookyClass;
+import SpringBoot.SpringBootExecutable;
 public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
 	
 	//Arrays to store information about the firstTeam and secondTeam. 
@@ -70,7 +72,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	private String[] firstTeamOrder = new String[4]; 
 	private String[] secondTeamOrder = {}; 
 	
-	private static HashMap<String, List<Spell>> decks = new HashMap<String, List<Spell>>(); 
+	public static HashMap<String, List<Spell>> decks = new HashMap<String, List<Spell>>(); 
 
 	//Declare a Spell list that contains BalanceSpells, FireSpells, LifeSpells, IceSpells, Deathspells, MythSpells, and StormSpells
 	//private ArrayList<Spells> spells; 
@@ -300,6 +302,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		
 		int index = 0; 
 		createDeck(firstTeamSchools[0]);
+		createDeck(firstTeamSchools[1]);
+		createDeck(firstTeamSchools[2]);
+		createDeck(firstTeamSchools[3]);
 
 
 		System.out.println("The decks are now created for all schools specified.");
@@ -568,28 +573,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		
 	}
 
-
-	/*private boolean searchForDuplicates(String[] orderCreated, HashMap<Integer, List<String>> orderDetail) {
-
-		boolean track = false; 
-		for(int number: orderDetail.keySet())
-		{
-			String firstSchool = orderDetail.get(number).get(0); 
-			String secondSchool = orderDetail.get(number).get(1); 
-			String thirdSchool = orderDetail.get(number).get(2); 
-			String fourthSchool = orderDetail.get(number).get(3); 
-			
-			if(firstSchool.equals(orderCreated[0]) && secondSchool.equals(orderCreated[1]) && thirdSchool.equals(orderCreated[2]) && fourthSchool.equals(orderCreated[3]))
-			{
-				track = true; 
-				break; 
-			}
-		}
-		return track;
-
-	}*/
-
-
 	private List<String> retrieveDuplicateKeyInfo(HashMap<String, List<String>> gearSets, String string) {
 		List<String> gearItems = new ArrayList<String>(); 
 		for(String wizard: gearSets.keySet())
@@ -613,42 +596,42 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 	private HashMap<String, List<Spell>> createDeck(String str) {
 		
-		new schoolSpells(); 
+		new schoolSpells(str); 
 		
 		switch(str.toLowerCase()) {
 		
 		case "balance": 
-			decks.put("balance", schoolSpells.allSchoolSpells.get(0)); 
+			decks.put("balance", schoolSpells.allSchoolSpells.get(schoolSpells.balanceIndex)); 
 			System.out.println("Success, balance deck is in!"); 
 			break;
 		
 		case "fire": 
-			decks.put("fire", schoolSpells.allSchoolSpells.get(1));
+			decks.put("fire", schoolSpells.allSchoolSpells.get(schoolSpells.fireIndex));
 			System.out.println("Success, fire deck is in!"); 
 			break;
 			
 		case "ice": 
-			decks.put("storm", schoolSpells.allSchoolSpells.get(2)); 
+			decks.put("storm", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex)); 
 			System.out.println("Success, ice deck is in!"); 
 			break;
 		
 		case "life": 
-			decks.put("life", schoolSpells.allSchoolSpells.get(3)); 
+			decks.put("life", schoolSpells.allSchoolSpells.get(schoolSpells.lifeIndex)); 
 			System.out.println("Success, life deck is in!"); 
 			break;
 		
 		case "death": 
-			decks.put("death", schoolSpells.allSchoolSpells.get(4)); 
+			decks.put("death", schoolSpells.allSchoolSpells.get(schoolSpells.deathIndex)); 
 			System.out.println("Success, death deck is in!"); 
 			break;
 		
 		case "storm": 
-			decks.put("storm", schoolSpells.allSchoolSpells.get(5));
+			decks.put("storm", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex));
 			System.out.println("Success, storm deck is in!"); 
 			break;
 			
 		case "myth": 
-			decks.put("myth", schoolSpells.allSchoolSpells.get(6)); 
+			decks.put("myth", schoolSpells.allSchoolSpells.get(schoolSpells.mythIndex)); 
 			System.out.println("Success, myth deck is in!"); 
 			break;
 
@@ -656,6 +639,21 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			TypeException ex = new TypeException(); 
 			ex.message(str); 
 		}
+
+		try
+		{
+			Thread th = new Thread(new SpringBootExecutable()); 
+			th.start();
+		}
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
 		return decks;
 		
 	}

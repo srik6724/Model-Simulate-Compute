@@ -6,34 +6,57 @@ import java.util.List;
 public class schoolSpells {
 	
 	public static ArrayList<List<Spell>> allSchoolSpells = new ArrayList<List<Spell>>(); 
+	static int universalIndex = -1; 
+	public static int lifeIndex; 
+	public static int deathIndex; 
+	public static int balanceIndex; 
+	public static int iceIndex; 
+	public static int mythIndex; 
+	public static int stormIndex; 
+	public static int fireIndex; 
 	
-	ArrayList<Spell> balanceSpells = new BalanceSpells().retrieveBalanceSpells();
-	ArrayList<Spell> lifeSpells = new LifeSpells().retrieveLifeSpells(); 
-	ArrayList<Spell> deathSpells = new DeathSpells().retrieveDeathSpells(); 
-	ArrayList<Spell> iceSpells = new IceSpells().retrieveIceSpells(); 
-	//ArrayList<Spell> stormSpells = new FireSpells().retrieveFireSpells(); 
-
-	/*ArrayList<Spell> fireSpells = new FireSpells().retrieveFireSpells(); 
-	ArrayList<Spell> iceSpells = new IceSpells().retrieveIceSpells(); 
-	ArrayList<Spell> lifeSpells = new LifeSpells().retrieveLifeSpells(); 
-	ArrayList<Spell> deathSpells = new DeathSpells().retrieveDeathSpells(); 
-	ArrayList<Spell> stormSpells = new StormSpells().retrieveStormSpells(); 
-	ArrayList<Spell> mythSpells = new MythSpells().retrieveMythSpells(); */
-	
-	
-	public schoolSpells()
+	public schoolSpells(String school)
 	{
-		allSchoolSpells.add(balanceSpells); 
-		allSchoolSpells.add(lifeSpells); 
-		allSchoolSpells.add(deathSpells); 
-		allSchoolSpells.add(iceSpells); 
-		//allSchoolSpells.add(stormSpells);
-		/*allSchoolSpells.add(fireSpells); 
-		allSchoolSpells.add(iceSpells); 
-		allSchoolSpells.add(lifeSpells); 
-		allSchoolSpells.add(deathSpells); 
-		allSchoolSpells.add(stormSpells); 
-		allSchoolSpells.add(mythSpells); */
+		switch(school.toLowerCase())
+		{
+			case "life": 
+				allSchoolSpells.add(new LifeSpells().retrieveLifeSpells()); 
+				universalIndex++; 
+				lifeIndex = universalIndex; 
+				break;
+			case "death": 
+				allSchoolSpells.add(new DeathSpells().retrieveDeathSpells()); 
+				universalIndex++; 
+				deathIndex = universalIndex;
+				break;
+			case "balance": 
+				allSchoolSpells.add(new BalanceSpells().retrieveBalanceSpells());
+				universalIndex++; 
+				balanceIndex = universalIndex;
+				break;
+			case "ice": 
+				allSchoolSpells.add(new IceSpells().retrieveIceSpells()); 
+				universalIndex++; 
+				iceIndex = universalIndex;
+				break;
+			case "myth": 
+				allSchoolSpells.add(new MythSpells().retrieveMythSpells());
+				universalIndex++; 
+				mythIndex = universalIndex;
+				break;
+			case "storm": 
+				allSchoolSpells.add(new StormSpells().retrieveStormSpells()); 
+				universalIndex++; 
+				stormIndex = universalIndex;
+				break;
+			case "fire": 
+				allSchoolSpells.add(new FireSpells().retrieveFireSpells()); 
+				universalIndex++; 
+				fireIndex = universalIndex;
+				break;
+			default: 
+				System.out.println("Sorry, wrong school input received."); 
+		}
 	}
 	
 	

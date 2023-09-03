@@ -101,7 +101,10 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				Spell spell = retrieveSpell(spellInput, spellList); 
 				if(spell != null)
 				{
-					spellList.add(spell); 
+					if(!(spellList.contains(spell)))
+					{
+						spellList.add(spell); 
+					}
 					System.out.println("The following spell has been added: " + spell.getName()); 
 					i = i + 1; 
 					System.out.println(i + "/" + retrieveCapacity + " spells added.");
@@ -118,7 +121,6 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				check = true; 
 			}		
 		}
-		sc.close();
 		return spellList.toArray(new Spell[spellList.size()]); 
 	}
 	
@@ -135,7 +137,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				int keyChange = countOfEachSpell2.get(spellName); 
 				keyChange++; 
 				countOfEachSpell2.put(spellName, keyChange); 
-				return spell; 
+				return spellList.get(i); 
 			}
 		}
 		System.out.println("Occurrence of spell never located: " + spellName); 
@@ -162,7 +164,10 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				Spell spell = retrieveSpell(spellInput, spellList); 
 				if(spell != null)
 				{
-					spellList.add(spell); 
+					if(!(spellList.contains(spell)))
+					{
+						spellList.add(spell); 
+					}
 					System.out.println("The following spell has been added: " + spell.getName()); 
 					i = i + 1; 
 					System.out.println(i + "/" + retrieveCapacity + " spells added.");
@@ -178,7 +183,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				System.out.println("Try again to select a spell from the list of available spells."); 
 				check = true; 
 			}	
-		}	
+		}
 		return spellList.toArray(new Spell[spellList.size()]); 
 	}
 
@@ -242,7 +247,8 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 							}
 							else 
 							{
-								createSpell.setCount(new Integer(1 + createSpell.getCount()));
+								int currentCount = createSpell.getCount(); 
+								createSpell.setCount(++currentCount);
 							}
 						}
 					}

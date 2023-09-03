@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import dataStructures.WizHeap;
@@ -43,18 +44,18 @@ public class FireSpells {
             			String pips = rs.getString("pips"); 
             			String fire_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1,fire_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, fire_typeSpell); 
             			
             			fireSpells.add(spell); 
-            			 
-            			//List<List<Spell>> updatedFireSpells = defaultDeck(fireSpells); 
-            			
-            			System.out.println("Deck has been successfully created."); 
-            			System.out.println("Here is the following information about your main Deck, tc Deck"); 
-            			
-            			//deckInformation(updatedFireSpells); 
-            			
             		}
+								conn1.close(); 
+								List<List<Spell>> createdFireSpells = null; 
+								List<Map<String, List<String>>> givenFireSpells = anotherDefaultDeck(fireSpells); 
+								if(givenFireSpells != null)
+								{
+									System.out.println("Deck has been successfully created."); 
+									deckInformation(createdFireSpells, givenFireSpells); 
+								}
             		System.out.println("Execution is done.");
             	}
             	else
@@ -66,6 +67,10 @@ public class FireSpells {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
         }
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
 	}
 	
 	public ArrayList<Spell> retrieveFireSpells()
@@ -73,26 +78,27 @@ public class FireSpells {
 		return fireSpells; 
 	}
 	
-	/*public List<List<Spell>> defaultDeck(ArrayList<Spell> spells)
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
 	{
-		Spell[] collectSpells = new Spell[spells.size()]; 
-		
-		Spell[] orderedSpells = performHeapOperations(collectSpells); 
-		
-		List<List<Spell>> deckOfSpells = hp.buildDeckYESoption(orderedSpells, "fire"); 
-		
-		return deckOfSpells;
-		
+		String input; 
+		Scanner sc = new Scanner(System.in); 
+		System.out.println("Select CD for custom deck, DD for default deck"); 
+		input = sc.nextLine(); 
+
+		if(input.equals("CD"))
+		{
+			hp.selectYESOption("Fire", "YES"); 
+			return null;
+		}
+		else if(input.equals("DD"))
+		{
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Fire", "NO"); 
+			return givenDeck;
+		}
+		return null;
 	}
 	
-	public Spell[] performHeapOperations(Spell[] spells)
-	{
-		Spell[] modifiedSpells = hp.buildHeap(spells); 
-		
-		return modifiedSpells;
-	}*/
-	
-	public void deckInformation(List<Map<String,List<String>>> setOfSpells)
+	public void deckInformation(List<List<Spell>> spells, List<Map<String,List<String>>> setOfSpells)
 	{
 		if(setOfSpells != null)
 		{

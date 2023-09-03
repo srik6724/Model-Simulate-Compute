@@ -66,7 +66,7 @@ public class BalanceSpells {
 								}
 								else if(input.equals("NO"))
 								{
-									List<Map<String, List<String>>> givenBalanceSpells = defaultDeck(balanceSpells, input); 
+									List<Map<String, List<String>>> givenBalanceSpells = defaultDeck(balanceSpells); 
 									if(givenBalanceSpells != null)
 									{
 										System.out.println("Deck has been successfully created."); 
@@ -108,11 +108,24 @@ public class BalanceSpells {
 		
 	}*/
 
-	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, String input) throws InterruptedException
+	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells) throws InterruptedException
 	{
-		List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Balance", "NO"); 
+		String input; 
+		Scanner sc = new Scanner(System.in); 
+		System.out.println("Select CD for custom deck, DD for default deck"); 
+		input = sc.nextLine(); 
 
-		return givenDeck;
+		if(input.equals("CD"))
+		{
+			hp.selectYESOption("Balance", "YES"); 
+			return null;
+		}
+		else if(input.equals("DD"))
+		{
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Balance", "NO"); 
+			return givenDeck;
+		}
+		return null;
 	}
 
 	public void customDeck(ArrayList<Spell>spells, String input) throws InterruptedException
