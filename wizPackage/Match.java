@@ -611,7 +611,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			break;
 			
 		case "ice": 
-			decks.put("storm", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex)); 
+			decks.put("ice", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex)); 
 			System.out.println("Success, ice deck is in!"); 
 			break;
 		
@@ -1407,6 +1407,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return null;
 	}
 
+	public static void main(String[]args)
+	{
+		new Match().checkGearName("Eternal Inspired Helm", "hat", new StringBuilder("eternal"), "life", 160);
+	}
+
 	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level)
 	{
 		//Open connection to database 
@@ -1517,14 +1522,18 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				
 					String databaseGearName = stmt.getString(5); 
 
+					if(databaseGearName == null)
+					{
+						System.out.println("Gear Name entered " + gearName + " does not match " + "database gearName " + databaseGearName + " of given school " + school); 
+						conn1.close(); 
+						return false;
+					}
+
 			 		if(gearName.equals(databaseGearName))
 					{
 						conn1.close(); 
 						return true; 
 					}
-					System.out.println("Gear Name entered " + gearName + " does not match " + "database gearName " + databaseGearName + "of given school " + school); 
-					conn1.close(); 
-					return false; 
 				}
 			}
 			return false; 

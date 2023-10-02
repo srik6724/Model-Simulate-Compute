@@ -27,10 +27,12 @@ public class Main {
 		System.out.println(newWizard.getIdentity());
 		newWizard.DefaultMessage();*/
 
+		
 		//Main main = new Main(); 
 		//System.out.println("Value: " + main.randomVariable); 
 		Match match = new Match(); 
 		match.enroll2Teams();
+		
 	}
 
 	

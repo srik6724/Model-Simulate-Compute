@@ -20,11 +20,13 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	private static Spell[] tcDeck;
 	static int decksMade = 1; 
 	private static HashMap<String, Integer> countOfEachSpell = new HashMap<String, Integer>();
+	private static String collectIdentity; 
 	String tcDeckType = "tcDeck"; 
 	String mainDeckType = "mainDeck"; 
 	
 	public DarkmoorDeck(String identity)
 	{
+		collectIdentity = identity; 
 		String retrieveDeckName = DarkmoorDeckName(identity);
 		System.out.println("Darkmoor Deck Name: " + retrieveDeckName + " for Wizard " + DarkmoorDeck.decksMade);
 		mainDeck = fillMainDeck();
@@ -34,7 +36,6 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	
 	public String DarkmoorDeckName(String identity)
 	{
-		
 		if(Identity.iceSchool().equals(identity))
 		{
 			return "Villages of Carpathes Case";
@@ -84,6 +85,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	
 	public Spell[] fillTcDeck()
 	{
+		String label = "tcDeck"; 
 		Scanner sc = new Scanner(System.in);
 		List<Spell> spellList = new ArrayList<Spell>(); 
 		int retrieveCapacity = TreasureCardSideDeck.capacityOfDarkmoorDeck(tcDeckType); 
@@ -98,7 +100,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 			spellInput = sc.nextLine(); 
 			if(spellInput instanceof String)
 			{
-				Spell spell = retrieveSpell(spellInput, spellList); 
+				Spell spell = retrieveSpell(spellInput, spellList, label); 
 				if(spell != null)
 				{
 					if(!(spellList.contains(spell)))
@@ -147,6 +149,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 
 	public Spell[] fillMainDeck()
 	{
+		String label = "mainDeck"; 
 		Scanner sc = new Scanner(System.in);
 		List<Spell> spellList = new ArrayList<Spell>(); 
 		int retrieveCapacity = MainDeck.maxSpells(mainDeckType); 
@@ -161,7 +164,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 			spellInput = sc.nextLine(); 
 			if(spellInput instanceof String)
 			{
-				Spell spell = retrieveSpell(spellInput, spellList); 
+				Spell spell = retrieveSpell(spellInput, spellList, label); 
 				if(spell != null)
 				{
 					if(!(spellList.contains(spell)))
@@ -175,7 +178,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				} 
 				else 
 				{
-					System.out.println("Spell: " + spellInput + " does not exist. Try again."); 
+					System.out.println("Spell: " + spellInput + " could not be inserted either due to it not existing or could not be placed in tc or main decks. Try again."); 
 				}
 			}
 			else 
@@ -192,7 +195,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		return mainDeck; 
 	}
 	
-	public Spell retrieveSpell(String spellInput, List<Spell> spellList)
+	public Spell retrieveSpell(String spellInput, List<Spell> spellList, String label)
 	{
 		if(!(spellInput instanceof String))
 		{
@@ -215,6 +218,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				String sql6 = "SELECT * FROM wizard_schema.fire_spells WHERE name = ?"; 
 				String sql7 = "SELECT * FROM wizard_schema.storm_spells WHERE name = ?"; 
 				String sql8 = "SELECT * FROM wizard_schema.astral_spells WHERE name = ?"; 
+				String sql9 = "SELECT * FROM wizard_schema.shadow_spells WHERE name = ?"; 
 				sqlTests.put(1, sql1); 
 				sqlTests.put(2, sql2); 
 				sqlTests.put(3, sql3);
@@ -223,6 +227,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				sqlTests.put(6, sql6); 
 				sqlTests.put(7, sql7);
 				sqlTests.put(8, sql8); 
+				sqlTests.put(9, sql9); 
 				Outer: 
 				for(int num: sqlTests.keySet())
 				{
@@ -237,18 +242,60 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 						String description = rs.getString("description"); 
 						String pip_chance = rs.getString("pip_chance"); 
 						String pips = rs.getString("pips"); 
+						String school = rs.getString("school"); 
 						String school_typeSpell = rs.getString("typeSpell");
-						if(name != null && level != null && description != null && pip_chance != null && school_typeSpell != null)
+						boolean accessByOtherSchools = Boolean.parseBoolean(rs.getString("accessByOtherSchools")); 
+						boolean accessByTC = Boolean.parseBoolean(rs.getString("accessByTC")); 
+						
+						if(name != null && level != null && description != null && pip_chance != null && school != null && school_typeSpell != null)
 						{
-							createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
-							if(createSpell == null)
+							//System.out.println("School Identity: " + collectIdentity); 
+							if(school.toLowerCase().equals(collectIdentity.toLowerCase()))
 							{
-								createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+								createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
+								if(createSpell == null)
+								{
+									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+								}
+								else 
+								{
+									int currentCount = createSpell.getCount(); 
+									createSpell.setCount(++currentCount);
+								}
 							}
-							else 
+							else if(!(school.equals(collectIdentity)) && accessByOtherSchools == false && label.equals("mainDeck"))
 							{
-								int currentCount = createSpell.getCount(); 
-								createSpell.setCount(++currentCount);
+								System.out.println("The card could not be inserted as only schools of " + school.toLowerCase() + " school can obtain this by spell quests."); 
+							}
+							else if(!(school.equals(collectIdentity)) && accessByOtherSchools == false && accessByTC == false && label.equals("tcDeck"))
+							{
+								System.out.println("The card could not be inserted of school " + school + " since it does not exist as tc card."); 
+							}
+							else if(!(school.equals(collectIdentity)) && accessByOtherSchools == true && label.equals("mainDeck"))
+							{
+								createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
+								if(createSpell == null)
+								{
+									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+								}
+								else 
+								{
+									int currentCount = createSpell.getCount(); 
+									createSpell.setCount(++currentCount);
+								}
+							}
+							else if(!(school.equals(collectIdentity)) && accessByTC == true && label.equals("tcDeck"))
+							{
+								createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
+								if(createSpell == null)
+								{
+									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+								}
+								else 
+								{
+									int currentCount = createSpell.getCount(); 
+									createSpell.setCount(++currentCount);
+								}
 							}
 						}
 					}
