@@ -20,14 +20,15 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	private static Spell[] tcDeck;
 	static int decksMade = 1; 
 	private static HashMap<String, Integer> countOfEachSpell = new HashMap<String, Integer>();
-	private static String collectIdentity; 
+	private String collectIdentity; 
 	String tcDeckType = "tcDeck"; 
 	String mainDeckType = "mainDeck"; 
 	
 	public DarkmoorDeck(String identity)
 	{
+		System.out.println(identity);
 		collectIdentity = identity; 
-		String retrieveDeckName = DarkmoorDeckName(identity);
+		String retrieveDeckName = DarkmoorDeckName(collectIdentity);
 		System.out.println("Darkmoor Deck Name: " + retrieveDeckName + " for Wizard " + DarkmoorDeck.decksMade);
 		mainDeck = fillMainDeck();
 		tcDeck = fillTcDeck(); 
@@ -38,7 +39,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	{
 		if(Identity.iceSchool().equals(identity))
 		{
-			return "Villages of Carpathes Case";
+			return "Villages of Carpathes Case"; 
 		}
 		
 		if(Identity.fireSchool().equals(identity))
@@ -192,7 +193,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 
 	public static Spell[] getMainDeck()
 	{
-		return mainDeck; 
+		return mainDeck;
 	}
 	
 	public Spell retrieveSpell(String spellInput, List<Spell> spellList, String label)
@@ -247,7 +248,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 						boolean accessByOtherSchools = Boolean.parseBoolean(rs.getString("accessByOtherSchools")); 
 						boolean accessByTC = Boolean.parseBoolean(rs.getString("accessByTC")); 
 						
-						if(name != null && level != null && description != null && pip_chance != null && school != null && school_typeSpell != null)
+						if(name != null && level != null && description != null && pip_chance != null && pips != null && school != null && school_typeSpell != null)
 						{
 							//System.out.println("School Identity: " + collectIdentity); 
 							if(school.toLowerCase().equals(collectIdentity.toLowerCase()))

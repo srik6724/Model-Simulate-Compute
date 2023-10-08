@@ -15,6 +15,7 @@ public class Spell {
 		this.name = name; 
 		this.level = level; 
 		this.description = description; 
+		this.pip_chance = pip_chance; 
 		this.pips = pips; 
 		this.count = count; 
 		this.type_Spell = type_Spell;

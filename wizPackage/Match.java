@@ -640,19 +640,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			ex.message(str); 
 		}
 
-		try
-		{
-			Thread th = new Thread(new SpringBootExecutable()); 
-			th.start();
-		}
-		catch(InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+		Thread th = new Thread(new SpringBootExecutable()); 
+		th.start();
 
 		return decks;
 		

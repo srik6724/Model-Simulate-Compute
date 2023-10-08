@@ -1,49 +1,57 @@
 package SpringBoot;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 
-import javax.xml.ws.spi.http.HttpContext;
-
 public class SpringBootExecutable implements Runnable {
-  public SpringBootExecutable() throws InterruptedException, IOException
-  {
-    run(); 
-  }
 
-  public void run()
-  {
-    try {
-      // Create a URL object for the endpoint you want to request
-      URL url = new URL("http://localhost:8080/api/someEndpoint"); // Replace with your endpoint URL
+    public SpringBootExecutable() {
+        run();
+    }
 
-      // Open a connection to the URL
-      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    public void run() {
+        try {
+            // Define the URL of the Spring Boot endpoint
+            String url = "http://localhost:8080/hello"; // Replace with your Spring Boot app's URL
 
-      // Set the HTTP request method (GET, POST, etc.)
-      connection.setRequestMethod("GET");
+            // Create a URL object
+            URL springBootUrl = new URL(url); 
 
-      // Read the response from the server
-      BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-      StringBuilder response = new StringBuilder();
-      String line;
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) springBootUrl.openConnection();
 
-      while ((line = reader.readLine()) != null) {
-          response.append(line);
-      }
-      reader.close();
+            try {
+                // Set the request method to GET
+                connection.setRequestMethod("GET");
 
-      // Print the response
-      System.out.println("Response: " + response.toString());
+                // Get the response code
+                int responseCode = connection.getResponseCode();
+                System.out.println("Response Code: " + responseCode);
 
-      // Close the connection
-      connection.disconnect();
-  } catch (Exception e) {
-      e.printStackTrace();
-  }
-}
+                // Read the response data
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    System.out.println("Response Data: " + response.toString());
+                } else {
+                    System.err.println("HTTP Request Failed");
+                }
+            } finally {
+                // Close the connection
+                connection.disconnect();
+            }
+        } catch (IOException e) {
+            // Handle IOException (e.g., log the error or take corrective action)
+            e.printStackTrace();
+        }
+    }
 }

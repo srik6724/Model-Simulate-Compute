@@ -196,57 +196,65 @@ public class WizHeap {
 		Spell[] mainDeck;
 		Spell[] tcDeck;
 
-		if(input.toLowerCase().equals("yes"))
+		boolean iterate = true; 
+
+		while(iterate)
 		{
-			System.out.println("Starting process to create custom deck"); 
-			System.out.println("Select a Wizard101 world, and a deck chosen from there will be given to you.");
-			String world = sc.nextLine(); 
-			
-			switch(world)
+			if(input.toLowerCase().equals("yes"))
 			{
-				case "Celestia": 
-					new DarkmoorDeck(identity); 
-				case "Zafaria": 
-					new DarkmoorDeck(identity); 
-				case "Avalon": 
-					new DarkmoorDeck(identity); 
-				case "Azteca": 
-					new DarkmoorDeck(identity); 
-				case "Khrysalis": 
-					new DarkmoorDeck(identity); 
-				case "Darkmoor": 
-					new DarkmoorDeck(identity); 
-					mainDeck = DarkmoorDeck.getMainDeck();
-					for(Spell spell: mainDeck)
-					{
-						System.out.println("Spell Name: " + spell.getName()); 
+				System.out.println("Starting process to create custom deck"); 
+				System.out.println("Select a Wizard101 world, and a deck chosen from there will be given to you.");
+				String world = sc.nextLine(); 
+			
+				switch(world)
+				{
+					case "Celestia": 
+						new DarkmoorDeck(identity); 
+					case "Zafaria": 
+						new DarkmoorDeck(identity); 
+					case "Avalon": 
+						new DarkmoorDeck(identity); 
+					case "Azteca": 
+						new DarkmoorDeck(identity); 
+					case "Khrysalis": 
+						new DarkmoorDeck(identity); 
+					case "Darkmoor": 
+						new DarkmoorDeck(identity); 
+						mainDeck = DarkmoorDeck.getMainDeck();
+						for(Spell spell: mainDeck)
+						{
+							System.out.println("Spell Name: " + spell.getName()); 
+							break;
+						}
+						tcDeck = DarkmoorDeck.getTcDeck(); 
+						for(Spell spell: tcDeck)
+						{
+							System.out.println("Spell Name: " + spell.getName()); 
+							break;
+						}
+						mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
+						tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
+						storeSpellsInHeap("CD", mainDeck, tcDeck);
+						iterate = false; 
 						break;
-					}
-					tcDeck = DarkmoorDeck.getTcDeck(); 
-					for(Spell spell: tcDeck)
-					{
-						System.out.println("Spell Name: " + spell.getName()); 
+					case "Polaris": 
+						new DarkmoorDeck(identity); 
+					case "Mirage": 
+						new DarkmoorDeck(identity); 
+					case "Empyrea": 
+						new DarkmoorDeck(identity); 
+					case "Karamelle": 
+						new DarkmoorDeck(identity); 
+					case "Lemuria": 
+						new DarkmoorDeck(identity); 
+					case "Novus": 
+						new DarkmoorDeck(identity);
+					default: 
+						System.out.println("Sorry, world could not be found."); 
+						iterate = true; 
 						break;
-					}
-					mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
-					tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
-					storeSpellsInHeap("CD", mainDeck, tcDeck);
-					break;
-				case "Polaris": 
-					new DarkmoorDeck(identity); 
-				case "Mirage": 
-					new DarkmoorDeck(identity); 
-				case "Empyrea": 
-					new DarkmoorDeck(identity); 
-				case "Karamelle": 
-					new DarkmoorDeck(identity); 
-				case "Lemuria": 
-					new DarkmoorDeck(identity); 
-				case "Novus": 
-					new DarkmoorDeck(identity);
-				default: 
-					System.out.println("Sorry, world could not be found."); 
 			}
+		}
 		}
 	}
 	
