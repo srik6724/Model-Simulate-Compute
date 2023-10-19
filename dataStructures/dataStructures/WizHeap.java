@@ -1,4 +1,7 @@
 package dataStructures;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -13,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Filter;
 
 import CustomExceptions.TypeException;
 import SchoolSpells.Spell;
@@ -51,7 +55,7 @@ public class WizHeap {
 		return optionSelected; 
 	}
 
-	public void storeSpellsInHeap(String input, Spell[]mD, Spell[]tC) throws InterruptedException
+	public void storeSpellsInHeap(String input, Spell[]mD, Spell[]tC, String identity, int selectionNo) throws InterruptedException
 	{
 		if(input.equals("CD"))
 			if(mainDeckInfo.getElements() != null && tcDeckInfo.getElements() != null)
@@ -83,8 +87,8 @@ public class WizHeap {
 							e.setTypeSpell(mD[tcDeckCounter].getTypeSpell()); 
 							tcDeckCounter++; 
 						}
-						buildHeap(mainDeckElements); 
-						buildHeap(tcDeckElements); 
+						buildHeap(mainDeckElements, identity, selectionNo); 
+						buildHeap(tcDeckElements, identity, selectionNo); 
 				}
 			}
 		else if(input.equals("DD"))
@@ -111,7 +115,7 @@ public class WizHeap {
 						}
 						//trackMainDeck++; 
 					}
-					buildHeap(mainDeckElements); 
+					buildHeap(mainDeckElements, identity, selectionNo); 
 					//int trackTcDeck = 0; 
 					for(Element e: tcDeckElements)
 					{
@@ -126,7 +130,7 @@ public class WizHeap {
 						}
 						//trackTcDeck++; 
 					}
-					buildHeap(tcDeckElements); 
+					buildHeap(tcDeckElements, identity, selectionNo); 
 				}
 				
 			}
@@ -164,8 +168,9 @@ public class WizHeap {
 		}
 	}
 
-	public Element[] buildHeap(Element[]elements) throws InterruptedException
+	public Element[] buildHeap(Element[]elements, String identity, int deckNo) throws InterruptedException
 	{
+
 		for(int i = (int)Math.floor(elements.length/2); i >= 1; i--)
 		{
 			minHeapify(elements, i); 
@@ -176,21 +181,43 @@ public class WizHeap {
 		Thread.sleep(1000); 
 		System.out.println("Here it goes."); 
 		Thread.sleep(1000); 
-		for(Element e: elements)
+		try
 		{
-			System.out.println("Spell Name: " + e.getSpellName()); 
-			System.out.println("Count: " + e.getCount()); 
-			System.out.println("Description: " + e.getDescription()); 
-			System.out.println("Pip Chance: " + e.getPipChance()); 
-			System.out.println("Pips: " + e.getPips()); 
-			System.out.println("School: "  + e.getSchool()); 
-			System.out.println("Type of Spell: " + e.getTypeSpell()); 
-			System.out.println("---------------------------------------"); 
+			File f1 = new File("deck" + deckNo + ".txt"); 
+			File[] files = new File[1]; 
+			files[0] = f1; 
+			FileWriter f = new FileWriter(files[0]);
+			f.write(identity.toUpperCase() + " DECK\n"); 
+			f.write("-----------------------------------" + "\n");
+			for(Element e: elements)
+			{
+				System.out.println("Spell Name: " + e.getSpellName()); 
+				f.write("Spell Name: " + e.getSpellName() + "\n"); 
+				System.out.println("Count: " + e.getCount()); 
+				f.write("Count: " + e.getCount() + "\n"); 
+				System.out.println("Description: " + e.getDescription()); 
+				f.write("Description: " + e.getDescription() + "\n"); 
+				System.out.println("Pip Chance: " + e.getPipChance()); 
+				f.write("Pip Chance: " + e.getPipChance() + "\n"); 
+				System.out.println("Pips: " + e.getPips()); 
+				f.write("Pips: " + e.getPips() + "\n"); 
+				System.out.println("School: "  + e.getSchool()); 
+				f.write("School: " + e.getSchool() + "\n"); 
+				System.out.println("Type of Spell: " + e.getTypeSpell()); 
+				f.write("Type Of Spell: " + e.getTypeSpell() + "\n"); 
+				System.out.println("-----------------------------------"); 
+				f.write("-----------------------------------" + "\n");
+			}
+			f.close();
+		}catch(IOException e)
+		{
+			e.printStackTrace();
 		}
+		
 		return elements; 
 	}
 
-	public void selectYESOption(String identity, String input) throws InterruptedException
+	public void selectYESOption(String identity, String input, int selectionNo) throws InterruptedException
 	{
 		Scanner sc = new Scanner(System.in); 
 		Spell[] mainDeck;
@@ -221,20 +248,10 @@ public class WizHeap {
 					case "Darkmoor": 
 						new DarkmoorDeck(identity); 
 						mainDeck = DarkmoorDeck.getMainDeck();
-						for(Spell spell: mainDeck)
-						{
-							System.out.println("Spell Name: " + spell.getName()); 
-							break;
-						}
 						tcDeck = DarkmoorDeck.getTcDeck(); 
-						for(Spell spell: tcDeck)
-						{
-							System.out.println("Spell Name: " + spell.getName()); 
-							break;
-						}
 						mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
 						tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
-						storeSpellsInHeap("CD", mainDeck, tcDeck);
+						storeSpellsInHeap("CD", mainDeck, tcDeck, identity, selectionNo);
 						iterate = false; 
 						break;
 					case "Polaris": 
@@ -258,7 +275,7 @@ public class WizHeap {
 		}
 	}
 	
-	public List<Map<String, List<String>>> selectNOoption(String identity, String input) throws InterruptedException
+	public List<Map<String, List<String>>> selectNOoption(String identity, String input, int selectionNo) throws InterruptedException
 	{
 		List<Map<String, List<String>>> fullDeck = new ArrayList<>();
 
@@ -306,10 +323,10 @@ public class WizHeap {
 
 				fillMainDeck(mainDeckSpells, identity);
 				String inputMainDeck = findDeckType(); 
-				storeSpellsInHeap(inputMainDeck, null, null);
+				storeSpellsInHeap(inputMainDeck, null, null, null, selectionNo);
 				fillTcDeck(tcDeckSpells, identity);
 				String inputTcDeck = findDeckType(); 
-				storeSpellsInHeap(inputTcDeck, null, null);
+				storeSpellsInHeap(inputTcDeck, null, null, null, selectionNo);
 
 				fullDeck.add(mainDeckSpells); 
 				fullDeck.add(tcDeckSpells); 

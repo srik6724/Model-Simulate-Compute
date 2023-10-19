@@ -21,7 +21,7 @@ public class BalanceSpells {
 	
 	public ArrayList<Spell> balanceSpells = new ArrayList<Spell>(); 
 	
-	BalanceSpells()
+	BalanceSpells(int selectionNo)
 	{
 		Connection conn1 = null;
         try {
@@ -62,11 +62,11 @@ public class BalanceSpells {
 								String input = sc.nextLine();
 								if(input.equals("YES"))
 								{
-									customDeck(balanceSpells, input);
+									customDeck(balanceSpells, input, selectionNo);
 								}
 								else if(input.equals("NO"))
 								{
-									List<Map<String, List<String>>> givenBalanceSpells = defaultDeck(balanceSpells); 
+									List<Map<String, List<String>>> givenBalanceSpells = defaultDeck(balanceSpells, selectionNo); 
 									if(givenBalanceSpells != null)
 									{
 										System.out.println("Deck has been successfully created."); 
@@ -108,7 +108,7 @@ public class BalanceSpells {
 		
 	}*/
 
-	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells) throws InterruptedException
+	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -117,20 +117,20 @@ public class BalanceSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Balance", "YES"); 
+			hp.selectYESOption("Balance", "YES", selectionNo); 
 			return null;
 		}
 		else if(input.equals("DD"))
 		{
-			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Balance", "NO"); 
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Balance", "NO", selectionNo); 
 			return givenDeck;
 		}
 		return null;
 	}
 
-	public void customDeck(ArrayList<Spell>spells, String input) throws InterruptedException
+	public void customDeck(ArrayList<Spell>spells, String input, int selectionNo) throws InterruptedException
 	{
-		new WizHeap().selectYESOption("Balance", "YES"); 
+		new WizHeap().selectYESOption("Balance", "YES", selectionNo); 
 	}
 	
 	public void deckInformation(List<List<Spell>> spells, List<Map<String, List<String>>> setOfSpells)
@@ -190,11 +190,6 @@ public class BalanceSpells {
 			}
 		}
 		System.out.println(count + "/" + capacity + name + "found."); 
-	}
-	
-	public static void main(String[]args)
-	{
-		new BalanceSpells(); 
 	}
 	
 	

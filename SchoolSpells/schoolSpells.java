@@ -20,39 +20,39 @@ public class schoolSpells {
 		switch(school.toLowerCase())
 		{
 			case "life": 
-				allSchoolSpells.add(new LifeSpells().retrieveLifeSpells()); 
 				universalIndex++; 
 				lifeIndex = universalIndex; 
+				allSchoolSpells.add(new LifeSpells(lifeIndex+1).retrieveLifeSpells()); 
 				break;
 			case "death": 
-				allSchoolSpells.add(new DeathSpells().retrieveDeathSpells()); 
-				universalIndex++; 
+				universalIndex++;
 				deathIndex = universalIndex;
+				allSchoolSpells.add(new DeathSpells(deathIndex+1).retrieveDeathSpells()); 
 				break;
 			case "balance": 
-				allSchoolSpells.add(new BalanceSpells().retrieveBalanceSpells());
 				universalIndex++; 
 				balanceIndex = universalIndex;
+				allSchoolSpells.add(new BalanceSpells(balanceIndex+1).retrieveBalanceSpells());
 				break;
 			case "ice": 
-				allSchoolSpells.add(new IceSpells().retrieveIceSpells()); 
 				universalIndex++; 
 				iceIndex = universalIndex;
+				allSchoolSpells.add(new IceSpells(iceIndex+1).retrieveIceSpells()); 
 				break;
 			case "myth": 
-				allSchoolSpells.add(new MythSpells().retrieveMythSpells());
 				universalIndex++; 
 				mythIndex = universalIndex;
+				allSchoolSpells.add(new MythSpells(mythIndex+1).retrieveMythSpells());
 				break;
 			case "storm": 
-				allSchoolSpells.add(new StormSpells().retrieveStormSpells()); 
 				universalIndex++; 
 				stormIndex = universalIndex;
+				allSchoolSpells.add(new StormSpells(stormIndex+1).retrieveStormSpells()); 
 				break;
 			case "fire": 
-				allSchoolSpells.add(new FireSpells().retrieveFireSpells()); 
 				universalIndex++; 
 				fireIndex = universalIndex;
+				allSchoolSpells.add(new FireSpells(fireIndex+1).retrieveFireSpells()); 
 				break;
 			default: 
 				System.out.println("Sorry, wrong school input received."); 

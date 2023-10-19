@@ -16,8 +16,7 @@ public class Main {
 		Wizard wizard2 = new Wizard("TW", "Ice", 900, 1);
 		Wizard wizard3 = new Wizard("TW", "Life", 900, 1);
 		
-		Wizard[] wizards = {wizard1, wizard2, wizard3}; 
-		
+		Wizard[] wizards = {wizard1, wizard2, wizard3};                                                                
 		
 		wizard1.classifyBySchool(wizards, list, "Fire");  
 		wizard2.classifyBySchool(wizards, list, "Ice");

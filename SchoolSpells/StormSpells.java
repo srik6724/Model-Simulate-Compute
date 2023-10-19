@@ -20,7 +20,7 @@ public class StormSpells {
 	private WizHeap hp = new WizHeap(); 
 	public ArrayList<Spell> stormSpells = new ArrayList<Spell>(); 
 	
-	StormSpells()
+	StormSpells(int selectionNo)
 	{
 		Connection conn1 = null;
         try {
@@ -56,7 +56,7 @@ public class StormSpells {
             			
             		}
 								conn1.close();
-								List<Map<String, List<String>>> givenStormSpells = anotherDefaultDeck(stormSpells); 
+								List<Map<String, List<String>>> givenStormSpells = anotherDefaultDeck(stormSpells, selectionNo); 
 								if(givenStormSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
@@ -85,7 +85,7 @@ public class StormSpells {
 		return stormSpells; 
 	}
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -94,12 +94,12 @@ public class StormSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Storm", "YES"); 
+			hp.selectYESOption("Storm", "YES", selectionNo); 
 			return null;
 		}
 		else if(input.equals("DD"))
 		{
-			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Storm", "NO"); 
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Storm", "NO", selectionNo); 
 			return givenDeck;
 		}
 		return null;

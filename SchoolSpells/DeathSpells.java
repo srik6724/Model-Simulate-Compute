@@ -21,7 +21,7 @@ public class DeathSpells {
 	
 	public ArrayList<Spell> deathSpells = new ArrayList<Spell>(); 
 	
-	DeathSpells()
+	DeathSpells(int selectionNo)
 	{
 		Connection conn1 = null;
         try {
@@ -50,7 +50,7 @@ public class DeathSpells {
             		}
 								conn1.close();
 								List<List<Spell>> createdDeathSpells = null; 
-								List<Map<String, List<String>>> givenDeathSpells = anotherDefaultDeck(deathSpells); 
+								List<Map<String, List<String>>> givenDeathSpells = anotherDefaultDeck(deathSpells, selectionNo); 
 								if(givenDeathSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
@@ -78,7 +78,7 @@ public class DeathSpells {
 		return deathSpells; 
 	}
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -87,12 +87,12 @@ public class DeathSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Death", "YES"); 
+			hp.selectYESOption("Death", "YES", selectionNo); 
 			return null;
 		}
 		else if(input.equals("DD"))
 		{
-			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Death", "NO"); 
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Death", "NO", selectionNo); 
 			return givenDeck;
 		}
 		return null;
@@ -159,7 +159,7 @@ public class DeathSpells {
 	
 	public static void main(String[]args)
 	{
-		new DeathSpells(); 
+		new DeathSpells(1); 
 	}
 	
 	

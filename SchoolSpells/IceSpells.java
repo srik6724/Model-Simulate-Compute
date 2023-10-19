@@ -21,7 +21,7 @@ public class IceSpells {
 	
 	public ArrayList<Spell> iceSpells = new ArrayList<Spell>(); 
 	
-	IceSpells()
+	IceSpells(int selectionNo)
 	{
 		Connection conn1 = null;
         try {
@@ -57,7 +57,7 @@ public class IceSpells {
             		}
 								conn1.close();
 								List<List<Spell>> createdIceSpells = null; 
-								List<Map<String, List<String>>> givenIceSpells = anotherDefaultDeck(iceSpells); 
+								List<Map<String, List<String>>> givenIceSpells = anotherDefaultDeck(iceSpells, selectionNo); 
 								if(givenIceSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
@@ -87,7 +87,7 @@ public class IceSpells {
 	}
 
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -96,12 +96,12 @@ public class IceSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Ice", "YES"); 
+			hp.selectYESOption("Ice", "YES", selectionNo); 
 			return null;
 		}
 		else if(input.equals("DD"))
 		{
-			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Ice", "NO"); 
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Ice", "NO", selectionNo); 
 			return givenDeck;
 		}
 		return null;

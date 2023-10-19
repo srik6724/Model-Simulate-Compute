@@ -1,4 +1,6 @@
 package wizPackage;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -300,14 +302,61 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println(); 
 		System.out.println("You are now clear to now create a deck for each player on your team."); 
 		
-		int index = 0; 
-		createDeck(firstTeamSchools[0]);
-		createDeck(firstTeamSchools[1]);
-		createDeck(firstTeamSchools[2]);
-		createDeck(firstTeamSchools[3]);
+		createDeck(firstTeamSchools[0], 1); 
+		createDeck(firstTeamSchools[1], 2);
+		createDeck(firstTeamSchools[2], 3);
+		createDeck(firstTeamSchools[3], 4);
 
+		for(String school: decks.keySet())
+		{
+			System.out.println(school); 
+			for(int i = 0; i < 64; i++)
+			{
+				System.out.println(decks.get(school).get(i).getName()); 
+			}
+		}
 
 		System.out.println("The decks are now created for all schools specified.");
+		System.out.println(); 
+		System.out.println(); 
+		//Create an array of file objects
+		File f1 = new File("deck1.txt"); 
+		File f2 = new File("deck2.txt"); 
+		File f3 = new File("deck3.txt"); 
+		File f4 = new File("deck4.txt"); 
+		File[] files = new File[4]; 
+		files[0] = f1; 
+		files[1] = f2; 
+		files[2] = f3; 
+		files[3] = f4; 
+		//Loops through the Hashmap
+		try{
+			for(String school: decks.keySet())
+			{
+				int fileIndex = 0; 
+				FileWriter f = new FileWriter(files[fileIndex]); 
+				System.out.println("School: " + school); 
+				f.write(school + "\n"); 
+				for(int i = 0; i < 64; i++)
+				{
+					System.out.println("Spell Name: " + decks.get(school).get(i)); 
+					f.write(decks.get(school).get(i) + "\n"); 
+				}
+				fileIndex++;
+				f.close(); 
+			}
+		}catch(IOException e)
+		{
+			System.err.println("IOException occurred."); 
+		}
+
+		System.out.println("The files are created for all decks specified."); 
+
+		for(int i = 0; i < files.length; i++)
+		{
+			System.out.println("File # " + (i+1) +  ": " + files[i]); 
+		}
+
 		System.out.println();
 		System.out.println(); 
 		System.out.println(); 
@@ -593,8 +642,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return gearItems;
 	}
 
-
-	private HashMap<String, List<Spell>> createDeck(String str) {
+	private HashMap<String, List<Spell>> createDeck(String str, int deckNo) {
 		
 		new schoolSpells(str); 
 		
@@ -611,7 +659,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			break;
 			
 		case "ice": 
-			decks.put("ice", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex)); 
+			decks.put("ice", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex));
 			System.out.println("Success, ice deck is in!"); 
 			break;
 		
@@ -1398,7 +1446,37 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 	public static void main(String[]args)
 	{
-		new Match().checkGearName("Eternal Inspired Helm", "hat", new StringBuilder("eternal"), "life", 160);
+		//new Match().checkGearName("Eternal Inspired Helm", "hat", new StringBuilder("eternal"), "life", 160);
+		new Match().createDeck("ice", 1); 
+		//Thread th = new Thread(new SpringBootExecutable()); 
+		//th.start();
+		/*File f1 = new File("deck1.txt"); 
+		File[] files = new File[1]; 
+		files[0] = f1; 
+		//Loops through the Hashmap
+		try{
+			int countSpells = 0; 
+			for(String school: decks.keySet())
+			{
+				int fileIndex = 0; 
+				FileWriter f = new FileWriter(files[fileIndex]); 
+				System.out.println("School: " + school); 
+				f.write(school + "\n"); 
+				for(int i = 0; i < 64; i++)
+				{
+					System.out.println("Spell Name: " + decks.get(school).get(i).getName()); 
+					countSpells++; 
+					f.write(decks.get(school).get(i) + "\n"); 
+					System.out.println("Spell Counter: " + countSpells); 
+				}
+				fileIndex++;
+				f.close(); 
+			}
+		}catch(IOException e)
+		{
+			System.err.println("IOException occurred."); 
+		}*/
+
 	}
 
 	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level)

@@ -21,7 +21,7 @@ public class LifeSpells {
 	
 	public ArrayList<Spell> lifeSpells = new ArrayList<Spell>(); 
 	
-	LifeSpells()
+	LifeSpells(int selectionNo)
 	{
 		Connection conn1 = null;
         try {
@@ -47,23 +47,15 @@ public class LifeSpells {
             			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, life_typeSpell); 
             			
             			lifeSpells.add(spell); 
-
-									/*if(createdBalanceSpells != null)
-									{
-										System.out.println("Deck has been successfully created."); 
-            				System.out.println("Here is the following information about your main Deck, tc Deck"); 
-										deckInformation(createdBalanceSpells, givenBalanceSpells); 
-									}*/
             		}
 								conn1.close();
 								List<List<Spell>> createdLifeSpells = null; 
-								List<Map<String, List<String>>> givenLifeSpells = anotherDefaultDeck(lifeSpells); 
+								List<Map<String, List<String>>> givenLifeSpells = anotherDefaultDeck(lifeSpells, selectionNo); 
 								if(givenLifeSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
-									//System.out.println("Here is the following information about your main Deck, tc Deck"); 
 									deckInformation(createdLifeSpells, givenLifeSpells); 
-									}
+								}
             		System.out.println("Execution is done.");
             	}
             	else
@@ -98,7 +90,7 @@ public class LifeSpells {
 		
 	}*/
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -107,12 +99,12 @@ public class LifeSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Life", "YES"); 
+			hp.selectYESOption("Life", "YES", selectionNo); 
 			return null;
 		}
 		else if(input.equals("DD"))
 		{
-			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Life", "NO"); 
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Life", "NO", selectionNo); 
 			return givenDeck;
 		}
 		return null;

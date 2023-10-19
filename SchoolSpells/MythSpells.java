@@ -21,7 +21,7 @@ public class MythSpells {
 	
 	public ArrayList<Spell> mythSpells = new ArrayList<Spell>(); 
 	
-	MythSpells()
+	MythSpells(int selectionNo)
 	{
 		Connection conn1 = null;
         try {
@@ -49,7 +49,7 @@ public class MythSpells {
             			mythSpells.add(spell); 
             		}
 								conn1.close();
-								List<Map<String, List<String>>> givenMythSpells = anotherDefaultDeck(mythSpells); 
+								List<Map<String, List<String>>> givenMythSpells = anotherDefaultDeck(mythSpells, selectionNo); 
 								if(givenMythSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
@@ -73,7 +73,7 @@ public class MythSpells {
 				}
 	}
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells) throws InterruptedException
+	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -82,12 +82,12 @@ public class MythSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Myth", "YES"); 
+			hp.selectYESOption("Myth", "YES", selectionNo); 
 			return null;
 		}
 		else if(input.equals("DD"))
 		{
-			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Myth", "NO"); 
+			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Myth", "NO", selectionNo); 
 			return givenDeck;
 		}
 		return null;
