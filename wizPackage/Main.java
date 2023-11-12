@@ -1,7 +1,7 @@
 package wizPackage;
 
 public class Main {
-	public static void main(String[]args)
+	public static void main(String[]args) throws InterruptedException
 	{
 		/*Wizard101LinkedList list = new Wizard101LinkedList(); 
 		
@@ -16,7 +16,7 @@ public class Main {
 		Wizard wizard2 = new Wizard("TW", "Ice", 900, 1);
 		Wizard wizard3 = new Wizard("TW", "Life", 900, 1);
 		
-		Wizard[] wizards = {wizard1, wizard2, wizard3};                                                                
+		Wizard[] wizards = {wizard1, wizard2, wizard3};                                                        
 		
 		wizard1.classifyBySchool(wizards, list, "Fire");  
 		wizard2.classifyBySchool(wizards, list, "Ice");
@@ -30,7 +30,7 @@ public class Main {
 		//Main main = new Main(); 
 		//System.out.println("Value: " + main.randomVariable); 
 		Match match = new Match(); 
-		match.enroll2Teams();
+		match.enroll2Teams(); 
 		
 	}
 

@@ -63,6 +63,9 @@ public class WizHeap {
 				Element[] mainDeckElements = mainDeckInfo.getElements(); 
 				Element[] tcDeckElements = tcDeckInfo.getElements(); 
 
+				System.out.println("Main Deck Elements Length: " + mainDeckElements.length); 
+				System.out.println("Tc Deck Elements Length: " + tcDeckElements.length);
+
 				if(mainDeckElements.length == mD.length && tcDeckElements.length == tC.length)
 				{
 						int mainDeckCounter = 0; 
@@ -79,16 +82,16 @@ public class WizHeap {
 						int tcDeckCounter = 0; 
 						for(Element e: tcDeckElements)
 						{
-							e.setSpellName(mD[tcDeckCounter].getName());
-							e.setPipChance(mD[tcDeckCounter].getPipChance());
-							e.setPips(mD[tcDeckCounter].getPips());
-							e.setCount(mD[tcDeckCounter].getCount());
-							e.setDescription(mD[tcDeckCounter].getDescription());
-							e.setTypeSpell(mD[tcDeckCounter].getTypeSpell()); 
+							e.setSpellName(tC[tcDeckCounter].getName());
+							e.setPipChance(tC[tcDeckCounter].getPipChance());
+							e.setPips(tC[tcDeckCounter].getPips());
+							e.setCount(tC[tcDeckCounter].getCount());
+							e.setDescription(tC[tcDeckCounter].getDescription());
+							e.setTypeSpell(tC[tcDeckCounter].getTypeSpell()); 
 							tcDeckCounter++; 
 						}
-						buildHeap(mainDeckElements, identity, selectionNo); 
-						buildHeap(tcDeckElements, identity, selectionNo); 
+						buildHeap(mainDeckElements, identity, selectionNo, "main"); 
+						buildHeap(tcDeckElements, identity, selectionNo, "tc"); 
 				}
 			}
 		else if(input.equals("DD"))
@@ -115,7 +118,7 @@ public class WizHeap {
 						}
 						//trackMainDeck++; 
 					}
-					buildHeap(mainDeckElements, identity, selectionNo); 
+					buildHeap(mainDeckElements, identity, selectionNo, "main"); 
 					//int trackTcDeck = 0; 
 					for(Element e: tcDeckElements)
 					{
@@ -130,7 +133,7 @@ public class WizHeap {
 						}
 						//trackTcDeck++; 
 					}
-					buildHeap(tcDeckElements, identity, selectionNo); 
+					buildHeap(tcDeckElements, identity, selectionNo, "tc"); 
 				}
 				
 			}
@@ -168,7 +171,7 @@ public class WizHeap {
 		}
 	}
 
-	public Element[] buildHeap(Element[]elements, String identity, int deckNo) throws InterruptedException
+	public Element[] buildHeap(Element[]elements, String identity, int deckNo, String deckType) throws InterruptedException
 	{
 
 		for(int i = (int)Math.floor(elements.length/2); i >= 1; i--)
@@ -183,7 +186,7 @@ public class WizHeap {
 		Thread.sleep(1000); 
 		try
 		{
-			File f1 = new File("deck" + deckNo + ".txt"); 
+			File f1 = new File("deck" + deckNo + "_" + deckType + ".txt"); 
 			File[] files = new File[1]; 
 			files[0] = f1; 
 			FileWriter f = new FileWriter(files[0]);
@@ -249,9 +252,18 @@ public class WizHeap {
 						new DarkmoorDeck(identity); 
 						mainDeck = DarkmoorDeck.getMainDeck();
 						tcDeck = DarkmoorDeck.getTcDeck(); 
+						for(int i = 0; i < tcDeck.length; i++)
+						{
+							System.out.println("Spell Name: " + tcDeck[i].getName());
+							System.out.println("Count: " + tcDeck[i].getCount()); 
+							System.out.println("Description: " + tcDeck[i].getDescription()); 
+							System.out.println("Pip Chance: " + tcDeck[i].getPipChance()); 
+							System.out.println("Pips: " + tcDeck[i].getPips()); 
+							System.out.println("Type Of Spell: " + tcDeck[i].getTypeSpell()); 
+						}
 						mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
 						tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
-						storeSpellsInHeap("CD", mainDeck, tcDeck, identity, selectionNo);
+						storeSpellsInHeap("CD", mainDeck, tcDeck, identity, selectionNo); 
 						iterate = false; 
 						break;
 					case "Polaris": 

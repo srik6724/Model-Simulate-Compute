@@ -56,12 +56,11 @@ import SpringBoot.SpringBootExecutable;
 public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
 	
 	//Arrays to store information about the firstTeam and secondTeam. 
-	private String[] firstTeam = new String[4]; 
-	private String[] firstTeamLevels = new String[4]; 
-	private String[] firstTeamSchools = new String[4]; 
-	private String[] secondTeam = new String[4]; 
-	private String[] secondTeamLevels = new String[4]; 
-	private String[] thirdTeamLevels = new String[4]; 
+	int teamSize; 
+	private String[] team; 
+	private String[] teamLevels; 
+	private String[] teamSchools; 
+
 	
 	private StopWatch watch = new StopWatch(); 
 	public Proposition statement = new Proposition(); 
@@ -86,45 +85,13 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	
 	public String retrieveFirstTeamName; 
 	public String retrieveSecondTeamName; 
-	
-	
-	String T1firstPlayer; 
-	String T1firstPlayerLevel; 
-	String T1firstPlayerSchool;
-	
-	String T1secondPlayer; 
-	String T1secondPlayerLevel; 
-	String T1secondPlayerSchool;
-	
-	String T1thirdPlayer; 
-	String T1thirdPlayerLevel;
-	String T1thirdPlayerSchool;
-	
-	String T1fourthPlayer; 
-	String T1fourthPlayerLevel; 
-	String T1fourthPlayerSchool;
-	
-	String T2firstPlayer; 
-	String T2firstPlayerLevel;
-	String T2firstPlayerSchool;
-	
-	String T2secondPlayer; 
-	String T2secondPlayerLevel; 
-	String T2secondPlayerSchool;
-	
-	String T2thirdPlayer; 
-	String T2thirdPlayerLevel; 
-	String T2thirdPlayerSchool;
-	
-	String T2fourthPlayer; 
-	String T2fourthPlayerLevel; 
-	String T2fourthPlayerSchool;
+
 	public char[] randomVariable;
 
 	private static int countTeamsRegistered = 1; 
 	private static int firstIteration = 1; 
 	
-	public void enroll2Teams()
+	public void enroll2Teams() throws InterruptedException
 	{
 		String[] teamStr = {"First", "Second"};  
 		for(int i = 0; i < 2; i++)
@@ -139,17 +106,79 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 	
 	
-	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered)
+	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered) throws InterruptedException
 	{
 		Scanner sc = new Scanner(System.in);
-		
+
+		boolean iterate = true; 
+
+		while(iterate)
+		{
+			System.out.println("Select the game mode you intend to play."); 
+			Thread.sleep(1000); 
+			System.out.println("--------------OPTIONS-------------------"); 
+			Thread.sleep(1000); 
+			System.out.println("----------------1v1---------------------"); 
+			Thread.sleep(1000); 
+			System.out.println("----------------2v2---------------------");
+			Thread.sleep(1000); 
+			System.out.println("----------------3v3----------------------"); 
+			Thread.sleep(1000); 
+			System.out.println("----------------4v4----------------------");
+			Thread.sleep(1000);  
+			System.out.println("Choose which one to play based on those options."); 
+			String gameMode = sc.nextLine(); 
+			if(isNumeric(gameMode))
+			{
+				System.out.println("Not a valid input entered for game mode: " + gameMode); 
+				iterate = true; 
+				continue; 
+			}
+			if(!((gameMode.equals("1v1") || gameMode.equals("2v2") || gameMode.equals("3v3") || gameMode.equals("4v4"))))
+			{
+				System.out.println("Game Mode: " + gameMode + " doesn't exist."); 
+				iterate = true; 
+				continue; 
+			}
+			System.out.println("Game Mode selection chosen is " + gameMode); 
+			if(gameMode.equals("1v1"))
+			{
+				teamSize = _1v1_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize]; 
+			}
+			else if(gameMode.equals("2v2"))
+			{
+				teamSize = _2v2_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize]; 
+			}
+			else if(gameMode.equals("3v3"))
+			{
+				teamSize = _3v3_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize];
+			}
+			else if(gameMode.equals("4v4"))
+			{
+				teamSize = _4v4_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize]; 
+			}
+			break; 
+		}
+
 		System.out.println(str + " Team");
 		System.out.println("-------------------"); 
 		System.out.println("What is the name of your team?"); 
 		
 		retrieveFirstTeamName = sc.nextLine(); 		
 		
-		boolean checkPlayer = true; 
+		boolean checkPlayerNames = true; 
 		
 		System.out.println("INSTRUCTIONS FOR REGISTERING A TEAM. Follow carefully."); 
 		System.out.println("First, please write down the names of your players."
@@ -158,86 +187,47 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("We humbly request it is done in this order as we would hope to avoid any technical "
 				+ "issues on our end for registering all teams. Thank you! "); 
 		
-		while(checkPlayer)
+		while(checkPlayerNames)
 		{
-			System.out.println("Please write down the names of the 4 players of your team."); 
-			T1firstPlayer = sc.nextLine(); 
-			T1secondPlayer = sc.nextLine(); 
-			T1thirdPlayer = sc.nextLine(); 
-			T1fourthPlayer = sc.nextLine(); 
-			
-			if(isNumeric(T1firstPlayer) == true)
+			for(int i = 0; i < teamSize; i++)
 			{
-				System.out.println("Not a valid name for " + T1firstPlayer);
-				checkPlayer = true; 
-			}
-			else if(isNumeric(T1secondPlayer) == true)
-			{
-				System.out.println("Not a valid name for " + T1secondPlayer); 
-				checkPlayer = true; 
-			}
-			else if(isNumeric(T1thirdPlayer) == true)
-			{
-				System.out.println("Not a valid name for " + T1thirdPlayer); 
-				checkPlayer = true; 
-			}
-			else if(isNumeric(T1fourthPlayer) == true)
-			{
-				System.out.println("Not a valid name for " + T1fourthPlayer); 
-				checkPlayer = true; 
-			}
-			else
-			{
-				checkPlayer = false; 
-				System.out.println("Success, now write down the levels of each player given the order you registered the players."); 
-				firstTeam[0] = T1firstPlayer; 
-				firstTeam[1] = T1secondPlayer; 
-				firstTeam[2] = T1thirdPlayer; 
-				firstTeam[3] = T1fourthPlayer; 
-			}
-			
-			while(!checkPlayer)
-			{
-				System.out.println("Write down the levels of each player for Team 1.\t");
-				System.out.println("\t"); 
-				System.out.println("Write down " + T1firstPlayer + " level.\t"); 
-				T1firstPlayerLevel = sc.nextLine(); 
-				System.out.println("Write down " + T1secondPlayer + " level.\t"); 
-				T1secondPlayerLevel = sc.nextLine(); 
-				System.out.println("Write down " + T1thirdPlayer + " level.\t"); 
-				T1thirdPlayerLevel = sc.nextLine(); 
-				System.out.println("Write down " + T1fourthPlayer + " level.\t"); 
-				T1fourthPlayerLevel = sc.nextLine(); 
-				
-				if(isNumeric(T1firstPlayerLevel) == false)
+				System.out.println("Please write down player " + (i+1) + " of your team."); 
+				String player = sc.nextLine(); 
+				if(isNumeric(player))
 				{
-					System.out.println("Not a valid level entered for " + T1firstPlayer);
-					checkPlayer = false; 
-				}
-				else if(isNumeric(T1secondPlayerLevel) == false)
-				{
-					System.out.println("Not a valid level entered for " + T1secondPlayer); 
-					checkPlayer = false; 
-				}
-				else if(isNumeric(T1thirdPlayerLevel) == false)
-				{
-					System.out.println("Not a valid level entered for " + T1thirdPlayer); 
-					checkPlayer = false; 
-				}
-				else if(isNumeric(T1fourthPlayerLevel) == false)
-				{
-					System.out.println("Not a valid level entered for " + T1fourthPlayer); 
-					checkPlayer = false; 
+					System.out.println("Not a valid name for " + player); 
+					checkPlayerNames = true; 
+					break;
 				}
 				else
 				{
-					checkPlayer = true;
-					firstTeamLevels[0] = T1firstPlayerLevel; 
-					firstTeamLevels[1] = T1secondPlayerLevel; 
-					firstTeamLevels[2] = T1thirdPlayerLevel; 
-					firstTeamLevels[3] = T1fourthPlayerLevel; 
+					team[i] = player; 
 				}
 			}
+			checkPlayerNames = false; 
+		}
+
+		boolean checkPlayerLevels = true; 
+		while(checkPlayerLevels)
+		{
+			for(int i = 0; i < teamSize; i++)
+			{
+				System.out.println("Write down " + team[i] + " level."); 
+				String playerLevel = sc.nextLine(); 
+				if(!(isNumeric(playerLevel)))
+				{
+					System.out.println("Level " + playerLevel + " not recognizable."); 
+					checkPlayerLevels = true; 
+					break;
+				}
+				else if(Integer.parseInt(playerLevel) > 160)
+				{
+					teamLevels[i] = playerLevel; 
+					System.out.println("Added " + teamLevels[i] + " level of " + "player " + team[i]); 
+				}
+				checkPlayerLevels = false; 
+			}
+		}
 			
 			System.out.println("Success, now proceed to write down each of the school identities of the players."); 
 			System.out.println(); 
@@ -248,114 +238,46 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 					+ "Ice, Fire, Death, Balance, Life, Myth, and Storm."
 					+ "Any other schools will not be accepted.");
 			
-			while(checkPlayer)
+			boolean checkIdentities = true; 
+			while(checkIdentities)
 			{
-				System.out.println("\t"); 
-				System.out.println("Write down " + T1firstPlayer + " school.\t"); 
-				T1firstPlayerSchool = sc.nextLine(); 
-				System.out.println("Write down " + T1secondPlayer + " school.\t"); 
-				T1secondPlayerSchool = sc.nextLine(); 
-				System.out.println("Write down " + T1thirdPlayer + " school.\t"); 
-				T1thirdPlayerSchool = sc.nextLine(); 
-				System.out.println("Write down " + T1fourthPlayer + " school.\t"); 
-				T1fourthPlayerSchool = sc.nextLine(); 
-				
-				boolean checkSchool1 = findSchool(wizSchools, T1firstPlayerSchool); 
-				boolean checkSchool2 = findSchool(wizSchools, T1secondPlayerSchool); 
-				boolean checkSchool3 = findSchool(wizSchools, T1thirdPlayerSchool); 
-				boolean checkSchool4 = findSchool(wizSchools, T1fourthPlayerSchool); 
-				
-				if(isNumeric(T1firstPlayerSchool) == true || checkSchool1 == false)
+				for(int i = 0; i < teamSize; i++)
 				{
-					System.out.println("Not a valid school name entered for " + T1firstPlayer);
-					checkPlayer = true; 
+					System.out.println("Write down " + team[i] + " school"); 
+					String playerSchool = sc.nextLine(); 
+					if(isNumeric(playerSchool))
+					{
+						System.out.println("Player School " + playerSchool + " cannot be a number."); 
+						checkIdentities = true; 
+						break;
+					}
+					else if(!playerSchool.equals("Ice") || !playerSchool.equals("Fire") || !playerSchool.equals("Death")
+					|| !playerSchool.equals("Balance") || !playerSchool.equals("Life") || !playerSchool.equals("Myth") 
+					|| !playerSchool.equals("Storm"))
+					{
+						System.out.println("The option selected didn't match the options listed above."); 
+						checkIdentities = true; 
+						break;
+					}
 				}
-				else if(isNumeric(T1secondPlayerSchool) == true || checkSchool2 == false)
-				{
-					System.out.println("Not a valid school name entered for " + T1secondPlayer); 
-					checkPlayer = false; 
-				}
-				else if(isNumeric(T1thirdPlayerSchool) == true || checkSchool3 == false)
-				{
-					System.out.println("Not a valid school name entered for " + T1thirdPlayer); 
-					checkPlayer = false; 
-				}
-				else if(isNumeric(T1fourthPlayerSchool) == true || checkSchool4 == false)
-				{
-					System.out.println("Not a valid school name entered for " + T1fourthPlayer); 
-					checkPlayer = false; 
-				}
-				else
-				{
-					checkPlayer = false;
-					firstTeamSchools[0] = T1firstPlayerSchool; 
-					firstTeamSchools[1] = T1secondPlayerSchool; 
-					firstTeamSchools[2] = T1thirdPlayerSchool; 
-					firstTeamSchools[3] = T1fourthPlayerSchool; 
-				}
+				checkIdentities = false; 
 			}
-			
-		}
 		System.out.println();
 		System.out.println(); 
 		System.out.println(); 
 		System.out.println(); 
 		System.out.println("You are now clear to now create a deck for each player on your team."); 
 		
-		createDeck(firstTeamSchools[0], 1); 
-		createDeck(firstTeamSchools[1], 2);
-		createDeck(firstTeamSchools[2], 3);
-		createDeck(firstTeamSchools[3], 4);
-
-		for(String school: decks.keySet())
+		for(int i = 0; i < teamSize; i++)
 		{
-			System.out.println(school); 
-			for(int i = 0; i < 64; i++)
-			{
-				System.out.println(decks.get(school).get(i).getName()); 
-			}
+			createDeck(teamSchools[i], (i+1)); 
 		}
 
 		System.out.println("The decks are now created for all schools specified.");
 		System.out.println(); 
 		System.out.println(); 
-		//Create an array of file objects
-		File f1 = new File("deck1.txt"); 
-		File f2 = new File("deck2.txt"); 
-		File f3 = new File("deck3.txt"); 
-		File f4 = new File("deck4.txt"); 
-		File[] files = new File[4]; 
-		files[0] = f1; 
-		files[1] = f2; 
-		files[2] = f3; 
-		files[3] = f4; 
-		//Loops through the Hashmap
-		try{
-			for(String school: decks.keySet())
-			{
-				int fileIndex = 0; 
-				FileWriter f = new FileWriter(files[fileIndex]); 
-				System.out.println("School: " + school); 
-				f.write(school + "\n"); 
-				for(int i = 0; i < 64; i++)
-				{
-					System.out.println("Spell Name: " + decks.get(school).get(i)); 
-					f.write(decks.get(school).get(i) + "\n"); 
-				}
-				fileIndex++;
-				f.close(); 
-			}
-		}catch(IOException e)
-		{
-			System.err.println("IOException occurred."); 
-		}
 
 		System.out.println("The files are created for all decks specified."); 
-
-		for(int i = 0; i < files.length; i++)
-		{
-			System.out.println("File # " + (i+1) +  ": " + files[i]); 
-		}
 
 		System.out.println();
 		System.out.println(); 
@@ -372,10 +294,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		LinkedListTeam1 list1 = new LinkedListTeam1(); 
 		LinkedListTeam2 list2 = new LinkedListTeam2(); 
 		HashMap<Integer, List<String>> keywords = new HashMap<Integer, List<String>>(); 
-		for(int i = 0; i < firstTeam.length; i++)
+		for(int i = 0; i < team.length; i++)
 		{
-			System.out.println(firstTeamSchools[i]); 
-			String fullGearString = computePlayerInformation(firstTeam[i], firstTeamSchools[i], Integer.parseInt(firstTeamLevels[i]), keywords, iter);
+			System.out.println(teamSchools[i]); 
+			String fullGearString = computePlayerInformation(team[i], teamSchools[i], Integer.parseInt(teamLevels[i]), keywords, iter);
 			iter--; 
 			ArrayList<String> storeGearPieces = new ArrayList<String>(); 
 			String gearToAdd = ""; 
@@ -404,17 +326,17 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				gearToAdd = ""; 
 				start = start + 1; 
 			}
-			System.out.println(firstTeam[i]); 
-			boolean checkIfExists = searchInGearSets(gearSets, firstTeam[i]); 
+			System.out.println(team[i]); 
+			boolean checkIfExists = searchInGearSets(gearSets, team[i]); 
 			if(checkIfExists == true)
 			{
 				if(firstIteration == 1)
 				{
-					saveDuplicateKey = firstTeam[i]; 
-					List<String> gearItems = retrieveDuplicateKeyInfo(gearSets, firstTeam[i]);
-					LinkedListTeam1.Node node = new LinkedListTeam1.Node(firstTeam[i], gearItems); 
+					saveDuplicateKey = team[i]; 
+					List<String> gearItems = retrieveDuplicateKeyInfo(gearSets, team[i]);
+					LinkedListTeam1.Node node = new LinkedListTeam1.Node(team[i], gearItems); 
 					list1.insert(node); 
-					LinkedListTeam1.Node anotherNode = new LinkedListTeam1.Node(firstTeam[i], storeGearPieces); 
+					LinkedListTeam1.Node anotherNode = new LinkedListTeam1.Node(team[i], storeGearPieces); 
 					list1.insert(anotherNode); 
 					firstIteration = 0; 
 				}
@@ -422,12 +344,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				{
 					if(countTeamsRegistered == 1)
 					{
-						LinkedListTeam1.Node node = new LinkedListTeam1.Node(firstTeam[i], storeGearPieces); 
+						LinkedListTeam1.Node node = new LinkedListTeam1.Node(team[i], storeGearPieces); 
 						list1.insert(node); 
 					}
 					else 
 					{
-						LinkedListTeam2.Node node = new LinkedListTeam2.Node(firstTeam[i], storeGearPieces); 
+						LinkedListTeam2.Node node = new LinkedListTeam2.Node(team[i], storeGearPieces); 
 						list2.insert(node); 
 					}
 				}
@@ -440,7 +362,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 			else 
 			{
-				gearSets.put(firstTeam[i], storeGearPieces);
+				gearSets.put(team[i], storeGearPieces);
 			}
 		}
 		LinkedListTeam1.Node current1;
@@ -517,11 +439,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 		int left = 0; 
 		int right = 0; 
-		int length = firstTeamSchools.length; 
+		int length = teamSchools.length; 
 		int firstLoopIteration = 1; 
 		String[]orderCreated = new String[4]; 
 
-		generatePossibleOrders(left, right, length, firstLoopIteration, orderCreated, Arrays.asList(firstTeamSchools), orderDetail);
+		generatePossibleOrders(left, right, length, firstLoopIteration, orderCreated, Arrays.asList(teamSchools), orderDetail);
 		int setCount = 1; 
 		for(int number: orderDetail.keySet())
 		{
@@ -555,7 +477,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		int start = 1; 
 		for(int i = 0; i < firstTeamOrder.length; i++)
 		{
-			System.out.println("Player # " + start + ": " + firstTeamOrder[i] + "," + firstTeamLevels[i] + "," + firstTeamSchools[i] +  " successfully enrolled in " + retrieveFirstTeamName); 
+			System.out.println("Player # " + start + ": " + firstTeamOrder[i] + "," + teamLevels[i] + "," + teamSchools[i] +  " successfully enrolled in " + retrieveFirstTeamName); 
 			start = start + 1; 
 		}
 		System.out.println("Congratulations, team " + retrieveFirstTeamName + " is enrolled officially.");
@@ -694,69 +616,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return decks;
 		
 	}
-
-
-	public void enrollSecondTeamPlayers()
-	{
-		Scanner sc = new Scanner(System.in);
-		
-		System.out.println("Second Team");
-		System.out.println("-------------------"); 
-		System.out.println("What is the name of your team?"); 
-		
-		retrieveSecondTeamName = sc.nextLine(); 
-		
-		System.out.println("Please write down the names of the 4 players of your team."); 
-		
-		boolean checkPlayer = true; 
-		
-		while(checkPlayer)
-		{
-			T2firstPlayer = sc.nextLine(); 
-			T2secondPlayer = sc.nextLine(); 
-			T2thirdPlayer = sc.nextLine(); 
-			T2fourthPlayer = sc.nextLine(); 
-			
-			if(isNumeric(T2firstPlayer) == true)
-			{
-				System.out.println("Not a valid name for " + T2firstPlayer);
-				checkPlayer = true; 
-			}
-			else if(isNumeric(T2secondPlayer) == true)
-			{
-				System.out.println("Not a valid name for " + T2secondPlayer); 
-				checkPlayer = true; 
-			}
-			else if(isNumeric(T2thirdPlayer) == true)
-			{
-				System.out.println("Not a valid name for " + T2thirdPlayer); 
-				checkPlayer = true; 
-			}
-			else if(isNumeric(T2fourthPlayer) == true)
-			{
-				System.out.println("Not a valid name for " + T2fourthPlayer); 
-				checkPlayer = true; 
-			}
-			else
-			{
-				checkPlayer = false; 
-				secondTeam[0] = T2firstPlayer; 
-			  secondTeam[1] = T2secondPlayer; 
-				secondTeam[2] = T2thirdPlayer; 
-				secondTeam[3] = T2fourthPlayer; 
-			}
-			
-		}
-		int start = 1; 
-		for(int i = 0; i < secondTeam.length; i++)
-		{
-			System.out.println("Player # " + start + ": " + secondTeam[i] + " successfully enrolled in " + retrieveSecondTeamName); 
-			start = start + 1; 
-		}
-		System.out.println("Congratulations, team " + retrieveSecondTeamName + " is enrolled officially.");
-		
-		
-	}
 	
 	public boolean isNumeric(String str)
 	{
@@ -859,7 +718,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("Bets have been placed for this following team: " + inputReceived); 
 		}
 		
-		String[] checkIfSorted = sortTeamsAlphabetically(firstTeam); 
+		String[] checkIfSorted = sortTeamsAlphabetically(team); 
 		for(int i = 0; i < checkIfSorted.length; i++)
 		{
 			System.out.println("Sorted element " + i + ": " + checkIfSorted[i]); 
@@ -997,11 +856,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		if(playerName instanceof String)
 		{
 			boolean check = false; 
-			for(int i = 0; i < firstTeam.length; i++)
+			for(int i = 0; i < team.length; i++)
 			{
-				if(playerName.equals(firstTeam[i]))
+				if(playerName.equals(team[i]))
 				{
-					firstTeam[startIndex] = ""; 
+					team[startIndex] = ""; 
 					check = true; 
 					break;
 				}
@@ -1486,7 +1345,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			Connection conn1 = null; 
 			String url1 = "jdbc:mysql://localhost:3306/wizard_schema";
 			String user = "srik6724";
-			String password = "28892K0shair!";
+			String password = "28892K0shair!"; 
 
 			if (WizCredentials.authenticate(user, password)) {
 				System.out.println("Authentication successful");
