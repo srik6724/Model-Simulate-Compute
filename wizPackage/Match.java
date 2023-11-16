@@ -222,10 +222,13 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				}
 				else if(Integer.parseInt(playerLevel) > 160)
 				{
+					System.out.println("Player Level Chosen " + playerLevel + " exceeds 160"); 
+				}
+				else {
 					teamLevels[i] = playerLevel; 
 					System.out.println("Added " + teamLevels[i] + " level of " + "player " + team[i]); 
+					checkPlayerLevels = false;
 				}
-				checkPlayerLevels = false; 
 			}
 		}
 			
@@ -251,16 +254,20 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 						checkIdentities = true; 
 						break;
 					}
-					else if(!playerSchool.equals("Ice") || !playerSchool.equals("Fire") || !playerSchool.equals("Death")
-					|| !playerSchool.equals("Balance") || !playerSchool.equals("Life") || !playerSchool.equals("Myth") 
-					|| !playerSchool.equals("Storm"))
+					else if((playerSchool.equals("Ice")) || (playerSchool.equals("Fire")) || (playerSchool.equals("Death"))
+					|| (playerSchool.equals("Balance")) || (playerSchool.equals("Life")) || (playerSchool.equals("Myth")) 
+					|| (playerSchool.equals("Storm")))
 					{
-						System.out.println("The option selected didn't match the options listed above."); 
-						checkIdentities = true; 
+						System.out.println("Player School added of type " + playerSchool); 
+						teamSchools[i] = playerSchool; 
+						checkIdentities = false; 
+					}
+					else 
+					{
+						checkIdentities = true;
 						break;
 					}
 				}
-				checkIdentities = false; 
 			}
 		System.out.println();
 		System.out.println(); 
@@ -526,7 +533,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			orderCreated[secondRandomNumber] = temp; 
 
 			generatePossibleOrders(left+1, right, length, firstIteration, Arrays.copyOf(orderCreated, orderCreated.length), Arrays.asList(orderCreated), orderDetail);
-
 		}
 
 		if(right < length)
@@ -872,6 +878,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	
 	public String computePlayerInformation(String wizard, String school, int level, HashMap<Integer, List<String>> keywords, int count)
 	{
+		System.out.println("Inside computePlayerInformation Method."); 
+
 		StringBuilder gearType1 = new StringBuilder(""); 
 		StringBuilder gearType2 = new StringBuilder(""); 
 		StringBuilder gearType3 = new StringBuilder(""); 
@@ -884,7 +892,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		String[] listGear = {"hat", "robe", "boot", "wand", "athame", "amulet", "ring", "deck", "pet"};  
 
 		Hat hat = (Hat)instantiateGearPiece(listGear[0], school, level, gearType1); 
-		System.out.println("Hat gearType: " + gearType1); 
+		System.out.println("Hat gearType: " + gearType1);  
 		Robe robe = (Robe)instantiateGearPiece(listGear[1], school, level, gearType2); 
 		System.out.println("Robe gearType: " + gearType2); 
 		Boot boot = (Boot)instantiateGearPiece(listGear[2], school, level, gearType3);
@@ -909,7 +917,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println(gear.toString()); 
 
 		return gear.toString();  
-
 	}
 
 	public boolean verifyHealthRequirements(int health, int level)

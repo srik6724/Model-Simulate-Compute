@@ -17,6 +17,7 @@ public class schoolSpells {
 	
 	public schoolSpells(String school)
 	{
+		System.out.println(school); 
 		switch(school.toLowerCase())
 		{
 			case "life": 
