@@ -31,7 +31,6 @@ public class Main {
 		//System.out.println("Value: " + main.randomVariable); 
 		Match match = new Match(); 
 		match.enroll2Teams(); 
-		
 	}
 
 	

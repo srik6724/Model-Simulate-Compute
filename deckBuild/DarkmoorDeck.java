@@ -253,7 +253,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 							//System.out.println("School Identity: " + collectIdentity); 
 							if(school.toLowerCase().equals(collectIdentity.toLowerCase()))
 							{
-								createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
+								createSpell = countSpell(spellList, countOfEachSpell, name); 
 								if(createSpell == null)
 								{
 									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
@@ -274,7 +274,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 							}
 							else if(!(school.equals(collectIdentity)) && accessByOtherSchools == true && label.equals("mainDeck"))
 							{
-								createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
+								createSpell = countSpell(spellList, countOfEachSpell, name); 
 								if(createSpell == null)
 								{
 									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 

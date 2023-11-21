@@ -53,6 +53,7 @@ import SchoolSpells.schoolSpells;
 import Sockets.Socket;
 import SpookyStats.SpookyClass;
 import SpringBoot.SpringBootExecutable;
+import deckBuild.DarkmoorDeck;
 public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
 	
 	//Arrays to store information about the firstTeam and secondTeam. 
@@ -360,12 +361,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 						list2.insert(node); 
 					}
 				}
-				/*if(LinkedList.root != null)
-				{
-					String modify_Contents = LinkedList.root.wizard + " " + count; 
-					gearSets.put(modify_Contents, storeGearPieces); 
-					count = count + 1; 
-				}*/
 			}
 			else 
 			{
@@ -376,8 +371,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		LinkedListTeam2.Node current2;
 		if(countTeamsRegistered == 1)
 		{
-			list1.printNodeData();
+			//list1.printNodeData();
+			//System.out.println("Printed Node data."); 
 			current1 = LinkedListTeam1.head; 
+			System.out.println(current1); 
 			int count = 1; 
 			String modified_wizardName = ""; 
 			while(current1.next != null)
@@ -395,6 +392,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		{
 			list2.printNodeData();
 			current2 = LinkedListTeam2.head; 
+			//System.out.println(current2); 
 			int count = 1; 
 			String modified_wizardName = ""; 
 			while(current2.next != null)
@@ -517,11 +515,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		{
 			orderDetail.put(left+1, Arrays.asList(orderCreated));
 		}
-		
-		/*if(searchForDuplicates(orderCreated, orderDetail) == true && firstIteration == 0)
-			{
-				return; 
-			}*/
 
 		if(left < length)
 		{
@@ -905,9 +898,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("Amulet gearType: " + gearType6); 
 		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level, gearType7); 
 		System.out.println("Ring gearType: " + gearType7); 
+		
 		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level, gearType8); 
 		System.out.println("Deck gearType: " + gearType8); 
-		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level, gearType1);
+		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level, gearType8);
 		
 		keywords.put(count, Arrays.asList(gearType1.toString(), gearType2.toString(), gearType3.toString(), gearType4.toString(), gearType5.toString(), gearType6.toString(), gearType7.toString(), gearType8.toString())); 
 
