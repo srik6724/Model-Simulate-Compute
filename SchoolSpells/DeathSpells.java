@@ -13,11 +13,14 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import dataStructures.Element;
 import dataStructures.WizHeap;
 
 public class DeathSpells {
 	
 	private WizHeap hp = new WizHeap(); 
+
+	private List<List<Element>> fullDeck;
 	
 	public ArrayList<Spell> deathSpells = new ArrayList<Spell>(); 
 	
@@ -50,12 +53,12 @@ public class DeathSpells {
             		}
 								conn1.close();
 								List<List<Spell>> createdDeathSpells = null; 
-								List<Map<String, List<String>>> givenDeathSpells = anotherDefaultDeck(deathSpells, selectionNo); 
-								if(givenDeathSpells != null)
+								fullDeck = anotherDefaultDeck(deathSpells, selectionNo); 
+								/*if(givenDeathSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
 									deckInformation(createdDeathSpells, givenDeathSpells); 
-								}
+								}*/
             		System.out.println("Execution is done.");
             	}
             	else
@@ -72,13 +75,18 @@ public class DeathSpells {
 					e.printStackTrace();
 				}
 	}
+
+	public List<List<Element>> retrieveFullDeck()
+	{
+		return fullDeck; 
+	}
 	
 	public ArrayList<Spell> retrieveDeathSpells()
 	{
 		return deathSpells; 
 	}
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -87,13 +95,13 @@ public class DeathSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Death", "YES", selectionNo); 
-			return null;
+			List<List<Element>> fullDeck = hp.selectYESOption("Death", "YES", selectionNo); 
+			return fullDeck;
 		}
 		else if(input.equals("DD"))
 		{
 			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Death", "NO", selectionNo); 
-			return givenDeck;
+			return null;
 		}
 		return null;
 	}

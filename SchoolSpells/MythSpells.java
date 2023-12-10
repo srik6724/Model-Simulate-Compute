@@ -13,11 +13,14 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import dataStructures.Element;
 import dataStructures.WizHeap;
 
 public class MythSpells {
 	
 	private WizHeap hp = new WizHeap(); 
+
+	private List<List<Element>> fullDeck;
 	
 	public ArrayList<Spell> mythSpells = new ArrayList<Spell>(); 
 	
@@ -49,13 +52,7 @@ public class MythSpells {
             			mythSpells.add(spell); 
             		}
 								conn1.close();
-								List<Map<String, List<String>>> givenMythSpells = anotherDefaultDeck(mythSpells, selectionNo); 
-								if(givenMythSpells != null)
-								{
-									System.out.println("Deck has been successfully created."); 
-									//System.out.println("Here is the following information about your main Deck, tc Deck"); 
-									deckInformation(givenMythSpells); 
-									}
+								fullDeck = anotherDefaultDeck(mythSpells, selectionNo); 
             		System.out.println("Execution is done.");
             	}
             	else
@@ -73,7 +70,7 @@ public class MythSpells {
 				}
 	}
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -82,40 +79,26 @@ public class MythSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Myth", "YES", selectionNo); 
-			return null;
+			List<List<Element>> fullDeck = hp.selectYESOption("Myth", "YES", selectionNo); 
+			return fullDeck; 
 		}
 		else if(input.equals("DD"))
 		{
 			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Myth", "NO", selectionNo); 
-			return givenDeck;
+			return null;
 		}
 		return null;
+	}
+
+	public List<List<Element>> retrieveFullDeck()
+	{
+		return fullDeck;
 	}
 	
 	public ArrayList<Spell> retrieveMythSpells()
 	{
 		return mythSpells; 
 	}
-	
-	/*public List<List<Spell>> defaultDeck(ArrayList<Spell> spells)
-	{
-		Spell[] collectSpells = new Spell[spells.size()]; 
-		
-		Spell[] orderedSpells = performHeapOperations(collectSpells); 
-		
-		List<List<Spell>> deckOfSpells = hp.buildDeckYESoption(orderedSpells, "myth"); 
-		
-		return deckOfSpells;
-		
-	}
-	
-	public Spell[] performHeapOperations(Spell[] spells)
-	{
-		Spell[] modifiedSpells = hp.buildHeap(spells); 
-		
-		return modifiedSpells;
-	}*/
 	
 	public void deckInformation(List<Map<String, List<String>>> setOfSpells)
 	{

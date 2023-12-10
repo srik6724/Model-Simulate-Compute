@@ -25,6 +25,7 @@ import deckBuild.MainDeck;
 import deckBuild.TreasureCardSideDeck;
 
 public class WizHeap {
+
 	public Map<String, List<String>> mainDeckSpells = new HashMap<String,List<String>>(); 
 	public Map<String, List<String>> tcDeckSpells = new HashMap<String, List<String>>(); 
 	private HeapInfo mainDeckInfo; 
@@ -55,7 +56,7 @@ public class WizHeap {
 		return optionSelected; 
 	}
 
-	public void storeSpellsInHeap(String input, Spell[]mD, Spell[]tC, String identity, int selectionNo) throws InterruptedException
+	public List<List<Element>> storeSpellsInHeap(String input, Spell[]mD, Spell[]tC, String identity, int selectionNo) throws InterruptedException
 	{
 		if(input.equals("CD"))
 			if(mainDeckInfo.getElements() != null && tcDeckInfo.getElements() != null)
@@ -90,8 +91,13 @@ public class WizHeap {
 							e.setTypeSpell(tC[tcDeckCounter].getTypeSpell()); 
 							tcDeckCounter++; 
 						}
-						buildHeap(mainDeckElements, identity, selectionNo, "main"); 
-						buildHeap(tcDeckElements, identity, selectionNo, "tc"); 
+						mainDeckElements = buildHeap(mainDeckElements, identity, selectionNo, "main"); 
+						tcDeckElements = buildHeap(tcDeckElements, identity, selectionNo, "tc"); 
+						List<List<Element>> fullDeck  = new ArrayList<List<Element>>(); 
+						fullDeck.add(Arrays.asList(mainDeckElements)); 
+						fullDeck.add(Arrays.asList(tcDeckElements)); 
+
+						return fullDeck; 
 				}
 			}
 		else if(input.equals("DD"))
@@ -137,6 +143,8 @@ public class WizHeap {
 				}
 				
 			}
+
+			return null; 
 			
 	}
 
@@ -220,7 +228,7 @@ public class WizHeap {
 		return elements; 
 	}
 
-	public void selectYESOption(String identity, String input, int selectionNo) throws InterruptedException
+	public List<List<Element>> selectYESOption(String identity, String input, int selectionNo) throws InterruptedException
 	{
 		Scanner sc = new Scanner(System.in); 
 		Spell[] mainDeck;
@@ -228,63 +236,66 @@ public class WizHeap {
 
 		boolean iterate = true; 
 
-		while(iterate)
+		if(input.toLowerCase().equals("yes"))
 		{
-			if(input.toLowerCase().equals("yes"))
-			{
-				System.out.println("Starting process to create custom deck"); 
-				System.out.println("Select a Wizard101 world, and a deck chosen from there will be given to you.");
-				String world = sc.nextLine(); 
+			System.out.println("Starting process to create custom deck"); 
+			System.out.println("Select a Wizard101 world, and a deck chosen from there will be given to you.");
+			String world = sc.nextLine(); 
 			
-				switch(world)
-				{
-					case "Celestia": 
-						new DarkmoorDeck(identity); 
-					case "Zafaria": 
-						new DarkmoorDeck(identity); 
-					case "Avalon": 
-						new DarkmoorDeck(identity); 
-					case "Azteca": 
-						new DarkmoorDeck(identity); 
-					case "Khrysalis": 
-						new DarkmoorDeck(identity); 
-					case "Darkmoor": 
-						new DarkmoorDeck(identity); 
-						mainDeck = DarkmoorDeck.getMainDeck();
-						tcDeck = DarkmoorDeck.getTcDeck(); 
-						for(int i = 0; i < tcDeck.length; i++)
-						{
-							System.out.println("Spell Name: " + tcDeck[i].getName());
-							System.out.println("Count: " + tcDeck[i].getCount()); 
-							System.out.println("Description: " + tcDeck[i].getDescription()); 
-							System.out.println("Pip Chance: " + tcDeck[i].getPipChance()); 
-							System.out.println("Pips: " + tcDeck[i].getPips()); 
-							System.out.println("Type Of Spell: " + tcDeck[i].getTypeSpell()); 
-						}
-						mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
-						tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
-						storeSpellsInHeap("CD", mainDeck, tcDeck, identity, selectionNo); 
-						iterate = false; 
-						break;
-					case "Polaris": 
-						new DarkmoorDeck(identity); 
-					case "Mirage": 
-						new DarkmoorDeck(identity); 
-					case "Empyrea": 
-						new DarkmoorDeck(identity); 
-					case "Karamelle": 
-						new DarkmoorDeck(identity); 
-					case "Lemuria": 
-						new DarkmoorDeck(identity); 
-					case "Novus": 
-						new DarkmoorDeck(identity);
-					default: 
-						System.out.println("Sorry, world could not be found."); 
-						iterate = true; 
-						break;
+			switch(world)
+			{
+				case "Celestia": 
+					new DarkmoorDeck(identity); 
+				case "Zafaria": 
+					new DarkmoorDeck(identity); 
+				case "Avalon": 
+					new DarkmoorDeck(identity); 
+				case "Azteca": 
+					new DarkmoorDeck(identity); 
+				case "Khrysalis": 
+					new DarkmoorDeck(identity); 
+				case "Darkmoor": 
+					//Creates Darkmoor Deck by identity
+					new DarkmoorDeck(identity); 
+					//Retrieves main deck
+					mainDeck = DarkmoorDeck.getMainDeck();
+					//Retrieves tc deck
+					tcDeck = DarkmoorDeck.getTcDeck(); 
+					for(int i = 0; i < tcDeck.length; i++)
+					{
+						System.out.println("Spell Name: " + tcDeck[i].getName());
+						System.out.println("Count: " + tcDeck[i].getCount()); 
+						System.out.println("Description: " + tcDeck[i].getDescription()); 
+						System.out.println("Pip Chance: " + tcDeck[i].getPipChance()); 
+						System.out.println("Pips: " + tcDeck[i].getPips()); 
+						System.out.println("Type Of Spell: " + tcDeck[i].getTypeSpell()); 
+					}
+					//Retrieve mainDeckInfo
+					mainDeckInfo = new HeapInfo(mainDeck.length, MainDeck.maxSpells("mainDeck")); 
+					//Retrieve tcDeckInfo
+					tcDeckInfo = new HeapInfo(tcDeck.length, TreasureCardSideDeck.capacityOfDarkmoorDeck("tcDeck"));
+					List<List<Element>> fullDeck = storeSpellsInHeap("CD", mainDeck, tcDeck, identity, selectionNo); 
+					iterate = false; 
+					return fullDeck; 
+				case "Polaris": 
+					new DarkmoorDeck(identity); 
+				case "Mirage": 
+					new DarkmoorDeck(identity); 
+				case "Empyrea": 
+					new DarkmoorDeck(identity); 
+				case "Karamelle": 
+					new DarkmoorDeck(identity); 
+				case "Lemuria": 
+					new DarkmoorDeck(identity); 
+				case "Novus": 
+					new DarkmoorDeck(identity);
+				default: 
+					System.out.println("Sorry, world could not be found."); 
+					iterate = true; 
+					break;
 			}
 		}
-		}
+		return null; 
 	}
 	
 	public List<Map<String, List<String>>> selectNOoption(String identity, String input, int selectionNo) throws InterruptedException

@@ -7,9 +7,9 @@ public class Team1vsTeam2 implements Runnable {
 
     Thread team1 = new Thread(new Team1Runnable()); 
 		Thread team2 = new Thread(new Team2Runnable()); 
-    team1.start(); 
 
     try{
+      team1.start(); 
       team1.join(); 
       team2.start(); 
       team2.join(); 
@@ -17,6 +17,9 @@ public class Team1vsTeam2 implements Runnable {
     {
       e.printStackTrace();
     }
+
+     Team1Runnable.messagesCompleted = true; 
+     Team2Runnable.messagesCompleted = true; 
 
     while(countDownTimer >= 1)
     {

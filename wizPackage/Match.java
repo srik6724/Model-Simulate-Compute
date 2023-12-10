@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
@@ -53,14 +54,16 @@ import SchoolSpells.schoolSpells;
 import Sockets.Socket;
 import SpookyStats.SpookyClass;
 import SpringBoot.SpringBootExecutable;
+import dataStructures.Element;
 import deckBuild.DarkmoorDeck;
 public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
-	
+
 	//Arrays to store information about the firstTeam and secondTeam. 
 	int teamSize; 
 	private String[] team; 
 	private String[] teamLevels; 
 	private String[] teamSchools; 
+	private static List<List<String>> teamPlayers = new ArrayList<List<String>>(); 
 
 	
 	private StopWatch watch = new StopWatch(); 
@@ -74,10 +77,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	private String[] firstTeamOrder = new String[4]; 
 	private String[] secondTeamOrder = {}; 
 	
-	public static HashMap<String, List<Spell>> decks = new HashMap<String, List<Spell>>(); 
-
-	//Declare a Spell list that contains BalanceSpells, FireSpells, LifeSpells, IceSpells, Deathspells, MythSpells, and StormSpells
-	//private ArrayList<Spells> spells; 
+	public static HashMap<String, List<List<Element>>> decks = new HashMap<String, List<List<Element>>>(); 
 	
 	int startCountDown; 
 	
@@ -148,6 +148,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				team = new String[teamSize]; 
 				teamLevels = new String[teamSize]; 
 				teamSchools = new String[teamSize]; 
+				
 			}
 			else if(gameMode.equals("2v2"))
 			{
@@ -177,8 +178,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("-------------------"); 
 		System.out.println("What is the name of your team?"); 
 		
-		retrieveFirstTeamName = sc.nextLine(); 		
-		
+		retrieveFirstTeamName = sc.nextLine(); 	
+
 		boolean checkPlayerNames = true; 
 		
 		System.out.println("INSTRUCTIONS FOR REGISTERING A TEAM. Follow carefully."); 
@@ -202,11 +203,13 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				}
 				else
 				{
-					team[i] = player; 
+					checkPlayerNames = false; 
+					team[i] = player;  
 				}
 			}
-			checkPlayerNames = false; 
 		}
+
+		teamPlayers.add(Arrays.asList(team));
 
 		boolean checkPlayerLevels = true; 
 		while(checkPlayerLevels)
@@ -305,6 +308,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		for(int i = 0; i < team.length; i++)
 		{
 			System.out.println(teamSchools[i]); 
+			//The full gear string is in the format gear1, gear2, gear3, gear4, gear5, gear6, gear7
 			String fullGearString = computePlayerInformation(team[i], teamSchools[i], Integer.parseInt(teamLevels[i]), keywords, iter);
 			iter--; 
 			ArrayList<String> storeGearPieces = new ArrayList<String>(); 
@@ -324,47 +328,31 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 						gearToAdd += fullGearString.substring(x, x+1); 
 					}
 				}		
-				System.out.println(gearToAdd); 
+				System.out.println("Gear to add: " + gearToAdd); 
 				storeGearPieces.add(gearToAdd); 
 				if(start < 9)
 				{
 					gearToAdd += ","; 
 				}
 				fullGearString = cutPartOfString(gearToAdd, fullGearString); 
+				System.out.println("Full Gear String: " + fullGearString); 
 				gearToAdd = ""; 
 				start = start + 1; 
 			}
 			System.out.println(team[i]); 
-			boolean checkIfExists = searchInGearSets(gearSets, team[i]); 
-			if(checkIfExists == true)
+
+			
+			if(countTeamsRegistered == 1)
 			{
-				if(firstIteration == 1)
-				{
-					saveDuplicateKey = team[i]; 
-					List<String> gearItems = retrieveDuplicateKeyInfo(gearSets, team[i]);
-					LinkedListTeam1.Node node = new LinkedListTeam1.Node(team[i], gearItems); 
-					list1.insert(node); 
-					LinkedListTeam1.Node anotherNode = new LinkedListTeam1.Node(team[i], storeGearPieces); 
-					list1.insert(anotherNode); 
-					firstIteration = 0; 
-				}
-				else 
-				{
-					if(countTeamsRegistered == 1)
-					{
-						LinkedListTeam1.Node node = new LinkedListTeam1.Node(team[i], storeGearPieces); 
-						list1.insert(node); 
-					}
-					else 
-					{
-						LinkedListTeam2.Node node = new LinkedListTeam2.Node(team[i], storeGearPieces); 
-						list2.insert(node); 
-					}
-				}
+				LinkedListTeam1.Node node = new LinkedListTeam1.Node(team[i], storeGearPieces); 
+				list1.insert(node); 
+				System.out.println("Inside storeGearPieces method."); 
+				System.out.println(LinkedListTeam1.head); 
 			}
 			else 
 			{
-				gearSets.put(team[i], storeGearPieces);
+				LinkedListTeam2.Node node = new LinkedListTeam2.Node(team[i], storeGearPieces); 
+				list2.insert(node); 
 			}
 		}
 		LinkedListTeam1.Node current1;
@@ -374,7 +362,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			//list1.printNodeData();
 			//System.out.println("Printed Node data."); 
 			current1 = LinkedListTeam1.head; 
-			System.out.println(current1); 
 			int count = 1; 
 			String modified_wizardName = ""; 
 			while(current1.next != null)
@@ -386,7 +373,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 			modified_wizardName = current1.wizard + " " + count;
 			gearSets.put(modified_wizardName, current1.data); 
-			gearSets.remove(saveDuplicateKey); 
 		}
 		else
 		{
@@ -446,7 +432,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		int right = 0; 
 		int length = teamSchools.length; 
 		int firstLoopIteration = 1; 
-		String[]orderCreated = new String[4]; 
+		String[]orderCreated = new String[team.length]; 
 
 		generatePossibleOrders(left, right, length, firstLoopIteration, orderCreated, Arrays.asList(teamSchools), orderDetail);
 		int setCount = 1; 
@@ -456,7 +442,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			setCount++; 
 		}
 
-		int playerOrderCount = 4; 
+		int playerOrderCount = team.length; 
 		int startIndex = 0; 
 		String retrievePlayerName = ""; 
 		boolean cont = true; 
@@ -480,7 +466,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		}
 		
 		int start = 1; 
-		for(int i = 0; i < firstTeamOrder.length; i++)
+		for(int i = 0; i < team.length; i++)
 		{
 			System.out.println("Player # " + start + ": " + firstTeamOrder[i] + "," + teamLevels[i] + "," + teamSchools[i] +  " successfully enrolled in " + retrieveFirstTeamName); 
 			start = start + 1; 
@@ -505,10 +491,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 		if(orderDetail.size() == 0)
 		{
-			System.out.println(orderCreated[0]); 
-			System.out.println(orderCreated[1]); 
-			System.out.println(orderCreated[2]); 
-			System.out.println(orderCreated[3]); 
 			orderDetail.put(left+1, Arrays.asList(orderCreated)); 
 		}
 		else 
@@ -518,8 +500,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 		if(left < length)
 		{
-			int firstRandomNumber = (int)(Math.random() * 3) + 1; 
-			int secondRandomNumber = (int)(Math.random() * 3) + 1; 
+			int firstRandomNumber = (int)(Math.random() * orderCreated.length-1);
+			int secondRandomNumber = (int)(Math.random() * orderCreated.length-1); 
 
 			String temp = orderCreated[firstRandomNumber]; 
 			orderCreated[firstRandomNumber] = orderCreated[secondRandomNumber];
@@ -530,8 +512,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 		if(right < length)
 		{
-			int firstRandomNumber = (int)(Math.random() * 3) + 1; 
-			int secondRandomNumber = (int)(Math.random() * 3) + 1; 
+			int firstRandomNumber = (int)(Math.random() * orderCreated.length-1); 
+			int secondRandomNumber = (int)(Math.random() * orderCreated.length-1); 
 
 			String temp = orderCreated[firstRandomNumber]; 
 			orderCreated[firstRandomNumber] = orderCreated[secondRandomNumber]; 
@@ -563,44 +545,197 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return gearItems;
 	}
 
-	private HashMap<String, List<Spell>> createDeck(String str, int deckNo) {
+	private HashMap<String, List<List<Element>>> createDeck(String str, int deckNo) {
 		
 		new schoolSpells(str); 
 		
 		switch(str.toLowerCase()) {
-		
 		case "balance": 
+			int mainDeckCardIndex = 0; 
+			int tcDeckCardIndex = 0; 
+
 			decks.put("balance", schoolSpells.allSchoolSpells.get(schoolSpells.balanceIndex)); 
+
+			for(String school: decks.keySet())
+			{
+				if(school.equals("balance"))
+				{
+					boolean iterate = true; 
+					while(iterate && mainDeckCardIndex < 64 && tcDeckCardIndex < 40)
+					{
+						System.out.println("Main Deck Card Name: " + decks.get(school).get(0).get(mainDeckCardIndex).getSpellName()); 
+						System.out.println("TC Deck Card Name: " + decks.get(school).get(1).get(tcDeckCardIndex).getSpellName());  
+						mainDeckCardIndex++; 
+						tcDeckCardIndex++;
+					}
+				}
+			}
+
+			System.out.println("Main Deck Card No: " + (mainDeckCardIndex + 1)); 
+			System.out.println("TC Deck Card No: " + (tcDeckCardIndex + 1)); 
+
 			System.out.println("Success, balance deck is in!"); 
 			break;
 		
 		case "fire": 
+			mainDeckCardIndex = 0; 
+			tcDeckCardIndex = 0; 
+
 			decks.put("fire", schoolSpells.allSchoolSpells.get(schoolSpells.fireIndex));
+
+			for(String school: decks.keySet())
+			{
+				if(school.equals("fire"))
+				{
+					boolean iterate = true; 
+					while(iterate && mainDeckCardIndex < 64 && tcDeckCardIndex < 40)
+					{
+						System.out.println("Main Deck Card Name: " + decks.get(school).get(0).get(mainDeckCardIndex).getSpellName()); 
+						System.out.println("TC Deck Card Name: " + decks.get(school).get(1).get(tcDeckCardIndex).getSpellName());  
+						mainDeckCardIndex++; 
+						tcDeckCardIndex++;
+					}
+				}
+			}
+
+			System.out.println("Main Deck Card No: " + (mainDeckCardIndex + 1)); 
+			System.out.println("TC Deck Card No: " + (tcDeckCardIndex + 1)); 
+
 			System.out.println("Success, fire deck is in!"); 
 			break;
 			
 		case "ice": 
+			mainDeckCardIndex = 0; 
+			tcDeckCardIndex = 0; 
+
 			decks.put("ice", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex));
+
+			for(String school: decks.keySet())
+			{
+				if(school.equals("ice"))
+				{
+					boolean iterate = true; 
+					while(iterate)
+					{
+						System.out.println("Main Deck Card Name: " + decks.get(school).get(0).get(mainDeckCardIndex).getSpellName()); 
+						System.out.println("TC Deck Card Name: " + decks.get(school).get(1).get(tcDeckCardIndex).getSpellName());  
+						mainDeckCardIndex++; 
+						tcDeckCardIndex++;
+					}
+				}
+			}
+
+			System.out.println("Main Deck Card No: " + (mainDeckCardIndex + 1)); 
+			System.out.println("TC Deck Card No: " + (tcDeckCardIndex + 1)); 
+
 			System.out.println("Success, ice deck is in!"); 
 			break;
 		
 		case "life": 
+			mainDeckCardIndex = 0; 
+			tcDeckCardIndex = 0; 
+
 			decks.put("life", schoolSpells.allSchoolSpells.get(schoolSpells.lifeIndex)); 
+
+			for(String school: decks.keySet())
+			{
+				if(school.equals("life"))
+				{
+					boolean iterate = true; 
+					while(iterate && mainDeckCardIndex < 64 && tcDeckCardIndex < 40)
+					{
+						System.out.println("Main Deck Card Name: " + decks.get(school).get(0).get(mainDeckCardIndex).getSpellName()); 
+						System.out.println("TC Deck Card Name: " + decks.get(school).get(1).get(tcDeckCardIndex).getSpellName());  
+						mainDeckCardIndex++; 
+						tcDeckCardIndex++;
+					}
+				}
+			}
+
+			System.out.println("Main Deck Card No: " + (mainDeckCardIndex + 1)); 
+			System.out.println("TC Deck Card No: " + (tcDeckCardIndex + 1)); 
+
 			System.out.println("Success, life deck is in!"); 
 			break;
 		
 		case "death": 
+			mainDeckCardIndex = 0; 
+			tcDeckCardIndex = 0; 
+
 			decks.put("death", schoolSpells.allSchoolSpells.get(schoolSpells.deathIndex)); 
+
+			for(String school: decks.keySet())
+			{
+				if(school.equals("death"))
+				{
+					boolean iterate = true; 
+					while(iterate && mainDeckCardIndex < 64 && tcDeckCardIndex < 40)
+					{
+						System.out.println("Main Deck Card Name: " + decks.get(school).get(0).get(mainDeckCardIndex).getSpellName()); 
+						System.out.println("TC Deck Card Name: " + decks.get(school).get(1).get(tcDeckCardIndex).getSpellName());  
+						mainDeckCardIndex++; 
+						tcDeckCardIndex++;
+					}
+				}
+			}
+
+			System.out.println("Main Deck Card No: " + (mainDeckCardIndex + 1)); 
+			System.out.println("TC Deck Card No: " + (tcDeckCardIndex + 1)); 
+
 			System.out.println("Success, death deck is in!"); 
 			break;
 		
 		case "storm": 
+			mainDeckCardIndex = 0; 
+			tcDeckCardIndex = 0; 
+
 			decks.put("storm", schoolSpells.allSchoolSpells.get(schoolSpells.stormIndex));
+
+			for(String school: decks.keySet())
+			{
+				if(school.equals("storm"))
+				{
+					boolean iterate = true; 
+					while(iterate && mainDeckCardIndex < 64 && tcDeckCardIndex < 40)
+					{
+						System.out.println("Main Deck Card Name: " + decks.get(school).get(0).get(mainDeckCardIndex).getSpellName()); 
+						System.out.println("TC Deck Card Name: " + decks.get(school).get(1).get(tcDeckCardIndex).getSpellName());  
+						mainDeckCardIndex++; 
+						tcDeckCardIndex++;
+					}
+				}
+			}
+
+			System.out.println("Main Deck Card No: " + (mainDeckCardIndex + 1)); 
+			System.out.println("TC Deck Card No: " + (tcDeckCardIndex + 1)); 
+
 			System.out.println("Success, storm deck is in!"); 
 			break;
 			
 		case "myth": 
+			mainDeckCardIndex = 0; 
+			tcDeckCardIndex = 0; 
+
 			decks.put("myth", schoolSpells.allSchoolSpells.get(schoolSpells.mythIndex)); 
+
+			for(String school: decks.keySet())
+			{
+				if(school.equals("myth"))
+				{
+					boolean iterate = true; 
+					while(iterate && mainDeckCardIndex < 64 && tcDeckCardIndex < 40)
+					{
+						System.out.println("Main Deck Card Name: " + decks.get(school).get(0).get(mainDeckCardIndex).getSpellName()); 
+						System.out.println("TC Deck Card Name: " + decks.get(school).get(1).get(tcDeckCardIndex).getSpellName());  
+						mainDeckCardIndex++; 
+						tcDeckCardIndex++;
+					}
+				}
+			}
+
+			System.out.println("Main Deck Card No: " + (mainDeckCardIndex + 1)); 
+			System.out.println("TC Deck Card No: " + (tcDeckCardIndex + 1)); 
+
 			System.out.println("Success, myth deck is in!"); 
 			break;
 
@@ -706,16 +841,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 		int numberOfSpectators = countSpectators(); 
 		System.out.println("We will have " + numberOfSpectators + " spectators " + "watching the match. "); 
-		boolean checkPlausibleBets = placeBets(); 
-		if(checkPlausibleBets == false)
-		{
-			System.out.println("No bids have been made as of now."); 
-		}
-		else
-		{
-			System.out.println("The bids have been placed for the time being."); 
-			System.out.println("Bets have been placed for this following team: " + inputReceived); 
-		}
 		
 		String[] checkIfSorted = sortTeamsAlphabetically(team); 
 		for(int i = 0; i < checkIfSorted.length; i++)
@@ -755,7 +880,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		inputReceived = isRightInput; 
 		return true; 
 	}
-	
 	
 	public Spectator[] sortedArray()
 	{
@@ -816,38 +940,127 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("TEAM " + retrieveFirstTeamName + " is starting first."); 
 			String teamFirst = retrieveFirstTeamName; 
 			String teamSecond = retrieveSecondTeamName; 
-			startRound(teamFirst, teamSecond); 
 			
+			Thread th = new Thread(new Team1Runnable());
+			th.start(); 
 		}
 		else if(inputAnswer.equals(input2))
 		{
 			System.out.println("TEAM " + retrieveSecondTeamName + " is starting first."); 
 			String teamFirst = retrieveSecondTeamName; 
 			String teamSecond = retrieveFirstTeamName; 
-			startRound(teamFirst, teamSecond); 
+
+			Thread th = new Thread(new Team2Runnable()); 
+			th.start(); 
 		}
 	}
 	
-	public void startRound(String teamFirst, String teamSecond)
+	public static void startRound(int index)
 	{
-		System.out.println("This is round 1 of our match between " + teamFirst + " and " + teamSecond); 
-		
-		for(int i = 0; i < firstTeamOrder.length; i++)
+		System.out.println("This is a round casted of our match between team1 and team2"); 
+
+		for(int i = 0; i < teamPlayers.get(index).size(); i++)
 		{
-			System.out.println("Player " + firstTeamOrder[i] + ": Choose your card. "); 
-			System.out.println("You have 7 cards that have been generated."); 
+			System.out.println("Player " + teamPlayers.get(index).get(i) + ": Choose your card."); 
+			System.out.println("The following seven cards have been generated."); 
+		  Element[] sevenCards = generateSevenCards(index, i+1); 
+			System.out.println("Printing out the seven cards.");
+			
+			for(int j = 0; j < sevenCards.length; j++)
+			{
+				System.out.println("Card " + (j+1) + ": " + "{ "); 
+				System.out.println("Name Of Spell: " + sevenCards[j].getSpellName()); 
+				System.out.println("Pips Of Spell: " + sevenCards[j].getPips()); 
+				System.out.println("Pip Chance Of Spell: " + sevenCards[j].getPipChance()); 
+				System.out.println("Type Of Spell: " + sevenCards[j].getTypeSpell()); 
+				System.out.println("Count Of Spell: " + sevenCards[j].getCount()); 
+				System.out.println("Description Of Spell: " + sevenCards[j].getDescription()); 
+				System.out.println("}");
+			}
+			Scanner sc = new Scanner(System.in); 
+			boolean iterate = true; 
+			while(iterate)
+			{
+				System.out.println("Select a card to cast out of the 7 listed.");
+				System.out.println("Make sure to spell the card correctly.");
+				String cardSelected = sc.nextLine();
+				if(!sc.hasNextLine())
+				{
+					sc.close(); 
+				}
+				for(int z = 0; z < sevenCards.length; z++)
+				{
+					if(cardSelected.equals(sevenCards[z].getSpellName()))
+					{
+						iterate = false; 
+						int count = sevenCards[z].getCount();
+						for(String wizard: decks.keySet())
+						{
+							if(wizard.equals(teamPlayers.get(index).get(i)))
+							{
+								decks.get(wizard).get(index).removeIf(
+								n -> (n.getSpellName() == cardSelected && n.getCount() == count)
+							); 
+							break;
+							}
+						}
+					}
+					else 
+					{
+						iterate = true; 
+						continue; 
+					}
+					break;
+				}
+				if(iterate == false)
+				{
+					break;
+				}
+				else 
+				{
+					System.out.println("Sorry, could not find the card found. Either was misspelled, or it just doesn't exist."); 
+				}
+			}
 		}
-		
 	}
 	
-	public String randomizeHeadsOrTails()
+private static Element[] generateSevenCards(int index, int playerNo) {
+
+	Element[] sevenCards = new Element[7]; 
+
+	for(String wizard: decks.keySet())
 	{
-		String[] inputs = {"Heads", "Tails"}; 
+		int card1Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
+		int card2Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
+		int card3Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
+		int card4Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
+		int card5Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size());
+		int card6Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
+		int card7Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
 		
-		int number = (int) ( (Math.random() * 2) + 1);
+		sevenCards[0] = decks.get(wizard).get(playerNo-1).get(card1Index);
+		sevenCards[1] = decks.get(wizard).get(playerNo-1).get(card2Index); 
+		sevenCards[2] = decks.get(wizard).get(playerNo-1).get(card3Index); 
+		sevenCards[3] = decks.get(wizard).get(playerNo-1).get(card4Index); 
+		sevenCards[4] = decks.get(wizard).get(playerNo-1).get(card5Index); 
+		sevenCards[5] = decks.get(wizard).get(playerNo-1).get(card6Index);
+		sevenCards[6] = decks.get(wizard).get(playerNo-1).get(card7Index); 
 		
-		return inputs[number]; 
+		break;
 	}
+
+	return sevenCards;
+}
+
+
+public String randomizeHeadsOrTails()
+{
+	String[] inputs = {"Heads", "Tails"}; 
+		
+	int number = (int) ( (Math.random() * team.length) + 1);
+		
+	return inputs[number]; 
+}
 	
 	
 	public boolean validatePlayer(String playerName, int startIndex)
@@ -1306,37 +1519,38 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 	public static void main(String[]args)
 	{
-		//new Match().checkGearName("Eternal Inspired Helm", "hat", new StringBuilder("eternal"), "life", 160);
-		new Match().createDeck("ice", 1); 
-		//Thread th = new Thread(new SpringBootExecutable()); 
-		//th.start();
-		/*File f1 = new File("deck1.txt"); 
-		File[] files = new File[1]; 
-		files[0] = f1; 
-		//Loops through the Hashmap
-		try{
-			int countSpells = 0; 
-			for(String school: decks.keySet())
-			{
-				int fileIndex = 0; 
-				FileWriter f = new FileWriter(files[fileIndex]); 
-				System.out.println("School: " + school); 
-				f.write(school + "\n"); 
-				for(int i = 0; i < 64; i++)
-				{
-					System.out.println("Spell Name: " + decks.get(school).get(i).getName()); 
-					countSpells++; 
-					f.write(decks.get(school).get(i) + "\n"); 
-					System.out.println("Spell Counter: " + countSpells); 
-				}
-				fileIndex++;
-				f.close(); 
-			}
-		}catch(IOException e)
-		{
-			System.err.println("IOException occurred."); 
-		}*/
+		/*String[] team1 = {"Travis Waterblood 1"};
+		String[] team2 = {"Travis Waterblood 2"}; 
 
+		Map<String, List<Spell>> mainDeckSpells1 = new HashMap<String, List<Spell>>(); 
+		Map<String, List<Spell>> tcDeckSpells1 = new HashMap<String, List<Spell>>(); 
+
+		Map<String, List<Spell>> mainDeckSpells2 = new HashMap<String, List<Spell>>(); 
+		Map<String, List<Spell>> tcDeckSpells2 = new HashMap<String, List<Spell>>(); 
+
+		new DarkmoorDeck("balance");
+		Spell[] deck1Main = DarkmoorDeck.getMainDeck(); 
+		for(int i = 0; i < deck1Main.length; i++)
+		{
+			System.out.println("Name Of Spell: " + deck1Main[i].getName()); 
+			System.out.println("Count Of Spell: " + deck1Main[i].getCount()); 
+		}
+		mainDeckSpells1.put("Travis Waterblood", Arrays.asList(deck1Main));
+		Spell[] deck1TC = DarkmoorDeck.getTcDeck(); 
+		tcDeckSpells1.put("Travis Waterblood", Arrays.asList(deck1TC));
+
+		new DarkmoorDeck("life");
+		Spell[] deck2Main = DarkmoorDeck.getMainDeck();
+		mainDeckSpells2.put("Travis Waterblood", Arrays.asList(deck2Main));
+		Spell[] deck2TC = DarkmoorDeck.getTcDeck(); 
+		tcDeckSpells2.put("Travis Waterblood", Arrays.asList(deck2TC));
+
+		fullDeck1.add(mainDeckSpells1);
+		fullDeck1.add(tcDeckSpells1); 
+		fullDeck2.add(mainDeckSpells2);
+		fullDeck2.add(tcDeckSpells2);  */
+
+		//new Match().startRound(team1, team2); 
 	}
 
 	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level)
@@ -1474,9 +1688,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 	public boolean searchInGearSets(HashMap<String, List<String>> gearSets, String person)
 	{
+		System.out.println(gearSets.size()); 
+		System.out.println(person); 
 		boolean var = false;
 		for(String wizard: gearSets.keySet())
 		{
+			System.out.println("Wizard: " + wizard);
 			if(wizard.equals(person))
 			{
 				var = true; 

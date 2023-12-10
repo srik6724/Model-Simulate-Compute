@@ -13,11 +13,13 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import dataStructures.Element;
 import dataStructures.WizHeap;
 
 public class StormSpells {
 	
 	private WizHeap hp = new WizHeap(); 
+	private List<List<Element>> fullDeck; 
 	public ArrayList<Spell> stormSpells = new ArrayList<Spell>(); 
 	
 	StormSpells(int selectionNo)
@@ -56,13 +58,13 @@ public class StormSpells {
             			
             		}
 								conn1.close();
-								List<Map<String, List<String>>> givenStormSpells = anotherDefaultDeck(stormSpells, selectionNo); 
-								if(givenStormSpells != null)
+								fullDeck = anotherDefaultDeck(stormSpells, selectionNo); 
+								/*if(givenStormSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
 									//System.out.println("Here is the following information about your main Deck, tc Deck"); 
 									deckInformation(givenStormSpells);
-								}
+								}*/
             		System.out.println("Execution is done.");
             	}
             	else
@@ -79,13 +81,18 @@ public class StormSpells {
 					e.printStackTrace();
 				}
 	}
+
+	public List<List<Element>> retrieveFullDeck()
+	{
+		return fullDeck;
+	}
 	
 	public ArrayList<Spell> retrieveStormSpells()
 	{
 		return stormSpells; 
 	}
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -94,13 +101,13 @@ public class StormSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Storm", "YES", selectionNo); 
-			return null;
+			List<List<Element>> fullDeck = hp.selectYESOption("Storm", "YES", selectionNo); 
+			return fullDeck;
 		}
 		else if(input.equals("DD"))
 		{
 			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Storm", "NO", selectionNo); 
-			return givenDeck;
+			return null;
 		}
 		return null;
 	}

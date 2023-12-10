@@ -13,12 +13,15 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import dataStructures.Element;
 import dataStructures.WizHeap;
 
 public class LifeSpells {
 	
 	private WizHeap hp = new WizHeap(); 
 	
+	private List<List<Element>> fullDeck; 
+
 	public ArrayList<Spell> lifeSpells = new ArrayList<Spell>(); 
 	
 	LifeSpells(int selectionNo)
@@ -49,13 +52,13 @@ public class LifeSpells {
             			lifeSpells.add(spell); 
             		}
 								conn1.close();
-								List<List<Spell>> createdLifeSpells = null; 
-								List<Map<String, List<String>>> givenLifeSpells = anotherDefaultDeck(lifeSpells, selectionNo); 
-								if(givenLifeSpells != null)
+								//List<List<Spell>> createdLifeSpells = null; 
+								fullDeck = anotherDefaultDeck(lifeSpells, selectionNo); 
+								/*if(givenLifeSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
 									deckInformation(createdLifeSpells, givenLifeSpells); 
-								}
+								}*/
             		System.out.println("Execution is done.");
             	}
             	else
@@ -77,20 +80,8 @@ public class LifeSpells {
 	{
 		return lifeSpells; 
 	}
-	
-	/*public List<List<Spell>> defaultDeck(ArrayList<Spell> spells)
-	{
-		Spell[] collectSpells = new Spell[spells.size()]; 
-		
-		Spell[] orderedSpells = performHeapOperations(collectSpells); 
-		
-		List<List<Spell>> deckOfSpells = hp.buildDeckYESoption(orderedSpells, "balance"); 
-		
-		return deckOfSpells;
-		
-	}*/
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -99,23 +90,21 @@ public class LifeSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Life", "YES", selectionNo); 
-			return null;
+			List<List<Element>> fullDeck = hp.selectYESOption("Life", "YES", selectionNo); 
+			return fullDeck;
 		}
 		else if(input.equals("DD"))
 		{
 			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Life", "NO", selectionNo); 
-			return givenDeck;
+			return null;
 		}
 		return null;
 	}
 	
-	/*public Spell[] performHeapOperations(Spell[] spells)
+	public List<List<Element>> retrieveFullDeck()
 	{
-		Spell[] modifiedSpells = hp.buildHeap(spells); 
-		
-		return modifiedSpells;
-	}*/
+		return fullDeck;
+	}
 	
 	public void deckInformation(List<List<Spell>> spells, List<Map<String, List<String>>> setOfSpells)
 	{
@@ -195,7 +184,8 @@ public class LifeSpells {
 	
 	public static void main(String[]args)
 	{
-		//FireSpells spells = new FireSpells(); 
+	 //FireSpells spells = new FireSpells(); 
+	 new LifeSpells(0); 
 	}
 	
 	

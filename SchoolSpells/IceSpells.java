@@ -13,12 +13,15 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import dataStructures.Element;
 import dataStructures.WizHeap;
 
 public class IceSpells {
 	
 	private WizHeap hp = new WizHeap(); 
 	
+	private List<List<Element>> fullDeck;
+
 	public ArrayList<Spell> iceSpells = new ArrayList<Spell>(); 
 	
 	IceSpells(int selectionNo)
@@ -57,13 +60,13 @@ public class IceSpells {
             		}
 								conn1.close();
 								List<List<Spell>> createdIceSpells = null; 
-								List<Map<String, List<String>>> givenIceSpells = anotherDefaultDeck(iceSpells, selectionNo); 
-								if(givenIceSpells != null)
+								fullDeck = anotherDefaultDeck(iceSpells, selectionNo); 
+								/*if(givenIceSpells != null)
 								{
 									System.out.println("Deck has been successfully created."); 
 									//System.out.println("Here is the following information about your main Deck, tc Deck"); 
 									deckInformation(createdIceSpells, givenIceSpells); 
-									}
+									}*/
             		System.out.println("Execution is done.");
             	}
             	else
@@ -80,6 +83,11 @@ public class IceSpells {
 					e.printStackTrace();
 				}
 	}
+
+	public List<List<Element>> retrieveFullDeck()
+	{
+		return fullDeck; 
+	}
 	
 	public ArrayList<Spell> retrieveIceSpells()
 	{
@@ -87,7 +95,7 @@ public class IceSpells {
 	}
 
 
-	public List<Map<String, List<String>>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -96,13 +104,13 @@ public class IceSpells {
 
 		if(input.equals("CD"))
 		{
-			hp.selectYESOption("Ice", "YES", selectionNo); 
-			return null;
+			List<List<Element>> fullDeck = hp.selectYESOption("Ice", "YES", selectionNo); 
+			return fullDeck;
 		}
 		else if(input.equals("DD"))
 		{
 			List<Map<String,List<String>>> givenDeck = hp.selectNOoption("Ice", "NO", selectionNo); 
-			return givenDeck;
+			return null;
 		}
 		return null;
 	}

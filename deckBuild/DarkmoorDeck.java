@@ -260,8 +260,17 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 								}
 								else 
 								{
-									int currentCount = createSpell.getCount(); 
-									createSpell.setCount(++currentCount);
+									int currentCount = 0; 
+									for(String spellName: countOfEachSpell.keySet())
+									{
+										if(createSpell.getName().equals(spellName))
+										{
+											currentCount = countOfEachSpell.get(spellName);
+											break;
+										}
+									}
+									System.out.println("Current Count: " + currentCount); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school_typeSpell); 
 								}
 							}
 							else if(!(school.equals(collectIdentity)) && accessByOtherSchools == false && label.equals("mainDeck"))
@@ -281,8 +290,17 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 								}
 								else 
 								{
-									int currentCount = createSpell.getCount(); 
-									createSpell.setCount(++currentCount);
+									int currentCount = 0; 
+									for(String spellName: countOfEachSpell.keySet())
+									{
+										if(createSpell.getName().equals(spellName))
+										{
+											currentCount = countOfEachSpell.get(spellName);
+											break;
+										}
+									}
+									System.out.println("Current Count: " + currentCount); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school_typeSpell); 
 								}
 							}
 							else if(!(school.equals(collectIdentity)) && accessByTC == true && label.equals("tcDeck"))
@@ -294,8 +312,17 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 								}
 								else 
 								{
-									int currentCount = createSpell.getCount(); 
-									createSpell.setCount(++currentCount);
+									int currentCount = 0; 
+									for(String spellName: countOfEachSpell.keySet())
+									{
+										if(createSpell.getName().equals(spellName))
+										{
+											currentCount = countOfEachSpell.get(spellName);
+											break;
+										}
+									}
+									System.out.println("Current Count: " + currentCount); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school_typeSpell); 
 								}
 							}
 						}

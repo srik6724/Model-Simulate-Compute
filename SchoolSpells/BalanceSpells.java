@@ -13,11 +13,14 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import dataStructures.Element;
 import dataStructures.WizHeap;
 
 public class BalanceSpells {
 	
 	private WizHeap hp = new WizHeap(); 
+
+	private List<List<Element>> fullDeck;
 	
 	public ArrayList<Spell> balanceSpells = new ArrayList<Spell>(); 
 	
@@ -62,7 +65,7 @@ public class BalanceSpells {
 								String input = sc.nextLine();
 								if(input.equals("YES"))
 								{
-									customDeck(balanceSpells, input, selectionNo);
+									fullDeck = customDeck(balanceSpells, input, selectionNo);
 								}
 								else if(input.equals("NO"))
 								{
@@ -90,23 +93,17 @@ public class BalanceSpells {
 					e.printStackTrace();
 				}
 	}
+
+
+	public List<List<Element>> retrieveFullDeck()
+	{
+		return fullDeck;
+	}
 	
 	public ArrayList<Spell> retrieveBalanceSpells()
 	{
 		return balanceSpells; 
 	}
-	
-	/*public List<List<Spell>> defaultDeck(ArrayList<Spell> spells)
-	{
-		Spell[] collectSpells = new Spell[spells.size()]; 
-		
-		Spell[] orderedSpells = performHeapOperations(collectSpells); 
-		
-		List<List<Spell>> deckOfSpells = hp.buildDeckYESoption(orderedSpells, "balance"); 
-		
-		return deckOfSpells;
-		
-	}*/
 
 	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
 	{
@@ -128,9 +125,10 @@ public class BalanceSpells {
 		return null;
 	}
 
-	public void customDeck(ArrayList<Spell>spells, String input, int selectionNo) throws InterruptedException
+	public List<List<Element>> customDeck(ArrayList<Spell>spells, String input, int selectionNo) throws InterruptedException
 	{
-		new WizHeap().selectYESOption("Balance", "YES", selectionNo); 
+		List<List<Element>> fullDeck = new WizHeap().selectYESOption("Balance", "YES", selectionNo); 
+		return fullDeck;
 	}
 	
 	public void deckInformation(List<List<Spell>> spells, List<Map<String, List<String>>> setOfSpells)
