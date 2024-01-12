@@ -8,9 +8,10 @@ public class Spell {
 	private String pip_chance; 
 	private String pips; 
 	private int count; 
+	private String school; 
 	private String type_Spell; 
 	
-	public Spell(String name, String level, String description, String pip_chance, String pips, int count, String type_Spell)
+	public Spell(String name, String level, String description, String pip_chance, String pips, int count, String school, String type_Spell)
 	{
 		this.name = name; 
 		this.level = level; 
@@ -18,6 +19,7 @@ public class Spell {
 		this.pip_chance = pip_chance; 
 		this.pips = pips; 
 		this.count = count; 
+		this.school = school; 
 		this.type_Spell = type_Spell;
 	}
 	
@@ -54,6 +56,11 @@ public class Spell {
 	public String getTypeSpell()
 	{
 		return type_Spell; 
+	}
+
+	public String getSchool() 
+	{
+		return school; 
 	}
 
 	public void setCount(int count)

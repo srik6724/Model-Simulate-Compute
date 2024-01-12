@@ -44,16 +44,16 @@ public class FireSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
+									String school = rs.getString("school"); 
             			String fire_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, fire_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, school, fire_typeSpell); 
             			
             			fireSpells.add(spell); 
             		}
 								conn1.close(); 
 								List<List<Spell>> createdFireSpells = null; 
 								fullDeck = anotherDefaultDeck(fireSpells, selectionNo); 
-								
             		System.out.println("Execution is done.");
             	}
             	else

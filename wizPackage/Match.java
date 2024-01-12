@@ -340,7 +340,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				start = start + 1; 
 			}
 			System.out.println(team[i]); 
-
 			
 			if(countTeamsRegistered == 1)
 			{
@@ -929,7 +928,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("We now spin a wheel to decide who starts first. We will do this "
 				+ "the traditional way.");
 		System.out.println("Heads or Tails Style."); 
-		
 		System.out.println("TEAM " + retrieveFirstTeamName + ": " + "Heads or Tails");
 		String input1 = sc.nextLine(); 
 		System.out.println("TEAM " + retrieveSecondTeamName + ": " + "Heads or Tails");
@@ -1001,6 +999,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 								decks.get(wizard).get(index).removeIf(
 								n -> (n.getSpellName() == cardSelected && n.getCount() == count)
 							); 
+							System.out.println("Removed card: " + cardSelected); 
 							break;
 							}
 						}

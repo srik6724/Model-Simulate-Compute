@@ -45,9 +45,10 @@ public class DeathSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
+									String school = rs.getString("school"); 
             			String death_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, death_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, school, death_typeSpell); 
             			
             			deathSpells.add(spell); 
             		}

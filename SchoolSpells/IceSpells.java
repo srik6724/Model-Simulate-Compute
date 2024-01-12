@@ -45,9 +45,10 @@ public class IceSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
+									String school = rs.getString("school"); 
             			String ice_typeSpell = rs.getString("typeSpell"); 
-            			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, ice_typeSpell); 
+
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, school, ice_typeSpell); 
             			
             			iceSpells.add(spell); 
 

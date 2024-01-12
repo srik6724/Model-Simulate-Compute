@@ -256,7 +256,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 								createSpell = countSpell(spellList, countOfEachSpell, name); 
 								if(createSpell == null)
 								{
-									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school, school_typeSpell); 
 								}
 								else 
 								{
@@ -270,7 +270,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 										}
 									}
 									System.out.println("Current Count: " + currentCount); 
-									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school_typeSpell); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school, school_typeSpell); 
 								}
 							}
 							else if(!(school.equals(collectIdentity)) && accessByOtherSchools == false && label.equals("mainDeck"))
@@ -286,7 +286,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 								createSpell = countSpell(spellList, countOfEachSpell, name); 
 								if(createSpell == null)
 								{
-									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school, school_typeSpell); 
 								}
 								else 
 								{
@@ -300,7 +300,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 										}
 									}
 									System.out.println("Current Count: " + currentCount); 
-									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school_typeSpell); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school, school_typeSpell); 
 								}
 							}
 							else if(!(school.equals(collectIdentity)) && accessByTC == true && label.equals("tcDeck"))
@@ -308,7 +308,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 								createSpell = countSpell(spellList, countOfEachSpell, spellInput); 
 								if(createSpell == null)
 								{
-									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school_typeSpell); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, 1, school, school_typeSpell); 
 								}
 								else 
 								{
@@ -322,7 +322,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 										}
 									}
 									System.out.println("Current Count: " + currentCount); 
-									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school_typeSpell); 
+									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school, school_typeSpell); 
 								}
 							}
 						}

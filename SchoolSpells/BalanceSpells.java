@@ -45,9 +45,10 @@ public class BalanceSpells {
             			String description = rs.getString("description"); 
             			String pip_chance = rs.getString("pip_chance");
             			String pips = rs.getString("pips"); 
+									String school = rs.getString("school"); 
             			String balance_typeSpell = rs.getString("typeSpell"); 
             			
-            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, balance_typeSpell); 
+            			Spell spell = new Spell(name, level, description, pip_chance, pips, 1, school, balance_typeSpell); 
             			
             			balanceSpells.add(spell); 
 

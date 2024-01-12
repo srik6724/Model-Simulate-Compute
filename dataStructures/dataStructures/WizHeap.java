@@ -1,5 +1,7 @@
 package dataStructures;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,6 +22,9 @@ import java.util.logging.Filter;
 
 import CustomExceptions.TypeException;
 import SchoolSpells.Spell;
+import SpellParser.InputBuffer;
+import SpellParser.LexicalAnalyzer;
+import SpellParser.Parser;
 import deckBuild.DarkmoorDeck;
 import deckBuild.MainDeck;
 import deckBuild.TreasureCardSideDeck;
@@ -30,7 +35,6 @@ public class WizHeap {
 	public Map<String, List<String>> tcDeckSpells = new HashMap<String, List<String>>(); 
 	private HeapInfo mainDeckInfo; 
 	private HeapInfo tcDeckInfo; 
-
 	
 	public WizHeap()
 	{
@@ -77,6 +81,7 @@ public class WizHeap {
 							e.setPips(mD[mainDeckCounter].getPips());
 							e.setCount(mD[mainDeckCounter].getCount());
 							e.setDescription(mD[mainDeckCounter].getDescription());
+							e.setSchool(mD[mainDeckCounter].getSchool());  
 							e.setTypeSpell(mD[mainDeckCounter].getTypeSpell());
 							mainDeckCounter++;
 						}
@@ -218,6 +223,33 @@ public class WizHeap {
 				f.write("Type Of Spell: " + e.getTypeSpell() + "\n"); 
 				System.out.println("-----------------------------------"); 
 				f.write("-----------------------------------" + "\n");
+			}
+			System.out.println("Reading the deck file now"); 
+			try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
+				String line; 
+				int countDelimiters = 0; 
+				String[] lines = new String[8]; 
+				int index = 0; 
+				while((line = reader.readLine()) != null) {
+					System.out.println("Line Read: " + line); 
+					if(line.contains("-"))
+					{
+						countDelimiters++; 
+						if(countDelimiters == 2)
+						{
+							new Parser(Arrays.asList(lines)); 
+							System.exit(0);
+						}
+					}
+					else 
+					{
+						if(index < 8)
+						{
+							lines[index] = line; 
+							index++; 
+						}
+					}
+				}
 			}
 			f.close();
 		}catch(IOException e)

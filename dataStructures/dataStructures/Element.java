@@ -80,6 +80,11 @@ public class Element {
     this.description  = description; 
   }
 
+  public void setSchool(String school) 
+  {
+    this.school = school; 
+  }
+
   public void setTypeSpell(String typeSpell)
   {
     this.typeSpell = typeSpell;
