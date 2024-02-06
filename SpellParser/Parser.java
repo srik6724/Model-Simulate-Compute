@@ -1,19 +1,25 @@
 package SpellParser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import SpellParser.Token.TokenType;
 import wizPackage.Match;
 
 public class Parser {
-  LexicalAnalyzer lexer; 
-  
+  private LexicalAnalyzer lexer; 
+  private List<Token> token_list;
+
   public Parser(List<String> inputLines)
   {
     lexer = new LexicalAnalyzer(inputLines);
+    // Get the token_list as it contains all the tokens
+    token_list = lexer.get_token_list(); 
+    System.out.println(token_list.size()); 
+    // this.parse_deck_list(); 
   }
-   /* 
-  void syntax_error()
+  
+  /*void syntax_error()
   {
 	  System.out.println("SYNTAX ERROR!!!\n"); 
   }
@@ -339,5 +345,9 @@ public class Parser {
     {
       parse_deck_list(); 
     }
+  }
+
+  List<Token> get_deck_list() {
+    return this.token_list;
   }*/
 }

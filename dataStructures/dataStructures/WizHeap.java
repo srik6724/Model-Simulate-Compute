@@ -657,7 +657,6 @@ public class WizHeap {
 		hp.selectNOoption("balance", "NO");
 		hp.fillMainDeck(hp.mainDeckSpells, "balance");
 		hp.fillTcDeck(hp.tcDeckSpells, "balance");*/
-
 	}
 
 }

@@ -7,36 +7,35 @@ import java.util.Vector;
 
 public class InputBuffer {
   //declares private instance variable input_buffer
-  private Vector<String> input_buffer;  
+  private Vector<String> input_buffer; 
 
   InputBuffer(String line)
   {
-    // Counts # of spaces in a line
     int countSpaces = count_spaces(line); 
+    input_buffer = new Vector<String>(countSpaces); 
     // Initializes input_buffer to a specified size based on number of spaces
-    input_buffer = new Vector<>(countSpaces); 
     int initial = 0;
     int spaceIndex = line.indexOf(" "); 
     String str = ""; 
     for(int i = initial; i < spaceIndex; i++)
     {
-      if(!(line.substring(i,i+1).equals(":"))) {
+      if(!(line.substring(i, i+1).equals(":")) && !(line.substring(i, i+1).equals(" "))) {
         str += line.substring(i, i+1); 
       }
       if((i+1) == spaceIndex) {
-        System.out.println("String about to be added to input buffer: " + str); 
         if(!(str.toLowerCase().equals("count"))) {
+          System.out.println("String about to be added to input buffer: " + str); 
           input_buffer.add(str); 
         }
-        initial = spaceIndex; 
-        spaceIndex = line.indexOf(" ", spaceIndex+1);
+        initial = spaceIndex + 1; 
+        spaceIndex = line.indexOf(" ", initial);
         if(spaceIndex == -1) {
           System.out.println("Space Index: " + spaceIndex); 
           str = ""; 
-          for(int j = initial + 1; j < line.length(); j++) {
+          for(int j = initial; j < line.length(); j++) {
             str += line.substring(j, j+1); 
           }
-          System.out.println("String str: " + str); 
+          System.out.println("String about to be added to input buffer: " + str); 
           input_buffer.add(str); 
         }
         str = ""; 
