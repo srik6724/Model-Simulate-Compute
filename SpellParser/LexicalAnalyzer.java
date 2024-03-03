@@ -62,9 +62,11 @@ public class LexicalAnalyzer {
           break;
         }
       }
+      else {
+        token.lexeme = ""; 
+        token.token_type = TokenType.END_OF_FILE;
+      }
     }
-    token.lexeme = ""; 
-    token.token_type = TokenType.END_OF_FILE;
     token_list.add(token); 
 
     System.out.println("Finished parsing input lines and creating tokens."); 
@@ -73,7 +75,7 @@ public class LexicalAnalyzer {
       System.out.println("Lexeme of token: "  + get_token.lexeme);
       System.out.println("TokenType of token: " + get_token.token_type); 
     }
-    
+    System.exit(0); 
   }
 
   boolean SkipSpace(String line)
@@ -190,6 +192,10 @@ public class LexicalAnalyzer {
             Token t = new Token(); 
 
             if(first_iteration_action_verb) {
+              Token token = new Token(); 
+              token.lexeme = element; 
+              token.token_type = TokenType.DESCRIPTION; 
+              token_list.add(token); 
               t.lexeme = element; 
               first_iteration_action_verb = false; 
               t.token_type = TokenType.ACTION; 

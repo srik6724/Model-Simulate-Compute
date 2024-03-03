@@ -225,7 +225,7 @@ public class WizHeap {
 				f.write("-----------------------------------" + "\n");
 			}
 			System.out.println("Reading the deck file now"); 
-			try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
+			/*try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
 				String line; 
 				int countDelimiters = 0; 
 				String[] lines = new String[8]; 
@@ -238,7 +238,7 @@ public class WizHeap {
 						if(countDelimiters == 2)
 						{
 							new Parser(Arrays.asList(lines)); 
-							System.exit(0);
+							//System.exit(0);
 						}
 					}
 					else 
@@ -251,12 +251,11 @@ public class WizHeap {
 					}
 				}
 			}
-			f.close();
+			f.close();*/
 		}catch(IOException e)
 		{
 			e.printStackTrace();
 		}
-		
 		return elements; 
 	}
 

@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
@@ -43,6 +45,9 @@ import Gear.Ring;
 import Gear.Robe;
 import Gear.Wand;
 import JadeStats.JadeClass;
+import Logging.LoggingStorage;
+
+import java.util.logging.*;
 import NightMireStats.NightMireClass;
 import wizPackage.LinkedListTeam1.Node;
 import wiz_threading.Team1Runnable;
@@ -54,17 +59,55 @@ import SchoolSpells.schoolSpells;
 import Sockets.Socket;
 import SpookyStats.SpookyClass;
 import SpringBoot.SpringBootExecutable;
+import Testing.ApplicationState;
+import Testing.StatePersistence;
+import Variables.BreakpointVariables;
 import dataStructures.Element;
 import deckBuild.DarkmoorDeck;
+import javafx.application.Application;
 public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
+
+	Scanner sc = new Scanner(System.in); 
+
+	// Store application states
+	private static Queue<ApplicationState<Object>> q = new LinkedList<>(); 
 
 	//Arrays to store information about the firstTeam and secondTeam. 
 	int teamSize; 
-	private String[] team; 
-	private String[] teamLevels; 
-	private String[] teamSchools; 
+	private static String[] team; 
+	private static String[] teamLevels; 
+	private static String[] teamSchools; 
 	private static List<List<String>> teamPlayers = new ArrayList<List<String>>(); 
+	private static HashMap<String, List<String>> gearSets = new HashMap<String, List<String>>(); 
 
+	// File Path static Names
+	private String gameModePath = "gameMode.ser"; 
+	private String nameOfTeamPath = "nameOfTeam.ser"; 
+	private String playerNamesPath = "playerNames.ser"; 
+	private String playerLevelsPath = "playerLevels.ser"; 
+	private String playerSchoolsPath = "playerSchools.ser";
+	private String playerDecksPath = "playerDecks.ser"; 
+	private String playerStatsPath = "playerStats.ser"; 
+	private String playerOrderPath = "playerOrder.ser"; 
+	private String arenaSelectionPath = "arenaSelection.ser"; 
+	private String matchCountDownPath = "matchCountDown.ser"; 
+	private String matchBeginsPath = "matchBegins.ser"; 
+	private String bothTeamsRegistered = "bothTeamsRegistered.ser"; 
+
+	// Setting application states here for readability purposes
+	private ApplicationState<Object> gameModeState; 
+	private ApplicationState<Object> nameOfTeamState; 
+	private ApplicationState<Object> playerNamesState; 
+	private ApplicationState<Object> playerLevelsState; 
+	private ApplicationState<Object> playerSchoolsState; 
+	private ApplicationState<Object> playerDecksState; 
+	private ApplicationState<Object> playerStatsState; 
+	private ApplicationState<Object> playerOrderState; 
+	private ApplicationState<Object> arenaSelectionState; 
+	private ApplicationState<Object> matchCountDownState; 
+	private ApplicationState<Object> matchBeginsState; 
+	private ApplicationState<Object> bothTeamsRegisteredState; 
+	
 	
 	private StopWatch watch = new StopWatch(); 
 	public Proposition statement = new Proposition(); 
@@ -100,205 +143,109 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered);
 		}
 		System.out.println(retrieveFirstTeamName + " will be competing against " + retrieveSecondTeamName); 
-		randomizeArenaSelection(); 
-		matchCountDown(retrieveFirstTeamName, retrieveSecondTeamName); 
-		//fillDecks(); 
-		beginMatch();
+		if(BreakpointVariables.getArenaSelection() == true) {
+			System.out.println("Re-execute arena selection again? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				randomizeArenaSelection(); 
+			}
+		}
+		else {
+			randomizeArenaSelection();
+		}
+
+		if(BreakpointVariables.getMatchCountDown() == true) {
+			System.out.println("Re-execute match countdown? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				randomizeArenaSelection();
+			}
+		}
+		else {
+			matchCountDown(retrieveFirstTeamName, retrieveSecondTeamName); 
+		}
+
+		if(BreakpointVariables.getMatchBegins() == true) {
+			System.out.println("Re-execute match countdown? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				sc.close();
+				beginMatch();
+			}
+		}
+		else {
+			beginMatch();
+		}
 	}
-	
-	
-	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered) throws InterruptedException
-	{
-		Scanner sc = new Scanner(System.in);
 
-		boolean iterate = true; 
+	void setPlayerOrder() {
+		System.out.println("Now, for the final step of registration, enter the order your team "
+				+ "would like to be placed in during the match."); 
+		System.out.println("Just quickly before that, here is a list of potential orders, you may be interested in " + 
+		"ordering your team."); 
 
-		while(iterate)
+		HashMap<Integer, List<String>> orderDetail = new HashMap<Integer, List<String>>(); 
+
+		int left = 0; 
+		int right = 0; 
+		int length = teamSchools.length; 
+		int firstLoopIteration = 1; 
+		String[]orderCreated = new String[team.length]; 
+
+		generatePossibleOrders(left, right, length, firstLoopIteration, orderCreated, Arrays.asList(teamSchools), orderDetail);
+		
+		int setCount = 1; 
+		for(int number: orderDetail.keySet())
 		{
-			System.out.println("Select the game mode you intend to play."); 
-			Thread.sleep(1000); 
-			System.out.println("--------------OPTIONS-------------------"); 
-			Thread.sleep(1000); 
-			System.out.println("----------------1v1---------------------"); 
-			Thread.sleep(1000); 
-			System.out.println("----------------2v2---------------------");
-			Thread.sleep(1000); 
-			System.out.println("----------------3v3----------------------"); 
-			Thread.sleep(1000); 
-			System.out.println("----------------4v4----------------------");
-			Thread.sleep(1000);  
-			System.out.println("Choose which one to play based on those options."); 
-			String gameMode = sc.nextLine(); 
-			if(isNumeric(gameMode))
-			{
-				System.out.println("Not a valid input entered for game mode: " + gameMode); 
-				iterate = true; 
-				continue; 
-			}
-			if(!((gameMode.equals("1v1") || gameMode.equals("2v2") || gameMode.equals("3v3") || gameMode.equals("4v4"))))
-			{
-				System.out.println("Game Mode: " + gameMode + " doesn't exist."); 
-				iterate = true; 
-				continue; 
-			}
-			System.out.println("Game Mode selection chosen is " + gameMode); 
-			if(gameMode.equals("1v1"))
-			{
-				teamSize = _1v1_.teamSize(); 
-				team = new String[teamSize]; 
-				teamLevels = new String[teamSize]; 
-				teamSchools = new String[teamSize]; 
-				
-			}
-			else if(gameMode.equals("2v2"))
-			{
-				teamSize = _2v2_.teamSize(); 
-				team = new String[teamSize]; 
-				teamLevels = new String[teamSize]; 
-				teamSchools = new String[teamSize]; 
-			}
-			else if(gameMode.equals("3v3"))
-			{
-				teamSize = _3v3_.teamSize(); 
-				team = new String[teamSize]; 
-				teamLevels = new String[teamSize]; 
-				teamSchools = new String[teamSize];
-			}
-			else if(gameMode.equals("4v4"))
-			{
-				teamSize = _4v4_.teamSize(); 
-				team = new String[teamSize]; 
-				teamLevels = new String[teamSize]; 
-				teamSchools = new String[teamSize]; 
-			}
-			break; 
+			System.out.println("Order "  + setCount +  ": " + orderDetail.get(number)); 
+			setCount++; 
 		}
 
-		System.out.println(str + " Team");
-		System.out.println("-------------------"); 
-		System.out.println("What is the name of your team?"); 
-		
-		retrieveFirstTeamName = sc.nextLine(); 	
-
-		boolean checkPlayerNames = true; 
-		
-		System.out.println("INSTRUCTIONS FOR REGISTERING A TEAM. Follow carefully."); 
-		System.out.println("First, please write down the names of your players."
-				+ "After this step is completed, write down the corresponding levels of each player." + "Then proceed"
-						+ "to write down the school identities of every player."); 
-		System.out.println("We humbly request it is done in this order as we would hope to avoid any technical "
-				+ "issues on our end for registering all teams. Thank you! "); 
-		
-		while(checkPlayerNames)
+		int playerOrderCount = team.length; 
+		int startIndex = 0; 
+		String retrievePlayerName = ""; 
+		boolean cont = true; 
+		while(startIndex < playerOrderCount && cont == true)
 		{
-			for(int i = 0; i < teamSize; i++)
+			System.out.println("Enter " + (startIndex+1) + "st player"); 
+			retrievePlayerName = sc.nextLine(); 
+			boolean checkPlayer1 = validatePlayer(retrievePlayerName, startIndex);
+			if(checkPlayer1 == true)
 			{
-				System.out.println("Please write down player " + (i+1) + " of your team."); 
-				String player = sc.nextLine(); 
-				if(isNumeric(player))
-				{
-					System.out.println("Not a valid name for " + player); 
-					checkPlayerNames = true; 
-					break;
-				}
-				else
-				{
-					checkPlayerNames = false; 
-					team[i] = player;  
-				}
+				cont = true; 
+				firstTeamOrder[startIndex] = retrievePlayerName; 
+				startIndex = startIndex + 1; 
+				System.out.println("Player " + startIndex + ": " + retrievePlayerName + " registered successfully.");
 			}
-		}
+			else
+			{
+				System.out.println("Error occurred with registering Player " + startIndex);
+				System.out.print("Try again.");
+			}
 
-		teamPlayers.add(Arrays.asList(team));
+			if(BreakpointVariables.getPlayerOrder() == false) {
+				LoggingStorage.getLogger().log(Level.INFO, "Ordering of players is completed.");; 
+				BreakpointVariables.setPlayerOrder(true); 
+			}
 
-		boolean checkPlayerLevels = true; 
-		while(checkPlayerLevels)
-		{
-			for(int i = 0; i < teamSize; i++)
-			{
-				System.out.println("Write down " + team[i] + " level."); 
-				String playerLevel = sc.nextLine(); 
-				if(!(isNumeric(playerLevel)))
-				{
-					System.out.println("Level " + playerLevel + " not recognizable."); 
-					checkPlayerLevels = true; 
-					break;
-				}
-				else if(Integer.parseInt(playerLevel) > 160)
-				{
-					System.out.println("Player Level Chosen " + playerLevel + " exceeds 160"); 
-				}
-				else {
-					teamLevels[i] = playerLevel; 
-					System.out.println("Added " + teamLevels[i] + " level of " + "player " + team[i]); 
-					checkPlayerLevels = false;
-				}
-			}
+			playerOrderState = new ApplicationState<Object>(orderDetail, playerOrderPath); 
+			q.add(playerOrderState); 
 		}
-			
-			System.out.println("Success, now proceed to write down each of the school identities of the players."); 
-			System.out.println(); 
-			System.out.println(); 
-			System.out.println(); 
-			System.out.println(); 
-			System.out.println("Just a note. The following school names allowed to be entered are: "
-					+ "Ice, Fire, Death, Balance, Life, Myth, and Storm."
-					+ "Any other schools will not be accepted.");
-			
-			boolean checkIdentities = true; 
-			while(checkIdentities)
-			{
-				for(int i = 0; i < teamSize; i++)
-				{
-					System.out.println("Write down " + team[i] + " school"); 
-					String playerSchool = sc.nextLine(); 
-					if(isNumeric(playerSchool))
-					{
-						System.out.println("Player School " + playerSchool + " cannot be a number."); 
-						checkIdentities = true; 
-						break;
-					}
-					else if((playerSchool.equals("Ice")) || (playerSchool.equals("Fire")) || (playerSchool.equals("Death"))
-					|| (playerSchool.equals("Balance")) || (playerSchool.equals("Life")) || (playerSchool.equals("Myth")) 
-					|| (playerSchool.equals("Storm")))
-					{
-						System.out.println("Player School added of type " + playerSchool); 
-						teamSchools[i] = playerSchool; 
-						checkIdentities = false; 
-					}
-					else 
-					{
-						checkIdentities = true;
-						break;
-					}
-				}
-			}
-		System.out.println();
-		System.out.println(); 
-		System.out.println(); 
-		System.out.println(); 
-		System.out.println("You are now clear to now create a deck for each player on your team."); 
 		
-		for(int i = 0; i < teamSize; i++)
+		int start = 1; 
+		for(int i = 0; i < team.length; i++)
 		{
-			createDeck(teamSchools[i], (i+1)); 
+			System.out.println("Player # " + start + ": " + firstTeamOrder[i] + "," + teamLevels[i] + "," + teamSchools[i] +  " successfully enrolled in " + retrieveFirstTeamName); 
+			start = start + 1; 
 		}
+		System.out.println("Congratulations, team " + retrieveFirstTeamName + " is enrolled officially.");
+		countTeamsRegistered++; 
+	}
 
-		System.out.println("The decks are now created for all schools specified.");
-		System.out.println(); 
-		System.out.println(); 
-
-		System.out.println("The files are created for all decks specified."); 
-
-		System.out.println();
-		System.out.println(); 
-		System.out.println(); 
-		System.out.println(); 
+	void setPlayerStats() {
 		System.out.println("The next step will involve player stats to be recorded of every individual."); 
 		System.out.println("This is expected to take around 10-15 minutes in total, so please be patient."); 
-
 		int iter = 4; 
-		HashMap<String, List<String>> gearSets = new HashMap<String, List<String>>(); 
 		int place = 0; 
 		firstIteration = 1; 
 		String saveDuplicateKey = ""; 
@@ -358,8 +305,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		LinkedListTeam2.Node current2;
 		if(countTeamsRegistered == 1)
 		{
-			//list1.printNodeData();
-			//System.out.println("Printed Node data."); 
 			current1 = LinkedListTeam1.head; 
 			int count = 1; 
 			String modified_wizardName = ""; 
@@ -416,71 +361,393 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println(keywords.get(number).get(7)); 
 		}
 		computeStatsInformation(gearSets, keywords);
-		
-		
-		
-		System.out.println("Now, for the final step of registration, enter the order your team "
-				+ "would like to be placed in during the match."); 
-		
-		System.out.println("Just quickly before that, here is a list of potential orders, you may be interested in " + 
-		"ordering your team."); 
+		LoggingStorage.getLogger().log(Level.INFO, "Player stats completed for each player on team."); 
+		BreakpointVariables.setPlayerStats(true);
+		playerStatsState = new ApplicationState<Object>(Match.gearSets, playerStatsPath); 
+		q.add(playerStatsState); 
+	}
 
-		HashMap<Integer, List<String>> orderDetail = new HashMap<Integer, List<String>>(); 
-
-		int left = 0; 
-		int right = 0; 
-		int length = teamSchools.length; 
-		int firstLoopIteration = 1; 
-		String[]orderCreated = new String[team.length]; 
-
-		generatePossibleOrders(left, right, length, firstLoopIteration, orderCreated, Arrays.asList(teamSchools), orderDetail);
-		int setCount = 1; 
-		for(int number: orderDetail.keySet())
-		{
-			System.out.println("Order "  + setCount +  ": " + orderDetail.get(number)); 
-			setCount++; 
-		}
-
-		int playerOrderCount = team.length; 
-		int startIndex = 0; 
-		String retrievePlayerName = ""; 
-		boolean cont = true; 
-		while(startIndex < playerOrderCount && cont == true)
-		{
-			System.out.println("Enter " + (startIndex+1) + "st player"); 
-			retrievePlayerName = sc.nextLine(); 
-			boolean checkPlayer1 = validatePlayer(retrievePlayerName, startIndex);
-			if(checkPlayer1 == true)
+	void createPlayerDecks(boolean flag) {
+		System.out.println("You are now clear to now create a deck for each player on your team."); 
+		if(flag == false) {
+			for(int i = 0; i < teamSize; i++)
 			{
-				cont = true; 
-				firstTeamOrder[startIndex] = retrievePlayerName; 
-				startIndex = startIndex + 1; 
-				System.out.println("Player " + startIndex + ": " + retrievePlayerName + " registered successfully.");
-			}
-			else
-			{
-				System.out.println("Error occurred with registering Player " + startIndex);
-				System.out.print("Try again.");
+				createDeck(teamSchools[i], (i+1)); 
 			}
 		}
-		
-		int start = 1; 
-		for(int i = 0; i < team.length; i++)
-		{
-			System.out.println("Player # " + start + ": " + firstTeamOrder[i] + "," + teamLevels[i] + "," + teamSchools[i] +  " successfully enrolled in " + retrieveFirstTeamName); 
-			start = start + 1; 
+		else {
+			boolean iterate = true; 
+			List<String> players = new ArrayList<String>(); 
+			int maxLimit = 4; 
+			while(iterate)
+			{
+				System.out.println("Which player do you want to reset the deck for? Options are player 1, player 2, player 3, or player 4");
+				String input = sc.nextLine(); 
+				if(input.equals("1")){
+					players.add(input); 
+					maxLimit--;
+				}
+				else if(input.equals("2")){
+					players.add(input); 
+					maxLimit--;
+				}
+				else if(input.equals("3")) {
+					players.add(input); 
+					maxLimit--;
+				}
+				else if(input.equals("4")) {
+					players.add(input); 
+					maxLimit--;
+				}
+				System.out.println("Are you done or more?"); 
+				String isFinished = sc.nextLine(); 
+				if(isFinished.equals("NO")) {
+					iterate = true;
+				}
+				else if(maxLimit == 0 || isFinished.equals("YES")) {
+					iterate = false; 
+				}
+			}
 		}
-		System.out.println("Congratulations, team " + retrieveFirstTeamName + " is enrolled officially.");
-		countTeamsRegistered++; 
+
+		System.out.println("The decks are now created for all schools specified.");
+		System.out.println(); 
+		System.out.println(); 
+
+		System.out.println("The files are created for all decks specified."); 
+
+		LoggingStorage.getLogger().log(Level.INFO, "Player Decks created for each player on team");
+		BreakpointVariables.setPlayerDecks(true);
+		playerDecksState = new ApplicationState<Object>(Match.decks, playerDecksPath);
+		q.add(playerDecksState); 
+	}
+
+	void selectPlayerIdentitiesForTeam() {
+		System.out.println("Success, now proceed to write down each of the school identities of the players."); 
+		System.out.println(); 
+		System.out.println(); 
+		System.out.println(); 
+		System.out.println(); 
+		System.out.println("Just a note. The following school names allowed to be entered are: "
+				+ "Ice, Fire, Death, Balance, Life, Myth, and Storm."
+				+ "Any other schools will not be accepted.");
 		
+		// Create a method for the player identities
+
+		boolean checkIdentities = true; 
+		while(checkIdentities)
+		{
+			for(int i = 0; i < teamSize; i++)
+			{
+				System.out.println("Write down " + team[i] + " school"); 
+				String playerSchool = sc.nextLine(); 
+				if(isNumeric(playerSchool))
+				{
+					System.out.println("Player School " + playerSchool + " cannot be a number."); 
+					checkIdentities = true; 
+					break;
+				}
+				else if((playerSchool.equals("Ice")) || (playerSchool.equals("Fire")) || (playerSchool.equals("Death"))
+				|| (playerSchool.equals("Balance")) || (playerSchool.equals("Life")) || (playerSchool.equals("Myth")) 
+				|| (playerSchool.equals("Storm")))
+				{
+					System.out.println("Player School added of type " + playerSchool); 
+					teamSchools[i] = playerSchool; 
+					checkIdentities = false; 
+				}
+				else 
+				{
+					checkIdentities = true;
+					break;
+				}
+			}
+		}
+		System.out.println();
+		System.out.println(); 
+		System.out.println(); 
+		System.out.println(); 
+
+		LoggingStorage.getLogger().log(Level.INFO, "Player Schools set for each player on team");
+		BreakpointVariables.setPlayerSchools(true);
+		playerSchoolsState = new ApplicationState<Object>(teamSchools, playerSchoolsPath);
+		q.add(playerSchoolsState); 
+	}
+
+	void selectPlayerLevelsForTeam() {
+		boolean checkPlayerLevels = true; 
+
+		while(checkPlayerLevels)
+		{
+			for(int i = 0; i < teamSize; i++)
+			{
+				System.out.println("Write down " + team[i] + " level."); 
+				String playerLevel = sc.nextLine(); 
+				if(!(isNumeric(playerLevel)))
+				{
+					System.out.println("Level " + playerLevel + " not recognizable."); 
+					checkPlayerLevels = true; 
+					break;
+				}
+				else if(Integer.parseInt(playerLevel) > 160)
+				{
+					System.out.println("Player Level Chosen " + playerLevel + " exceeds 160"); 
+				}
+				else {
+					Match.teamLevels[i] = playerLevel; 
+					System.out.println("Added " + teamLevels[i] + " level of " + "player " + team[i]); 
+					checkPlayerLevels = false;
+				}
+			}
+		}
+		LoggingStorage.getLogger().log(Level.INFO, "Levels for each player on team selected."); 
+		BreakpointVariables.setPlayerLevels(true);  
+		playerLevelsState = new ApplicationState<Object>(Match.teamLevels, playerLevelsPath); 
+		q.add(playerLevelsState);
+	}
+
+	void selectPlayerNamesForTeam() {
+		boolean checkPlayerNames = true; 
+		
+		System.out.println("INSTRUCTIONS FOR REGISTERING A TEAM. Follow carefully."); 
+		System.out.println("First, please write down the names of your players."
+				+ "After this step is completed, write down the corresponding levels of each player." + "Then proceed"
+						+ "to write down the school identities of every player."); 
+		System.out.println("We humbly request it is done in this order as we would hope to avoid any technical "
+				+ "issues on our end for registering all teams. Thank you! "); 
+		
+		while(checkPlayerNames)
+		{
+			for(int i = 0; i < teamSize; i++)
+			{
+				System.out.println("Please write down player " + (i+1) + " of your team."); 
+				String player = sc.nextLine(); 
+				if(isNumeric(player))
+				{
+					System.out.println("Not a valid name for " + player); 
+					checkPlayerNames = true; 
+					break;
+				}
+				else
+				{
+					checkPlayerNames = false; 
+					team[i] = player;  
+				}
+			}
+		}
+
+		Match.teamPlayers.add(Arrays.asList(team));
+		playerNamesState = new ApplicationState<Object>(Match.teamPlayers, playerNamesPath);
+		q.add(playerNamesState); 
+		LoggingStorage.getLogger().log(Level.INFO, "Player Names selected for players on team");
+		BreakpointVariables.setPlayerNames(true); 
+	}
+
+	String selectTeamName(String str) {
+		System.out.println(str + " Team");
+		System.out.println("-------------------"); 
+		System.out.println("What is the name of your team?"); 
+		String teamName = sc.nextLine();
+		LoggingStorage.getLogger().log(Level.INFO, "Name selected for team.");
+		BreakpointVariables.setNameOfTeam(true); 
+		nameOfTeamState = new ApplicationState<Object>(teamName, nameOfTeamPath); 
+		q.add(nameOfTeamState); 
+		return teamName;
 	}
 	
+	void gameModeSelection() throws InterruptedException {
+		Scanner sc = new Scanner(System.in); 
+		boolean iterate = true; 
+		String gameMode = ""; 
+		while(iterate)
+		{
+			System.out.println("Select the game mode you intend to play."); 
+			Thread.sleep(1000); 
+			System.out.println("--------------OPTIONS-------------------"); 
+			Thread.sleep(1000); 
+			System.out.println("----------------1v1---------------------"); 
+			Thread.sleep(1000); 
+			System.out.println("----------------2v2---------------------");
+			Thread.sleep(1000); 
+			System.out.println("----------------3v3----------------------"); 
+			Thread.sleep(1000); 
+			System.out.println("----------------4v4----------------------");
+			Thread.sleep(1000);  
+			System.out.println("Choose which one to play based on those options."); 
+			gameMode = sc.nextLine(); 
+			if(isNumeric(gameMode))
+			{
+				System.out.println("Not a valid input entered for game mode: " + gameMode); 
+				iterate = true; 
+				continue; 
+			}
+			if(!((gameMode.equals("1v1") || gameMode.equals("2v2") || gameMode.equals("3v3") || gameMode.equals("4v4"))))
+			{
+				System.out.println("Game Mode: " + gameMode + " doesn't exist."); 
+				iterate = true; 
+				continue; 
+			}
+			System.out.println("Game Mode selection chosen is " + gameMode); 
+			if(gameMode.equals("1v1"))
+			{
+				teamSize = _1v1_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize]; 
+			}
+			else if(gameMode.equals("2v2"))
+			{
+				teamSize = _2v2_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize]; 
+			}
+			else if(gameMode.equals("3v3"))
+			{
+				teamSize = _3v3_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize];
+			}
+			else if(gameMode.equals("4v4"))
+			{
+				teamSize = _4v4_.teamSize(); 
+				team = new String[teamSize]; 
+				teamLevels = new String[teamSize]; 
+				teamSchools = new String[teamSize]; 
+			}
+			break; 
+		}
+		LoggingStorage.getLogger().log(Level.INFO, "Game-mode selection completed."); 
+		BreakpointVariables.setGameModeSelection(true);  
+		gameModeState = new ApplicationState<Object>(gameMode, gameModePath); 
+		StatePersistence gameModePersistence = new StatePersistence(gameModeState); 
+		gameModePersistence.saveState();
+		q.add(gameModeState); 
+	}
+	
+	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered) throws InterruptedException
+	{
+		if(BreakpointVariables.getGameModeSelection() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
+			System.out.println("Re-execute game mode selection again? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				BreakpointVariables.setGameModeSelection(false);
+				gameModeSelection();
+			}
+			else {
+				System.out.println("Testing the load state function. Accessing the queue");
+				gameModeState = pollQueue(gameModePath); 
+			}
+		} else {
+			gameModeSelection();
+		}
+
+		String retrieveTeamName; 
+
+		if(BreakpointVariables.getNameOfTeam() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
+			System.out.println("Switch team name? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				BreakpointVariables.setNameOfTeam(false);
+				retrieveTeamName = selectTeamName(str);
+				System.out.println("Team Name chosen is: " + retrieveTeamName); 
+			}
+		}
+		else {
+			retrieveTeamName = selectTeamName(str);
+			System.out.println("Team Name chosen is: " + retrieveTeamName); 
+		}
+
+		if(BreakpointVariables.getPlayerNames() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
+			System.out.println("Change player names? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				BreakpointVariables.setPlayerNames(false);
+				selectPlayerNamesForTeam(); 
+			}
+		}
+		else {
+			selectPlayerNamesForTeam();
+		}
+
+		if(BreakpointVariables.getPlayerLevels() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
+			System.out.println("Change player levels? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				BreakpointVariables.setPlayerLevels(false);
+				selectPlayerLevelsForTeam(); 
+			}
+		}
+		else {
+			selectPlayerLevelsForTeam();
+		}
+
+		if(BreakpointVariables.getPlayerSchools() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
+			System.out.println("Change player identities? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				BreakpointVariables.setPlayerSchools(false);
+				selectPlayerIdentitiesForTeam(); 
+			}
+		} else {
+			selectPlayerIdentitiesForTeam(); 
+		}
+
+		if(BreakpointVariables.getPlayerDecks() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
+			System.out.println("Change player decks? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				BreakpointVariables.setPlayerDecks(false);
+				boolean flag = BreakpointVariables.getPlayerDecks(); 
+				createPlayerDecks(flag); 
+			}
+		} else {
+			boolean flag = BreakpointVariables.getPlayerDecks(); 
+			createPlayerDecks(flag); 
+		}
+
+		System.out.println();
+		System.out.println(); 
+		System.out.println(); 
+		System.out.println(); 
+
+		if(BreakpointVariables.getPlayerStats() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
+			System.out.println("Redo player stats for players? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				gearSets = new HashMap<String, List<String>>(); 
+				setPlayerStats(); 
+			}
+		}
+		else {
+			setPlayerStats(); 
+		}
+
+		if(BreakpointVariables.getPlayerOrder() == true) {
+			System.out.println("Revamp player order for team? Y or N"); 
+			String input = sc.nextLine(); 
+			if(input.equals("Y")) {
+				setPlayerOrder(); 
+			}
+		}
+		else {
+			setPlayerOrder(); 
+		}
+	}
+
+	private ApplicationState<Object> pollQueue(String pathName) {
+		return q.stream()
+					 .filter(state -> state.getFilePath().equals(pathName))
+					 .findFirst()
+					 .orElse(null); 
+	}
+
 	private void generatePossibleOrders(int left, int right, int length, int firstIteration, String[]orderCreated, List<String> firstTeamSchools, HashMap<Integer, List<String>> orderDetail) {
 
-		//Implement a backtracking algorithm that generates all the possible combinations of orders that one can look at.
-		//Use hashmap to store the information of each order. 
-		//Make sure to terminate the base case if there are duplicates and no other potential combinations can be created. 
-		//Use a randomization metric from 0-3 to decide which two elements to swap
+		// Implement a backtracking algorithm that generates all the possible combinations of orders that one can look at.
+		// Use hashmap to store the information of each order. 
+		// Make sure to terminate the base case if there are duplicates and no other potential combinations can be created. 
+		// Use a randomization metric from 0-3 to decide which two elements to swap
 
 		if(firstIteration == 1)
 		{
@@ -519,7 +786,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			orderCreated[secondRandomNumber] = temp; 
 		
 			generatePossibleOrders(left, right+1, length, firstIteration, Arrays.copyOf(orderCreated, orderCreated.length), Arrays.asList(orderCreated), orderDetail);
-
 		}
 		
 	}
@@ -817,6 +1083,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		
 		System.out.println("The chosen Arena Number is " + ArenaNumberSelected);
 		System.out.println("This corresponds to the arena of " + arenaName);
+
+		LoggingStorage.getLogger().log(Level.INFO, "Arena selection has been made."); 
+		BreakpointVariables.setArenaSelection(true);
 	}
 	
 	public void matchCountDown(String firstTeamName, String secondTeamName)
@@ -847,7 +1116,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("Sorted element " + i + ": " + checkIfSorted[i]); 
 		}
 		//watch.startWatch(); 
-		
+		LoggingStorage.getLogger().log(Level.INFO, "Match countdown for both teams versing one another completed."); 
+		BreakpointVariables.setMatchCountDown(true);
 	}
 	
 	public int countSpectators()
@@ -924,7 +1194,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	public void beginMatch()
 	{
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Match between " + retrieveFirstTeamName + " and " + retrieveSecondTeamName + "has begun."); 
+		System.out.println("Match between " + retrieveFirstTeamName + " and " + retrieveSecondTeamName + " has begun."); 
 		System.out.println("We now spin a wheel to decide who starts first. We will do this "
 				+ "the traditional way.");
 		System.out.println("Heads or Tails Style."); 
@@ -950,6 +1220,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 			Thread th = new Thread(new Team2Runnable()); 
 			th.start(); 
+		}
+
+		if(BreakpointVariables.getMatchBegins() == false) {
+			LoggingStorage.getLogger().log(Level.INFO, "The match has begun."); 
+			BreakpointVariables.setMatchBegins(true); 
 		}
 	}
 	
