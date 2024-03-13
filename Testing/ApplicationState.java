@@ -10,6 +10,7 @@ public class ApplicationState<T> implements Serializable {
   public ApplicationState(T data, String STATE_FILE_PATH) {
     this.data = data; 
     this.STATE_FILE_PATH = STATE_FILE_PATH;
+    this.lookIntoData();
   }
 
   public T getData() {
@@ -22,6 +23,12 @@ public class ApplicationState<T> implements Serializable {
 
   public String getFilePath() {
     return this.STATE_FILE_PATH;
+  }
+
+  public void lookIntoData() {
+    if(data instanceof Object) {
+      System.out.println("Data associated with state: " + data); 
+    }
   }
 
 

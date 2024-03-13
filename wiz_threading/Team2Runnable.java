@@ -26,7 +26,6 @@ public class Team2Runnable implements Runnable {
          th.start(); 
       }
     }
-    
   }
 
   public static boolean messagesCompleted()

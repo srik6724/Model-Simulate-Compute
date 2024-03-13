@@ -1,5 +1,7 @@
 package wizPackage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.CallableStatement;
@@ -17,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -64,6 +67,7 @@ import Testing.StatePersistence;
 import Variables.BreakpointVariables;
 import dataStructures.Element;
 import deckBuild.DarkmoorDeck;
+import io.netty.channel.unix.Buffer;
 import javafx.application.Application;
 public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
 
@@ -72,15 +76,21 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	// Store application states
 	private static Queue<ApplicationState<Object>> q = new LinkedList<>(); 
 
-	//Arrays to store information about the firstTeam and secondTeam. 
+	// Read from the files team_1_information.txt and team_2_information.txt
+	String line_curr = ""; 
+	File team1 = new File("team_1_information.txt"); 
+	File team2 = new File("team_2_information.txt");
+
+	// Arrays to store information about the firstTeam and secondTeam. 
 	int teamSize; 
-	private static String[] team; 
+	private static String[] team;
 	private static String[] teamLevels; 
-	private static String[] teamSchools; 
+	private static String[] teamSchools;
 	private static List<List<String>> teamPlayers = new ArrayList<List<String>>(); 
+	private static List<List<String>> schoolsOfTeam = new ArrayList<List<String>>(); 
+	private static HashMap<String, String> playerAssociationToSchool = new HashMap<String, String>();  
 	private static HashMap<String, List<String>> gearSets = new HashMap<String, List<String>>(); 
 
-	// File Path static Names
 	private String gameModePath = "gameMode.ser"; 
 	private String nameOfTeamPath = "nameOfTeam.ser"; 
 	private String playerNamesPath = "playerNames.ser"; 
@@ -140,7 +150,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		String[] teamStr = {"First", "Second"};  
 		for(int i = 0; i < 2; i++)
 		{
-			enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered);
+			if(i == 0) {
+				enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered, team1);
+			}
+			else if(i == 1) {
+				enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered, team2);
+			}
 		}
 		System.out.println(retrieveFirstTeamName + " will be competing against " + retrieveSecondTeamName); 
 		if(BreakpointVariables.getArenaSelection() == true) {
@@ -462,6 +477,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				}
 			}
 		}
+		List<String> identitiesOfTeam = new ArrayList<String>(); 
+		for(int i = 0; i < teamSchools.length; i++) {
+			System.out.println("School here: " + teamSchools[i]);
+			identitiesOfTeam.add(teamSchools[i]); 
+		}
+		schoolsOfTeam.add(identitiesOfTeam);
 		System.out.println();
 		System.out.println(); 
 		System.out.println(); 
@@ -474,9 +495,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 
 	void selectPlayerLevelsForTeam() {
-		boolean checkPlayerLevels = true; 
-
-		while(checkPlayerLevels)
+		// boolean checkPlayerLevels = true; 
+		for(int i = 0; i < teamLevels.length; i++) {
+			System.out.println("Added " + teamLevels[i] + " level of " + "player " + team[i]); 
+		}
+		/*while(checkPlayerLevels)
 		{
 			for(int i = 0; i < teamSize; i++)
 			{
@@ -498,7 +521,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 					checkPlayerLevels = false;
 				}
 			}
-		}
+		}*/
 		LoggingStorage.getLogger().log(Level.INFO, "Levels for each player on team selected."); 
 		BreakpointVariables.setPlayerLevels(true);  
 		playerLevelsState = new ApplicationState<Object>(Match.teamLevels, playerLevelsPath); 
@@ -515,7 +538,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("We humbly request it is done in this order as we would hope to avoid any technical "
 				+ "issues on our end for registering all teams. Thank you! "); 
 		
-		while(checkPlayerNames)
+		/*while(checkPlayerNames)
 		{
 			for(int i = 0; i < teamSize; i++)
 			{
@@ -533,10 +556,15 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 					team[i] = player;  
 				}
 			}
+		}*/
+		List<String> playersOnTeam = new ArrayList<String>(); 
+		System.out.println("Team Length: " + team.length); 
+		for(int i = 0; i < team.length; i++) {
+			System.out.println(team[i]);
+			playersOnTeam.add(team[i]); 
 		}
-
-		Match.teamPlayers.add(Arrays.asList(team));
-		playerNamesState = new ApplicationState<Object>(Match.teamPlayers, playerNamesPath);
+		teamPlayers.add(playersOnTeam); 
+		playerNamesState = new ApplicationState<Object>(teamPlayers, playerNamesPath);
 		q.add(playerNamesState); 
 		LoggingStorage.getLogger().log(Level.INFO, "Player Names selected for players on team");
 		BreakpointVariables.setPlayerNames(true); 
@@ -554,10 +582,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return teamName;
 	}
 	
-	void gameModeSelection() throws InterruptedException {
+	void gameModeSelection(String line_curr) throws InterruptedException {
 		Scanner sc = new Scanner(System.in); 
 		boolean iterate = true; 
-		String gameMode = ""; 
+		String gameMode = line_curr; 
 		while(iterate)
 		{
 			System.out.println("Select the game mode you intend to play."); 
@@ -573,7 +601,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("----------------4v4----------------------");
 			Thread.sleep(1000);  
 			System.out.println("Choose which one to play based on those options."); 
-			gameMode = sc.nextLine(); 
+			/*gameMode = sc.nextLine(); 
 			if(isNumeric(gameMode))
 			{
 				System.out.println("Not a valid input entered for game mode: " + gameMode); 
@@ -586,29 +614,30 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				iterate = true; 
 				continue; 
 			}
-			System.out.println("Game Mode selection chosen is " + gameMode); 
-			if(gameMode.equals("1v1"))
+			System.out.println("Game Mode selection chosen is " + gameMode); */
+			if(gameMode.contains("1v1"))
 			{
 				teamSize = _1v1_.teamSize(); 
 				team = new String[teamSize]; 
 				teamLevels = new String[teamSize]; 
 				teamSchools = new String[teamSize]; 
+				System.out.println("Team Size Value Set Here: " + teamSize); 
 			}
-			else if(gameMode.equals("2v2"))
+			else if(gameMode.contains("2v2"))
 			{
 				teamSize = _2v2_.teamSize(); 
 				team = new String[teamSize]; 
 				teamLevels = new String[teamSize]; 
 				teamSchools = new String[teamSize]; 
 			}
-			else if(gameMode.equals("3v3"))
+			else if(gameMode.contains("3v3"))
 			{
 				teamSize = _3v3_.teamSize(); 
 				team = new String[teamSize]; 
 				teamLevels = new String[teamSize]; 
 				teamSchools = new String[teamSize];
 			}
-			else if(gameMode.equals("4v4"))
+			else if(gameMode.contains("4v4"))
 			{
 				teamSize = _4v4_.teamSize(); 
 				team = new String[teamSize]; 
@@ -617,6 +646,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 			break; 
 		}
+		System.out.println("Game-mode selection chosen is: " + gameMode); 
 		LoggingStorage.getLogger().log(Level.INFO, "Game-mode selection completed."); 
 		BreakpointVariables.setGameModeSelection(true);  
 		gameModeState = new ApplicationState<Object>(gameMode, gameModePath); 
@@ -625,21 +655,24 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		q.add(gameModeState); 
 	}
 	
-	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered) throws InterruptedException
+	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered, File teamFile) throws InterruptedException
 	{
+		try (BufferedReader reader = new BufferedReader(new FileReader(teamFile))) {
 		if(BreakpointVariables.getGameModeSelection() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
 			System.out.println("Re-execute game mode selection again? Y or N"); 
 			String input = sc.nextLine(); 
 			if(input.equals("Y")) {
 				BreakpointVariables.setGameModeSelection(false);
-				gameModeSelection();
+				line_curr = reader.readLine();
+				gameModeSelection(line_curr);
 			}
 			else {
 				System.out.println("Testing the load state function. Accessing the queue");
 				gameModeState = pollQueue(gameModePath); 
 			}
 		} else {
-			gameModeSelection();
+			line_curr = reader.readLine();
+			gameModeSelection(line_curr);
 		}
 
 		String retrieveTeamName; 
@@ -654,8 +687,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 		}
 		else {
-			retrieveTeamName = selectTeamName(str);
-			System.out.println("Team Name chosen is: " + retrieveTeamName); 
+			//retrieveTeamName = selectTeamName(str);
+			System.out.println("Select your team name."); 
+			retrieveTeamName = reader.readLine();
+			System.out.println("Team Name chosen is: " + retrieveTeamName.replace("Team Name:", "")); 
 		}
 
 		if(BreakpointVariables.getPlayerNames() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
@@ -667,6 +702,18 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 		}
 		else {
+			// Collecting the player names
+			System.out.println("Team Size: " + teamSize); 
+			for(int i = 0; i < teamSize; i++) {
+				String playerName = reader.readLine();
+				System.out.println("Player Name Read: " + playerName); 
+				if(playerName.contains("Player " + (i+1) + " Name: ")) {
+					String x = "Player " + (i+1) + " Name: "; 
+					playerName = playerName.replace(x, ""); 
+					//System.out.println("Player Name: " + playerName);
+					team[i] = playerName; 
+				}
+			}
 			selectPlayerNamesForTeam();
 		}
 
@@ -679,6 +726,14 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 		}
 		else {
+			for(int i = 0; i < teamSize; i++) {
+				String levelOfPlayer = reader.readLine();
+				if(levelOfPlayer.contains("Player " + (i+1) + " Level: ")){
+					String x = "Player " + (i+1) + " Level: "; 
+					levelOfPlayer = levelOfPlayer.replace(x, ""); 
+					teamLevels[i] = levelOfPlayer;
+				}
+			}
 			selectPlayerLevelsForTeam();
 		}
 
@@ -702,6 +757,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				createPlayerDecks(flag); 
 			}
 		} else {
+			BreakpointVariables.setPlayerDecks(false);
 			boolean flag = BreakpointVariables.getPlayerDecks(); 
 			createPlayerDecks(flag); 
 		}
@@ -733,6 +789,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		else {
 			setPlayerOrder(); 
 		}
+	} catch(IOException e) {
+		e.printStackTrace();
+	}
 	}
 
 	private ApplicationState<Object> pollQueue(String pathName) {
@@ -1086,6 +1145,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 		LoggingStorage.getLogger().log(Level.INFO, "Arena selection has been made."); 
 		BreakpointVariables.setArenaSelection(true);
+		// Storing arenaName
+		arenaSelectionState = new ApplicationState<Object>(arenaName, arenaSelectionPath);
+		q.add(arenaSelectionState); 
 	}
 	
 	public void matchCountDown(String firstTeamName, String secondTeamName)
@@ -1118,6 +1180,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		//watch.startWatch(); 
 		LoggingStorage.getLogger().log(Level.INFO, "Match countdown for both teams versing one another completed."); 
 		BreakpointVariables.setMatchCountDown(true);
+		matchCountDownState = new ApplicationState<Object>("Place-holder to store match state", matchCountDownPath);
+		q.add(matchCountDownState);
 	}
 	
 	public int countSpectators()
@@ -1173,7 +1237,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			String retrieveKey = firstTeam[i]; //Cowan Shadowsteed
 			
 			//Store the index i in variable j
-			int j = i - 1;  //0
+			int j = i - 1;  // 0
 			
 			//Compare the first Character to the second character
 			while(j >= 0 && retrieveKey.compareTo(firstTeam[j]) < 0) 
@@ -1211,6 +1275,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			
 			Thread th = new Thread(new Team1Runnable());
 			th.start(); 
+			matchBeginsState = new ApplicationState<Object>(th, matchBeginsPath);
+			q.add(matchBeginsState); 
 		}
 		else if(inputAnswer.equals(input2))
 		{
@@ -1220,108 +1286,134 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 			Thread th = new Thread(new Team2Runnable()); 
 			th.start(); 
+			matchBeginsState = new ApplicationState<Object>(th, matchBeginsPath);
+			q.add(matchBeginsState); 
 		}
-
-		if(BreakpointVariables.getMatchBegins() == false) {
-			LoggingStorage.getLogger().log(Level.INFO, "The match has begun."); 
-			BreakpointVariables.setMatchBegins(true); 
-		}
+		LoggingStorage.getLogger().log(Level.INFO, "The match has begun."); 
+		BreakpointVariables.setMatchBegins(true); 
 	}
 	
 	public static void startRound(int index)
 	{
 		System.out.println("This is a round casted of our match between team1 and team2"); 
 
-		for(int i = 0; i < teamPlayers.get(index).size(); i++)
-		{
-			System.out.println("Player " + teamPlayers.get(index).get(i) + ": Choose your card."); 
-			System.out.println("The following seven cards have been generated."); 
-		  Element[] sevenCards = generateSevenCards(index, i+1); 
-			System.out.println("Printing out the seven cards.");
-			
-			for(int j = 0; j < sevenCards.length; j++)
-			{
-				System.out.println("Card " + (j+1) + ": " + "{ "); 
-				System.out.println("Name Of Spell: " + sevenCards[j].getSpellName()); 
-				System.out.println("Pips Of Spell: " + sevenCards[j].getPips()); 
-				System.out.println("Pip Chance Of Spell: " + sevenCards[j].getPipChance()); 
-				System.out.println("Type Of Spell: " + sevenCards[j].getTypeSpell()); 
-				System.out.println("Count Of Spell: " + sevenCards[j].getCount()); 
-				System.out.println("Description Of Spell: " + sevenCards[j].getDescription()); 
-				System.out.println("}");
-			}
-			Scanner sc = new Scanner(System.in); 
-			boolean iterate = true; 
-			while(iterate)
-			{
-				System.out.println("Select a card to cast out of the 7 listed.");
-				System.out.println("Make sure to spell the card correctly.");
-				String cardSelected = sc.nextLine();
-				if(!sc.hasNextLine())
-				{
-					sc.close(); 
+		System.out.println("Team Players Size: " + teamPlayers.size()); 
+
+		int playerIndex = 0;
+		int schoolIndex = 0;
+		String playerPerson = ""; 
+		for(List<String> players: teamPlayers) {
+			for(int i = 0; i < players.size(); i++) {
+				// Extract player name here
+				if(i == playerIndex) {
+					playerPerson = players.get(i); 
+					System.out.println("Player to be inserted is: " + playerPerson); 
 				}
-				for(int z = 0; z < sevenCards.length; z++)
-				{
-					if(cardSelected.equals(sevenCards[z].getSpellName()))
-					{
-						iterate = false; 
-						int count = sevenCards[z].getCount();
-						for(String wizard: decks.keySet())
-						{
-							if(wizard.equals(teamPlayers.get(index).get(i)))
-							{
-								decks.get(wizard).get(index).removeIf(
-								n -> (n.getSpellName() == cardSelected && n.getCount() == count)
-							); 
-							System.out.println("Removed card: " + cardSelected); 
+				else {
+					break;
+				}
+				for(List<String> schools: schoolsOfTeam) {
+					for(int j = 0; j < schools.size(); j++) {
+						if(j == schoolIndex) {
+							String school = schools.get(j); 
+							System.out.println("School to be inserted is: " + school); 
+							playerAssociationToSchool.put(playerPerson, school); 
 							break;
+						}
+					}
+				}
+				playerIndex++; 
+			}
+		}
+
+		for(String player: playerAssociationToSchool.keySet()) {
+			System.out.println("Player " + player + ": Select a card.");
+			System.out.println("The following seven cards have been generated."); 
+			Element[] sevenCards = generateSevenCards(playerAssociationToSchool.get(player), index); 
+			System.out.println("Printing out the seven cards.");
+			for(int z = 0; z < sevenCards.length; z++)
+			{
+				System.out.println("Card " + (z+1) + ": " + "{ "); 
+				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
+				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
+				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
+				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
+				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
+				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
+				System.out.println("}"); 
+			}
+				/*Scanner sc = new Scanner(System.in); 
+				boolean iterate = true; 
+				while(iterate)
+				{
+					System.out.println("Select a card to cast out of the 7 listed.");
+					System.out.println("Make sure to spell the card correctly.");
+					String cardSelected = sc.nextLine();
+					if(!sc.hasNextLine())
+					{
+						sc.close(); 
+					}
+					for(int z = 0; z < sevenCards.length; z++)
+					{
+						if(cardSelected.equals(sevenCards[z].getSpellName()))
+						{
+							iterate = false; 
+							int count = sevenCards[z].getCount();
+							for(String wizard: decks.keySet())
+							{
+								if(wizard.equals(player))
+								{
+									decks.get(wizard).get(index).removeIf(
+									n -> (n.getSpellName() == cardSelected && n.getCount() == count)
+								); 
+								System.out.println("Removed card: " + cardSelected); 
+								break;
+								}
 							}
 						}
+						else 
+						{
+							iterate = true; 
+							continue; 
+						}
+						break;
+					}
+					if(iterate == false)
+					{
+						break;
 					}
 					else 
 					{
-						iterate = true; 
-						continue; 
+						System.out.println("Sorry, could not find the card found. Either was misspelled, or it just doesn't exist."); 
 					}
-					break;
-				}
-				if(iterate == false)
-				{
-					break;
-				}
-				else 
-				{
-					System.out.println("Sorry, could not find the card found. Either was misspelled, or it just doesn't exist."); 
-				}
-			}
+				}*/
 		}
-	}
+}
 	
-private static Element[] generateSevenCards(int index, int playerNo) {
+private static Element[] generateSevenCards(String school, int index) {
 
 	Element[] sevenCards = new Element[7]; 
 
-	for(String wizard: decks.keySet())
-	{
-		int card1Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
-		int card2Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
-		int card3Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
-		int card4Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
-		int card5Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size());
-		int card6Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
-		int card7Index = (int) (Math.random() * decks.get(wizard).get(playerNo-1).size()); 
+	System.out.println("School: " + school); 
+	//System.out.println("Deck Size for wizard " + index + ": " + decks.get(school).get(index).size()); 
+
+	System.out.println("Index: " + index); 
+
+	int card1Index = (int) (Math.random() * decks.get(school).get(index).size()); 
+	int card2Index = (int) (Math.random() * decks.get(school).get(index).size()); 
+	int card3Index = (int) (Math.random() * decks.get(school).get(index).size()); 
+	int card4Index = (int) (Math.random() * decks.get(school).get(index).size()); 
+	int card5Index = (int) (Math.random() * decks.get(school).get(index).size());
+	int card6Index = (int) (Math.random() * decks.get(school).get(index).size()); 
+	int card7Index = (int) (Math.random() * decks.get(school).get(index).size()); 
 		
-		sevenCards[0] = decks.get(wizard).get(playerNo-1).get(card1Index);
-		sevenCards[1] = decks.get(wizard).get(playerNo-1).get(card2Index); 
-		sevenCards[2] = decks.get(wizard).get(playerNo-1).get(card3Index); 
-		sevenCards[3] = decks.get(wizard).get(playerNo-1).get(card4Index); 
-		sevenCards[4] = decks.get(wizard).get(playerNo-1).get(card5Index); 
-		sevenCards[5] = decks.get(wizard).get(playerNo-1).get(card6Index);
-		sevenCards[6] = decks.get(wizard).get(playerNo-1).get(card7Index); 
-		
-		break;
-	}
+	sevenCards[0] = decks.get(school).get(index).get(card1Index);
+	sevenCards[1] = decks.get(school).get(index).get(card2Index); 
+	sevenCards[2] = decks.get(school).get(index).get(card3Index); 
+	sevenCards[3] = decks.get(school).get(index).get(card4Index); 
+	sevenCards[4] = decks.get(school).get(index).get(card5Index); 
+	sevenCards[5] = decks.get(school).get(index).get(card6Index);
+	sevenCards[6] = decks.get(school).get(index).get(card7Index); 
 
 	return sevenCards;
 }

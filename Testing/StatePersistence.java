@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import wizPackage.Match;
-
 public class StatePersistence {
   /*
    * Creating class methods for usage in StatePersistence class
