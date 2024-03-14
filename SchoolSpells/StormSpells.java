@@ -1,5 +1,6 @@
 package SchoolSpells;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -22,7 +23,7 @@ public class StormSpells {
 	private List<List<Element>> fullDeck; 
 	public ArrayList<Spell> stormSpells = new ArrayList<Spell>(); 
 	
-	StormSpells(int selectionNo)
+	StormSpells(int selectionNo) throws IOException
 	{
 		Connection conn1 = null;
         try {
@@ -93,7 +94,7 @@ public class StormSpells {
 		return stormSpells; 
 	}
 
-	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException, IOException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 

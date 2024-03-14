@@ -1,5 +1,6 @@
 package SchoolSpells;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class DeathSpells {
 	
 	public ArrayList<Spell> deathSpells = new ArrayList<Spell>(); 
 	
-	DeathSpells(int selectionNo)
+	DeathSpells(int selectionNo) throws IOException
 	{
 		Connection conn1 = null;
         try {
@@ -87,7 +88,7 @@ public class DeathSpells {
 		return deathSpells; 
 	}
 
-	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException, IOException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -166,7 +167,7 @@ public class DeathSpells {
 		System.out.println(count + "/" + capacity + name + "found."); 
 	}
 	
-	public static void main(String[]args)
+	public static void main(String[]args) throws IOException
 	{
 		new DeathSpells(1); 
 	}

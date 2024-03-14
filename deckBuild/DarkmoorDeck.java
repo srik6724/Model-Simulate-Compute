@@ -1,5 +1,6 @@
 package deckBuild;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +15,7 @@ import Credentials.WizCredentials;
 import CustomExceptions.EmptyStringException;
 import CustomExceptions.TypeException;
 import SchoolSpells.Spell;
+import wizPackage.Match;
 
 public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	private static Spell[] mainDeck; 
@@ -23,9 +25,27 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	private String collectIdentity; 
 	String tcDeckType = "tcDeck"; 
 	String mainDeckType = "mainDeck"; 
+
+	Scanner sc = new Scanner(System.in);
+
+	private boolean scannerInUse = false; 
+	private boolean fileInUse = false; 
+	private boolean initialFixIteration = true; 
+
+	private void setInput(boolean temp, String input) {
+		if(input.equals("file")) {
+			this.fileInUse = temp; 
+		}
+		else if(input.equals("scanner")) {
+			this.scannerInUse = temp;
+		}
+	}
 	
-	public DarkmoorDeck(String identity)
+	public DarkmoorDeck(String identity) throws IOException, InterruptedException
 	{
+		System.out.println("File or Scanner for deck configuration? Select file or scanner.");
+		String input = sc.nextLine(); 
+		setInput(true, input); 
 		System.out.println(identity);
 		collectIdentity = identity; 
 		String retrieveDeckName = DarkmoorDeckName(collectIdentity);
@@ -33,6 +53,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		mainDeck = fillMainDeck();
 		tcDeck = fillTcDeck(); 
 		DarkmoorDeck.decksMade++; 
+		sc.close(); 
 	}
 	
 	public String DarkmoorDeckName(String identity)
@@ -84,10 +105,9 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		return tcDeck;
 	}
 	
-	public Spell[] fillTcDeck()
+	public Spell[] fillTcDeck() throws IOException, InterruptedException
 	{
 		String label = "tcDeck"; 
-		Scanner sc = new Scanner(System.in);
 		List<Spell> spellList = new ArrayList<Spell>(); 
 		int retrieveCapacity = TreasureCardSideDeck.capacityOfDarkmoorDeck(tcDeckType); 
 		String spellInput = ""; 
@@ -98,7 +118,23 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		while(check && i < retrieveCapacity)
 		{
 			System.out.println("Select a spell to place inside your tc deck."); 
-			spellInput = sc.nextLine(); 
+
+			if(this.scannerInUse == true) {
+				spellInput = sc.nextLine();
+			}
+
+			if(this.fileInUse == true) {
+				if(initialFixIteration) {
+					Match.getBufferReader().readLine();
+					Match.getBufferReader().readLine();
+					initialFixIteration = false; 
+				}
+				spellInput = Match.getBufferReader().readLine();
+				spellInput = spellInput.trim();
+				System.out.println("Spell Input Read Here: " + spellInput);  
+				Thread.sleep(1000); 
+			}
+
 			if(spellInput instanceof String)
 			{
 				Spell spell = retrieveSpell(spellInput, spellList, label); 
@@ -127,7 +163,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		return spellList.toArray(new Spell[spellList.size()]); 
 	}
 	
-	private Spell countSpell(List<Spell> spellList, HashMap<String, Integer> countOfEachSpell2, String spellName) {
+	private Spell countSpell(List<Spell> spellList, HashMap<String, Integer> countOfEachSpell2, String spellName) throws InterruptedException {
 		Spell spell = null; 
 		for(int i = 0; i < spellList.size(); i++)
 		{
@@ -143,12 +179,14 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				return spellList.get(i); 
 			}
 		}
+		Thread.sleep(1000); 
 		System.out.println("Occurrence of spell never located: " + spellName); 
+		Thread.sleep(1000); 
 		countOfEachSpell2.put(spellName, 1);
 		return spell; 
 	}
 
-	public Spell[] fillMainDeck()
+	public Spell[] fillMainDeck() throws IOException, InterruptedException
 	{
 		String label = "mainDeck"; 
 		Scanner sc = new Scanner(System.in);
@@ -162,7 +200,24 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		while(check && i < retrieveCapacity)
 		{
 			System.out.println("Select a spell to place inside your main deck."); 
-			spellInput = sc.nextLine(); 
+			Thread.sleep(1000); 
+
+			if(this.scannerInUse == true) {
+				spellInput = sc.nextLine();
+			}
+
+			if(this.fileInUse == true) {
+				if(initialFixIteration) {
+					Match.getBufferReader().readLine();
+					Match.getBufferReader().readLine();
+					initialFixIteration = false; 
+				}
+				spellInput = Match.getBufferReader().readLine();
+				System.out.println("Spell Input Read Here: " + spellInput);  
+				spellInput = spellInput.trim(); 
+				Thread.sleep(1000); 
+			}
+
 			if(spellInput instanceof String)
 			{
 				Spell spell = retrieveSpell(spellInput, spellList, label); 
@@ -173,8 +228,10 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 						spellList.add(spell); 
 					}
 					System.out.println("The following spell has been added: " + spell.getName()); 
+					Thread.sleep(1000); 
 					i = i + 1; 
 					System.out.println(i + "/" + retrieveCapacity + " spells added.");
+					Thread.sleep(1000); 
 					check = true;
 				} 
 				else 
@@ -188,6 +245,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 				check = true; 
 			}	
 		}
+		initialFixIteration = true; 
 		return spellList.toArray(new Spell[spellList.size()]); 
 	}
 
@@ -196,7 +254,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		return mainDeck;
 	}
 	
-	public Spell retrieveSpell(String spellInput, List<Spell> spellList, String label)
+	public Spell retrieveSpell(String spellInput, List<Spell> spellList, String label) throws InterruptedException
 	{
 		if(!(spellInput instanceof String))
 		{
@@ -270,6 +328,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 										}
 									}
 									System.out.println("Current Count: " + currentCount); 
+									//Thread.sleep(1000); 
 									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school, school_typeSpell); 
 								}
 							}
@@ -300,6 +359,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 										}
 									}
 									System.out.println("Current Count: " + currentCount); 
+									//Thread.sleep(1000); 
 									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school, school_typeSpell); 
 								}
 							}
@@ -322,6 +382,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 										}
 									}
 									System.out.println("Current Count: " + currentCount); 
+									//Thread.sleep(1000); 
 									createSpell = new Spell(name, level, description, pip_chance, pips, currentCount, school, school_typeSpell); 
 								}
 							}

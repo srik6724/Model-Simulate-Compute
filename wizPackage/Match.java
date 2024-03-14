@@ -144,17 +144,30 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 	private static int countTeamsRegistered = 1; 
 	private static int firstIteration = 1; 
+
+	// Creating the buffer reader
+	private static BufferedReader reader; 
+
+	private void setBufferReader(File teamFile) throws IOException {
+		reader = new BufferedReader(new FileReader(teamFile)); 
+	}
+
+	public static BufferedReader getBufferReader() {
+		return reader;
+	}
 	
-	public void enroll2Teams() throws InterruptedException
+	public void enroll2Teams() throws InterruptedException, IOException
 	{
 		String[] teamStr = {"First", "Second"};  
 		for(int i = 0; i < 2; i++)
 		{
 			if(i == 0) {
-				enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered, team1);
+				setBufferReader(team1);
+				enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered);
 			}
 			else if(i == 1) {
-				enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered, team2);
+				setBufferReader(team2);
+				enrollTeamPlayers(teamStr[i], firstIteration, countTeamsRegistered);
 			}
 		}
 		System.out.println(retrieveFirstTeamName + " will be competing against " + retrieveSecondTeamName); 
@@ -382,7 +395,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		q.add(playerStatsState); 
 	}
 
-	void createPlayerDecks(boolean flag) {
+	void createPlayerDecks(boolean flag) throws IOException {
 		System.out.println("You are now clear to now create a deck for each player on your team."); 
 		if(flag == false) {
 			for(int i = 0; i < teamSize; i++)
@@ -437,7 +450,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		q.add(playerDecksState); 
 	}
 
-	void selectPlayerIdentitiesForTeam() {
+	void selectPlayerIdentitiesForTeam() throws InterruptedException {
 		System.out.println("Success, now proceed to write down each of the school identities of the players."); 
 		System.out.println(); 
 		System.out.println(); 
@@ -447,9 +460,17 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				+ "Ice, Fire, Death, Balance, Life, Myth, and Storm."
 				+ "Any other schools will not be accepted.");
 		
+		Thread.sleep(1000); 
+
+		System.out.println("Reading the player identities.");
+
+		for(int i = 0; i < teamSchools.length; i++) {
+			System.out.println("Player " + (i+1) + " School: " + teamSchools[i]); 
+		}
+
 		// Create a method for the player identities
 
-		boolean checkIdentities = true; 
+		/* boolean checkIdentities = true; 
 		while(checkIdentities)
 		{
 			for(int i = 0; i < teamSize; i++)
@@ -491,7 +512,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		LoggingStorage.getLogger().log(Level.INFO, "Player Schools set for each player on team");
 		BreakpointVariables.setPlayerSchools(true);
 		playerSchoolsState = new ApplicationState<Object>(teamSchools, playerSchoolsPath);
-		q.add(playerSchoolsState); 
+		q.add(playerSchoolsState); */
 	}
 
 	void selectPlayerLevelsForTeam() {
@@ -655,15 +676,14 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		q.add(gameModeState); 
 	}
 	
-	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered, File teamFile) throws InterruptedException
+	public void enrollTeamPlayers(String str, int firstIteration, int countTeamsRegistered) throws InterruptedException, IOException
 	{
-		try (BufferedReader reader = new BufferedReader(new FileReader(teamFile))) {
 		if(BreakpointVariables.getGameModeSelection() == true && BreakpointVariables.getBothTeamsRegistered() == true) {
 			System.out.println("Re-execute game mode selection again? Y or N"); 
 			String input = sc.nextLine(); 
 			if(input.equals("Y")) {
 				BreakpointVariables.setGameModeSelection(false);
-				line_curr = reader.readLine();
+				line_curr = Match.getBufferReader().readLine();
 				gameModeSelection(line_curr);
 			}
 			else {
@@ -671,7 +691,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				gameModeState = pollQueue(gameModePath); 
 			}
 		} else {
-			line_curr = reader.readLine();
+			line_curr = Match.getBufferReader().readLine();
 			gameModeSelection(line_curr);
 		}
 
@@ -745,6 +765,14 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				selectPlayerIdentitiesForTeam(); 
 			}
 		} else {
+			for(int i = 0; i < teamSize; i++) {
+				String schoolOfPlayer = reader.readLine(); 
+				if(schoolOfPlayer.contains("Player " + (i+1) + " School: ")) {
+					String x = "Player " + (i+1) + " School: "; 
+					schoolOfPlayer = schoolOfPlayer.replace(x, ""); 
+					teamSchools[i] = schoolOfPlayer;
+				}
+			}
 			selectPlayerIdentitiesForTeam(); 
 		}
 
@@ -789,11 +817,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		else {
 			setPlayerOrder(); 
 		}
-	} catch(IOException e) {
-		e.printStackTrace();
-	}
-	}
-
+	} 
 	private ApplicationState<Object> pollQueue(String pathName) {
 		return q.stream()
 					 .filter(state -> state.getFilePath().equals(pathName))
@@ -869,7 +893,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return gearItems;
 	}
 
-	private HashMap<String, List<List<Element>>> createDeck(String str, int deckNo) {
+	private HashMap<String, List<List<Element>>> createDeck(String str, int deckNo) throws IOException {
 		
 		new schoolSpells(str); 
 		

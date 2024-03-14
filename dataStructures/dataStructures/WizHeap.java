@@ -259,7 +259,7 @@ public class WizHeap {
 		return elements; 
 	}
 
-	public List<List<Element>> selectYESOption(String identity, String input, int selectionNo) throws InterruptedException
+	public List<List<Element>> selectYESOption(String identity, String input, int selectionNo) throws InterruptedException, IOException
 	{
 		Scanner sc = new Scanner(System.in); 
 		Spell[] mainDeck;

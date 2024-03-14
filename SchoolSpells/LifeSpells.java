@@ -1,5 +1,6 @@
 package SchoolSpells;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class LifeSpells {
 
 	public ArrayList<Spell> lifeSpells = new ArrayList<Spell>(); 
 	
-	LifeSpells(int selectionNo)
+	LifeSpells(int selectionNo) throws IOException
 	{
 		Connection conn1 = null;
         try {
@@ -82,7 +83,7 @@ public class LifeSpells {
 		return lifeSpells; 
 	}
 
-	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<List<Element>> anotherDefaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException, IOException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -183,7 +184,7 @@ public class LifeSpells {
 		System.out.println(count + "/" + capacity + name + "found."); 
 	}
 	
-	public static void main(String[]args)
+	public static void main(String[]args) throws IOException
 	{
 	 //FireSpells spells = new FireSpells(); 
 	 new LifeSpells(0); 

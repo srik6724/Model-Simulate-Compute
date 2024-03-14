@@ -1,5 +1,6 @@
 package SchoolSpells;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class schoolSpells {
 	public static int stormIndex; 
 	public static int fireIndex; 
 	
-	public schoolSpells(String school)
+	public schoolSpells(String school) throws IOException
 	{
 		System.out.println(school); 
 		switch(school.toLowerCase())

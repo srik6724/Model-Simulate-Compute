@@ -1,5 +1,6 @@
 package SchoolSpells;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class BalanceSpells {
 	
 	public ArrayList<Spell> balanceSpells = new ArrayList<Spell>(); 
 	
-	BalanceSpells(int selectionNo)
+	BalanceSpells(int selectionNo) throws IOException
 	{
 		Connection conn1 = null;
         try {
@@ -106,7 +107,7 @@ public class BalanceSpells {
 		return balanceSpells; 
 	}
 
-	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException
+	public List<Map<String, List<String>>> defaultDeck(ArrayList<Spell>spells, int selectionNo) throws InterruptedException, IOException
 	{
 		String input; 
 		Scanner sc = new Scanner(System.in); 
@@ -126,7 +127,7 @@ public class BalanceSpells {
 		return null;
 	}
 
-	public List<List<Element>> customDeck(ArrayList<Spell>spells, String input, int selectionNo) throws InterruptedException
+	public List<List<Element>> customDeck(ArrayList<Spell>spells, String input, int selectionNo) throws InterruptedException, IOException
 	{
 		List<List<Element>> fullDeck = new WizHeap().selectYESOption("Balance", "YES", selectionNo); 
 		return fullDeck;
