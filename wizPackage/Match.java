@@ -270,7 +270,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		countTeamsRegistered++; 
 	}
 
-	void setPlayerStats() {
+	void setPlayerStats() throws NumberFormatException, IOException {
 		System.out.println("The next step will involve player stats to be recorded of every individual."); 
 		System.out.println("This is expected to take around 10-15 minutes in total, so please be patient."); 
 		int iter = 4; 
@@ -604,7 +604,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 	
 	void gameModeSelection(String line_curr) throws InterruptedException {
-		Scanner sc = new Scanner(System.in); 
 		boolean iterate = true; 
 		String gameMode = line_curr; 
 		while(iterate)
@@ -1281,7 +1280,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	
 	public void beginMatch()
 	{
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Match between " + retrieveFirstTeamName + " and " + retrieveSecondTeamName + " has begun."); 
 		System.out.println("We now spin a wheel to decide who starts first. We will do this "
 				+ "the traditional way.");
@@ -1472,7 +1470,7 @@ public String randomizeHeadsOrTails()
 		return false; 
 	}
 	
-	public String computePlayerInformation(String wizard, String school, int level, HashMap<Integer, List<String>> keywords, int count)
+	public String computePlayerInformation(String wizard, String school, int level, HashMap<Integer, List<String>> keywords, int count) throws IOException
 	{
 		System.out.println("Inside computePlayerInformation Method."); 
 
@@ -1613,22 +1611,21 @@ public String randomizeHeadsOrTails()
 		return createNewString; 
 	}
 
-	public Object instantiateGearPiece(String gearName, String school, int level, StringBuilder extractGearType)
+	public Object instantiateGearPiece(String gearName, String school, int level, StringBuilder extractGearType) throws IOException
 	{
-		String hatName; 
-		String robeName; 
-		String bootName; 
-		String wandName;
-		String athameName; 
-		String amuletName; 
-		String ringName; 
-		String deckName; 
-		String petName; 
+		String hatName = new String(); 
+		String robeName = new String(); 
+		String bootName = new String(); 
+		String wandName = new String(); 
+		String athameName = new String(); 
+		String amuletName = new String(); 
+		String ringName = new String(); 
+		String deckName = new String(); 
+		String petName = new String(); 
+
+		final String temp; 
 
 		String[] jadeGear = {"Sword Of Kings", "Stone Of The Other Side", "Pepper Grass Blade", "Celestian Sliver Of Power", "Ring Of The Dying Star"}; 
-
-
-		Scanner sc = new Scanner(System.in); 
 	
 		System.out.println("Please try to space out each word to ensure name of gear inputted can be fixed if written incorrectly."); 
 		System.out.println("If you happen to fail to follow these instructions, you will be redirected back to the same page."); 
@@ -1638,12 +1635,21 @@ public String randomizeHeadsOrTails()
 		switch(gearName) 
 		{
 			case "hat": 
-				hatName = sc.nextLine();
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					hatName = sc.nextLine();
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
 				}
-				boolean isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(hatName)); 
+				else if(Option.getFileInUse() == true) {
+					Match.getBufferReader().readLine();
+					Match.getBufferReader().readLine(); 
+					hatName = Match.getBufferReader().readLine(); 
+					System.out.println("Hat Name Read: " + hatName); 
+				}
+				temp = hatName;
+				boolean isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				boolean check1 = hatName.contains("Aeon"); 
 				boolean check2 = hatName.contains("Eternal"); 
 				boolean check3 = hatName.contains("Dragoon"); 
@@ -1669,12 +1675,19 @@ public String randomizeHeadsOrTails()
 				Hat hat = (Hat)instantiateGearPiece(gearName, school, level, extractGearType);
 				return hat;
 			case "robe": 
-				robeName = sc.nextLine();
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					robeName = sc.nextLine();
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
 				}
-				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(robeName)); 
+				else {
+					robeName = Match.getBufferReader().readLine(); 
+					System.out.println("Robe Name Read: " + robeName);  
+				}
+				temp = robeName; 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				check1 = robeName.contains("Aeon"); 
 				check2 = robeName.contains("Eternal"); 
 				check3 = robeName.contains("Dragoon"); 
@@ -1700,12 +1713,19 @@ public String randomizeHeadsOrTails()
 				Robe robe = (Robe)instantiateGearPiece(gearName, school, level,  extractGearType);
 				return robe;
 			case "boot": 
-				bootName = sc.nextLine();
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					bootName = sc.nextLine();
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
 				}
-				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(bootName)); 
+				else {
+					bootName = Match.getBufferReader().readLine();
+					System.out.println("Boot Name Read: " + bootName); 
+				}
+				temp = bootName;
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				check1 = bootName.contains("Aeon"); 
 				check2 = bootName.contains("Eternal"); 
 				check3 = bootName.contains("Dragoon"); 
@@ -1736,7 +1756,8 @@ public String randomizeHeadsOrTails()
 				{
 					sc.close(); 
 				}
-				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(wandName)); 
+				temp = wandName; 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				check1 = wandName.contains("Aeon"); 
 				check2 = wandName.contains("Eternal"); 
 				check3 = wandName.contains("Dragoon"); 
@@ -1762,12 +1783,18 @@ public String randomizeHeadsOrTails()
 				Wand wand = (Wand)instantiateGearPiece(gearName, school, level, extractGearType);
 				return wand;
 			case "athame": 
-				athameName = sc.nextLine();
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					athameName = sc.nextLine();
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
 				}
-				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(athameName)); 
+				else {
+					athameName = Match.getBufferReader().readLine();
+				}
+				temp = athameName; 
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				check1 = athameName.contains("Aeon"); 
 				check2 = athameName.contains("Eternal"); 
 				check3 = athameName.contains("Dragoon"); 
@@ -1793,12 +1820,19 @@ public String randomizeHeadsOrTails()
 				Athame athame = (Athame)instantiateGearPiece(gearName, school, level, extractGearType);
 				return athame;
 			case "amulet": 
-				amuletName = sc.nextLine();
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					amuletName = sc.nextLine();
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
 				}
-				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(amuletName)); 
+				else {
+					amuletName = Match.getBufferReader().readLine(); 
+					System.out.println("Amulet Name Read: " + amuletName); 
+				}
+				temp = amuletName;
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				check1 = amuletName.contains("Aeon"); 
 				check2 = amuletName.contains("Eternal"); 
 				check3 = amuletName.contains("Dragoon"); 
@@ -1824,12 +1858,19 @@ public String randomizeHeadsOrTails()
 				Amulet amulet = (Amulet)instantiateGearPiece(gearName, school, level, extractGearType);
 				return amulet;
 			case "ring": 
-				ringName = sc.nextLine();
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					ringName = sc.nextLine();
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
 				}
-				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(ringName)); 
+				else {
+					ringName = Match.getBufferReader().readLine(); 
+					System.out.println("Ring Name: " + ringName);
+				}
+				temp = ringName;
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				check1 = ringName.contains("Aeon"); 
 				check2 = ringName.contains("Eternal"); 
 				check3 = ringName.contains("Dragoon"); 
@@ -1855,12 +1896,19 @@ public String randomizeHeadsOrTails()
 				Ring ring = (Ring)instantiateGearPiece(gearName, school, level, extractGearType);
 				return ring;
 			case "deck": 
-				deckName = sc.nextLine(); 
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					deckName = sc.nextLine(); 
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
 				}
-				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(deckName)); 
+				else {
+					deckName = Match.getBufferReader().readLine(); 
+					System.out.println("Deck Name Read: " + deckName); 
+				}
+				temp = deckName;
+				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
 				check1 = deckName.contains("Aeon"); 
 				check2 = deckName.contains("Eternal"); 
 				check3 = deckName.contains("Dragoon"); 
@@ -1886,10 +1934,16 @@ public String randomizeHeadsOrTails()
 				Deck deck = (Deck)instantiateGearPiece(gearName, school, level, extractGearType);
 				return deck;
 			case "pet": 
-				petName = sc.nextLine(); 
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					petName = sc.nextLine(); 
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
+				}
+				else {
+					petName = Match.getBufferReader().readLine(); 
+					System.out.println("Pet Name Read: " + petName); 
 				}
 				boolean res9 = checkGearName(petName, gearName, null, school, level); 
 				if(res9 == true)
