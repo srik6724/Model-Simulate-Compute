@@ -27,7 +27,6 @@ public class Team1vsTeam2 implements Runnable {
         Thread.sleep(1000);
         System.out.println("Countdown: " + countDownTimer); 
         countDownTimer--; 
-        System.out.println("Countdown after decrement: " + countDownTimer);
       } catch (InterruptedException e) {
         e.printStackTrace();
       } 

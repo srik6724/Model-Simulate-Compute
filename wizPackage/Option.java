@@ -10,7 +10,7 @@ public class Option {
 
   private static boolean scannerInUse = false; 
 	private static boolean fileInUse = false; 
-  private static Scanner sc = new Scanner(System.in); 
+  private static Scanner sc;
 
 	public static void setScannerInUse(boolean temp) {
 		Option.scannerInUse = temp;
@@ -29,22 +29,26 @@ public class Option {
   }
 
   public static void closeScannerForOptionChosen() {
-    Option.sc.close();
+    sc.close();
+  }
+
+  public static void openScanner() {
+    sc = new Scanner(System.in); 
   }
 
   public static void scannerOrfileOption() {  
-     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("File or Scanner? Write it as file or scanner.");
-        try {
-            String input = br.readLine();
-            if(input.equals("file")) {
-                Option.setFileInUse(true);
-            } else if(input.equals("scanner")) {
-                Option.setScannerInUse(true);
-            }
-            br.close(); // Close BufferedReader when done
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+     Option.openScanner();
+     System.out.println("File or Scanner? Write it as file or scanner."); 
+     String input = sc.nextLine(); 
+     System.out.println("Input selected: " + input); 
+     if(!sc.hasNextLine()) {
+      Option.closeScannerForOptionChosen();
+     }
+     if(input.equals("file")) {
+      Option.setFileInUse(true);
+     }
+     else if(input.equals("scanner")) {
+      Option.setScannerInUse(true);
+     }
   }
 }

@@ -44,6 +44,9 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 	{
 		System.out.println("File or Scanner for deck configuration? Select file or scanner.");
 		String input = sc.nextLine(); 
+		if(!sc.hasNextLine()) {
+			sc.close(); 
+		}
 		setInput(true, input); 
 		System.out.println(identity);
 		collectIdentity = identity; 
@@ -54,7 +57,6 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		DarkmoorDeck.decksMade++; 
 		Option.setFileInUse(false);
 		Option.setScannerInUse(false);
-		sc.close(); 
 	}
 	
 	public String DarkmoorDeckName(String identity)

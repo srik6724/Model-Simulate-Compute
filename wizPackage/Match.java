@@ -1519,7 +1519,7 @@ public String randomizeHeadsOrTails()
 		return true; 
 	}
 
-	public void computeStatsInformation(HashMap<String, List<String>> gearSets, HashMap<Integer, List<String>> keywords)
+	public void computeStatsInformation(HashMap<String, List<String>> gearSets, HashMap<Integer, List<String>> keywords) throws IOException
 	{
 		System.out.println("Before the loop.");
 		String[] listItems = {"hat", "robe", "boots", "wand", "athame", "amulet", "ring", "deck"};
@@ -1561,7 +1561,7 @@ public String randomizeHeadsOrTails()
 		}
 	}
 
-	private void findGearClass(String word, String gearName, String pieceOfGear) {
+	private void findGearClass(String word, String gearName, String pieceOfGear) throws IOException {
 				if(word.toLowerCase().equals("aeon"))
 				{
 					new AeonClass(gearName, pieceOfGear); 
@@ -1613,6 +1613,8 @@ public String randomizeHeadsOrTails()
 
 	public Object instantiateGearPiece(String gearName, String school, int level, StringBuilder extractGearType) throws IOException
 	{
+		Option.scannerOrfileOption();
+
 		String hatName = new String(); 
 		String robeName = new String(); 
 		String bootName = new String(); 
@@ -1646,6 +1648,7 @@ public String randomizeHeadsOrTails()
 					Match.getBufferReader().readLine();
 					Match.getBufferReader().readLine(); 
 					hatName = Match.getBufferReader().readLine(); 
+					hatName = hatName.trim(); 
 					System.out.println("Hat Name Read: " + hatName); 
 				}
 				temp = hatName;
@@ -1684,6 +1687,7 @@ public String randomizeHeadsOrTails()
 				}
 				else {
 					robeName = Match.getBufferReader().readLine(); 
+					robeName = robeName.trim(); 
 					System.out.println("Robe Name Read: " + robeName);  
 				}
 				temp = robeName; 
@@ -1722,6 +1726,7 @@ public String randomizeHeadsOrTails()
 				}
 				else {
 					bootName = Match.getBufferReader().readLine();
+					bootName = bootName.trim(); 
 					System.out.println("Boot Name Read: " + bootName); 
 				}
 				temp = bootName;
@@ -1751,10 +1756,17 @@ public String randomizeHeadsOrTails()
 				Boot boot = (Boot)instantiateGearPiece(gearName, school, level, extractGearType);
 				return boot;
 			case "wand": 
-				wandName = sc.nextLine();
-				if(!(sc.hasNextLine()))
-				{
-					sc.close(); 
+				if(Option.getScannerInUse() == true) {
+					wandName = sc.nextLine();
+					if(!(sc.hasNextLine()))
+					{
+						sc.close(); 
+					}
+				}
+				else {
+					wandName = Match.getBufferReader().readLine(); 
+					wandName = wandName.trim(); 
+					System.out.println("Wand Name Read: " + wandName); 
 				}
 				temp = wandName; 
 				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
@@ -1792,6 +1804,8 @@ public String randomizeHeadsOrTails()
 				}
 				else {
 					athameName = Match.getBufferReader().readLine();
+					athameName = athameName.trim(); 
+					System.out.println("Athame Name Read: " + athameName); 
 				}
 				temp = athameName; 
 				isJadeGear = Arrays.stream(jadeGear).anyMatch(gear->gear.equals(temp)); 
@@ -1829,6 +1843,7 @@ public String randomizeHeadsOrTails()
 				}
 				else {
 					amuletName = Match.getBufferReader().readLine(); 
+					amuletName = amuletName.trim(); 
 					System.out.println("Amulet Name Read: " + amuletName); 
 				}
 				temp = amuletName;
@@ -1867,6 +1882,7 @@ public String randomizeHeadsOrTails()
 				}
 				else {
 					ringName = Match.getBufferReader().readLine(); 
+					ringName = ringName.trim(); 
 					System.out.println("Ring Name: " + ringName);
 				}
 				temp = ringName;
@@ -1905,6 +1921,7 @@ public String randomizeHeadsOrTails()
 				}
 				else {
 					deckName = Match.getBufferReader().readLine(); 
+					deckName = deckName.trim(); 
 					System.out.println("Deck Name Read: " + deckName); 
 				}
 				temp = deckName;
@@ -1943,6 +1960,7 @@ public String randomizeHeadsOrTails()
 				}
 				else {
 					petName = Match.getBufferReader().readLine(); 
+					petName = petName.trim(); 
 					System.out.println("Pet Name Read: " + petName); 
 				}
 				boolean res9 = checkGearName(petName, gearName, null, school, level); 
@@ -1997,7 +2015,7 @@ public String randomizeHeadsOrTails()
 		//new Match().startRound(team1, team2); 
 	}
 
-	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level)
+	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level) throws IOException
 	{
 		//Open connection to database 
 		try {
@@ -2014,47 +2032,64 @@ public String randomizeHeadsOrTails()
 
 			conn1 = DriverManager.getConnection(url1, user, password); 
 
-			if(conn1 != null)
+			if(conn1 != null) 
 			{
 				if(pieceOfGear.equals("pet"))
 				{
+					Option.scannerOrfileOption();
 					Scanner sc = new Scanner(System.in); 
-					String petType; 
+					String petType = new String(); 
 					System.out.println("Enter the type of your pet here. Make sure to spell it correctly. Otherwise, an error will occur."); 
-					petType = sc.nextLine(); 
-					if(!(sc.hasNextLine()))
-					{
-						sc.close();
+					if(Option.getScannerInUse() == true) {
+						petType = sc.nextLine(); 
+						if(!(sc.hasNextLine()))
+						{
+							sc.close();
+						}		
+					}
+					else {
+						petType = Match.getBufferReader().readLine(); 
+						System.out.println("Pet Type Read: " + petType);
+						Match.getBufferReader().readLine(); 
 					}
 					//Create a sql string
-					String sqlToExecute = "SELECT typeName, school FROM wizard_schema.pets WHERE typename = ?";
-					//Execute the sql string above, but create a statement first.
-					PreparedStatement createStatement = conn1.prepareStatement(sqlToExecute); 
-					createStatement.setString(1, petType); 
-					//Store the result inside a result set to access the database column's data
-					ResultSet rs = createStatement.executeQuery();  
+					ResultSet rs = null;
+					try {
+						String sqlToExecute = "SELECT typeName, school FROM wizard_schema.pets WHERE typename = ?";
+						//Execute the sql string above, but create a statement first.
+						PreparedStatement createStatement = conn1.prepareStatement(sqlToExecute); 
+						createStatement.setString(1, petType.trim()); 
+						//Store the result inside a result set to access the database column's data
+						rs = createStatement.executeQuery();  
+					} catch(SQLException e) {
+						e.printStackTrace();
+					}
 
 					boolean iterate = false; 
+					
 					while(rs.next())
 					{
 						//Retrieve the typename of the pet
 						String typeName = rs.getString("typeName"); 
-						if(petType.equals(typeName))
+						System.out.println("Type Name: " + typeName);
+						if(petType.trim().equals(typeName.trim()))
 						{
-							Pet.typeName = typeName; 
+							Pet.typeName = typeName.trim(); 
 						}
-						else 
+						else  
 						{
 							System.out.println("Sorry name in database for pet type: " + typeName + " does not match " + petType);
 							break;
 						}
 						//Retrieve the school of the pet 
 						String schoolOfPet = rs.getString("school"); 
+						System.out.println("School Of Pet: " + schoolOfPet); 
 						Pet.school = schoolOfPet; 
 
 						iterate = true; 
 					}
 					conn1.close(); 
+					System.out.println("Iterate bool value: " + iterate); 
 					return iterate; 
 				}
 				else 

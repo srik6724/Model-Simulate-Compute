@@ -1,17 +1,19 @@
 package AeonStats;
 
-public class AeonClass {
+import java.io.IOException;
+
+public class AeonClass{
 
   {
     System.out.println("We are going to detect which piece of gear that we are looking at."); 
   }
-  public AeonClass(String gearName, String gearType)
+  public AeonClass(String gearName, String gearType) throws IOException
   {
     System.out.println("Aeon Class created."); 
     retrieveStatsInfo(gearName, gearType);
   }
 
-  private void retrieveStatsInfo(String gearName, String gearType)
+  private void retrieveStatsInfo(String gearName, String gearType) throws IOException
   {
     System.out.println(gearType); 
     if(gearType.equals("hat"))
