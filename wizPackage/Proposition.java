@@ -48,6 +48,11 @@ public class Proposition {
 			
 			
 		}
+
+    public String establishStatement(StringBuilder retrieveFirstTeamName, StringBuilder retrieveSecondTeamName) {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'establishStatement'");
+    }
 		
 		
 	}
