@@ -1,4 +1,5 @@
 package wizPackage;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -51,6 +52,12 @@ import JadeStats.JadeClass;
 import Logging.LoggingStorage;
 
 import java.util.logging.*;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import NightMireStats.NightMireClass;
 import wizPackage.LinkedListTeam1.Node;
 import wiz_threading.Team1Runnable;
@@ -69,8 +76,8 @@ import dataStructures.Element;
 import deckBuild.DarkmoorDeck;
 import io.netty.channel.unix.Buffer;
 import javafx.application.Application;
-public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena {
-
+public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Match_Recorder {
+	// Putting match_writer here for now
 	Scanner sc = new Scanner(System.in); 
 
 	// Store application states
@@ -211,72 +218,14 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		}
 	}
 
-	void setPlayerOrder() {
-		System.out.println("Now, for the final step of registration, enter the order your team "
-				+ "would like to be placed in during the match."); 
-		System.out.println("Just quickly before that, here is a list of potential orders, you may be interested in " + 
-		"ordering your team."); 
+	private void setPlayerOrder() {
+		System.out.println("Enter the order your team would like to be placed during the match.");
+		System.out.println("Here is a list of potential orders you could be interested in for ordering your team.");
 
-		HashMap<Integer, List<String>> orderDetail = new HashMap<Integer, List<String>>(); 
-
-		int left = 0; 
-		int right = 0; 
-		int length = teamSchools.length; 
-		int firstLoopIteration = 1; 
-		String[]orderCreated = new String[team.length]; 
-
-		generatePossibleOrders(left, right, length, firstLoopIteration, orderCreated, Arrays.asList(teamSchools), orderDetail);
 		
-		int setCount = 1; 
-		for(int number: orderDetail.keySet())
-		{
-			System.out.println("Order "  + setCount +  ": " + orderDetail.get(number)); 
-			setCount++; 
-		}
-
-		int playerOrderCount = team.length; 
-		int startIndex = 0; 
-		String retrievePlayerName = ""; 
-		boolean cont = true; 
-		while(startIndex < playerOrderCount && cont == true)
-		{
-			System.out.println("Enter " + (startIndex+1) + "st player"); 
-			retrievePlayerName = sc.nextLine(); 
-			boolean checkPlayer1 = validatePlayer(retrievePlayerName, startIndex);
-			if(checkPlayer1 == true)
-			{
-				cont = true; 
-				firstTeamOrder[startIndex] = retrievePlayerName; 
-				startIndex = startIndex + 1; 
-				System.out.println("Player " + startIndex + ": " + retrievePlayerName + " registered successfully.");
-			}
-			else
-			{
-				System.out.println("Error occurred with registering Player " + startIndex);
-				System.out.print("Try again.");
-			}
-
-			if(BreakpointVariables.getPlayerOrder() == false) {
-				LoggingStorage.getLogger().log(Level.INFO, "Ordering of players is completed.");; 
-				BreakpointVariables.setPlayerOrder(true); 
-			}
-
-			playerOrderState = new ApplicationState<Object>(orderDetail, playerOrderPath); 
-			q.add(playerOrderState); 
-		}
-		
-		int start = 1; 
-		for(int i = 0; i < team.length; i++)
-		{
-			System.out.println("Player # " + start + ": " + firstTeamOrder[i] + "," + teamLevels[i] + "," + teamSchools[i] +  " successfully enrolled in " + retrieveFirstTeamName); 
-			start = start + 1; 
-		}
-		System.out.println("Congratulations, team " + retrieveFirstTeamName + " is enrolled officially.");
-		System.out.println("First Team Name: " + retrieveFirstTeamName); 
-		countTeamsRegistered++; 
 	}
 
-	void setPlayerStats() throws NumberFormatException, IOException {
+	private void setPlayerStats() throws NumberFormatException, IOException {
 		System.out.println("The next step will involve player stats to be recorded of every individual."); 
 		System.out.println("This is expected to take around 10-15 minutes in total, so please be patient."); 
 		int iter = 4; 
@@ -1316,7 +1265,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		BreakpointVariables.setMatchBegins(true); 
 	}
 	
-	public static void startRound(int index)
+	public static void startRound(int index) throws IOException
 	{
 		System.out.println("This is a round casted of our match between team1 and team2"); 
 
@@ -1358,13 +1307,22 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			for(int z = 0; z < sevenCards.length; z++)
 			{
 				System.out.println("Card " + (z+1) + ": " + "{ "); 
+				MatchWriter.get_file_writer().write("Card " + (z+1) + ": " + "{ "); 
 				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
+				MatchWriter.get_file_writer().write("Name Of Spell: " + sevenCards[z].getSpellName()); 
 				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
+				MatchWriter.get_file_writer().write("Pips Of Spell: " + sevenCards[z].getPips()); 
 				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
+				MatchWriter.get_file_writer().write("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
 				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
+				MatchWriter.get_file_writer().write("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
+				MatchWriter.get_file_writer().write("Count Of Spell: " + sevenCards[z].getCount()); 
 				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
-				System.out.println("}"); 
+				MatchWriter.get_file_writer().write("Description Of Spell: " + sevenCards[z].getDescription()); 
+				System.out.println("}");
+				MatchWriter.get_file_writer().write("}"); 
+				System.out.println("Spell added to the Matchwriter."); 
 			}
 				/*Scanner sc = new Scanner(System.in); 
 				boolean iterate = true; 

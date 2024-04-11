@@ -1,5 +1,7 @@
 package wiz_threading;
 
+import java.io.IOException;
+
 import Messages.MessageDirectory;
 import wizPackage.Match;
 
@@ -21,7 +23,11 @@ public class Team1Runnable implements Runnable {
 
       if(Team2Runnable.team2Done == true)
       {
-        Match.startRound(0); 
+        try {
+          Match.startRound(0);
+        } catch (IOException e) {
+          e.printStackTrace();
+        } 
         Team1Runnable.team1Done = true; 
         Thread th = new Thread(new Team2Runnable()); 
         th.start(); 

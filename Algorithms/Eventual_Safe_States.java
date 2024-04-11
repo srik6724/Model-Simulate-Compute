@@ -1,11 +1,9 @@
-package Graphs;
+package Algorithms;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventualSafeStates {
-
-  private static int callsToDfs = 0; 
+class Eventual_Safe_States {
 
   public List<Integer> eventualSafeNodes(int[][] graph) throws InterruptedException {
       List<Integer> eventualSafe = new ArrayList<>();
@@ -42,14 +40,8 @@ public class EventualSafeStates {
       return true;
   }
 
-  private void traceDFSCalls() {
-    System.out.println("Starting the process for tracing the DFS calls"); 
-
-
-  }
-
   public static void main(String[]args) throws InterruptedException {
-    EventualSafeStates ess = new EventualSafeStates(); 
+    Eventual_Safe_States ess = new Eventual_Safe_States(); 
     int[][] graph = {
       {1,2}, 
       {2,3},
