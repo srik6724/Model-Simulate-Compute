@@ -18,8 +18,13 @@ public class MatchWriter {
 
   static FileWriter get_file_writer() {
     if(MatchWriter.writerCreated == false) {
+      System.out.println("Calling match_writer constructor."); 
       new MatchWriter(); 
     }
-    return file_writer; 
+    if(file_writer != null) {
+      System.out.println("Returning file_writer object here."); 
+      return file_writer; 
+    }
+    return null;
   }
 }

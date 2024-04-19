@@ -1306,69 +1306,36 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("Printing out the seven cards.");
 			for(int z = 0; z < sevenCards.length; z++)
 			{
+				MatchWriter.get_file_writer().write("----------------------------");
+				MatchWriter.get_file_writer().write("\n"); 
 				System.out.println("Card " + (z+1) + ": " + "{ "); 
 				MatchWriter.get_file_writer().write("Card " + (z+1) + ": " + "{ "); 
+				MatchWriter.get_file_writer().write("\n"); 
 				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
 				MatchWriter.get_file_writer().write("Name Of Spell: " + sevenCards[z].getSpellName()); 
+				MatchWriter.get_file_writer().write("\n"); 
 				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
 				MatchWriter.get_file_writer().write("Pips Of Spell: " + sevenCards[z].getPips()); 
+				MatchWriter.get_file_writer().write("\n");
 				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
 				MatchWriter.get_file_writer().write("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
+				MatchWriter.get_file_writer().write("\n");
 				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
 				MatchWriter.get_file_writer().write("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
+				MatchWriter.get_file_writer().write("\n");
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
 				MatchWriter.get_file_writer().write("Count Of Spell: " + sevenCards[z].getCount()); 
+				MatchWriter.get_file_writer().write("\n");
 				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
 				MatchWriter.get_file_writer().write("Description Of Spell: " + sevenCards[z].getDescription()); 
+				MatchWriter.get_file_writer().write("\n");
 				System.out.println("}");
 				MatchWriter.get_file_writer().write("}"); 
 				System.out.println("Spell added to the Matchwriter."); 
+				MatchWriter.get_file_writer().write("\n"); 
 			}
-				/*Scanner sc = new Scanner(System.in); 
-				boolean iterate = true; 
-				while(iterate)
-				{
-					System.out.println("Select a card to cast out of the 7 listed.");
-					System.out.println("Make sure to spell the card correctly.");
-					String cardSelected = sc.nextLine();
-					if(!sc.hasNextLine())
-					{
-						sc.close(); 
-					}
-					for(int z = 0; z < sevenCards.length; z++)
-					{
-						if(cardSelected.equals(sevenCards[z].getSpellName()))
-						{
-							iterate = false; 
-							int count = sevenCards[z].getCount();
-							for(String wizard: decks.keySet())
-							{
-								if(wizard.equals(player))
-								{
-									decks.get(wizard).get(index).removeIf(
-									n -> (n.getSpellName() == cardSelected && n.getCount() == count)
-								); 
-								System.out.println("Removed card: " + cardSelected); 
-								break;
-								}
-							}
-						}
-						else 
-						{
-							iterate = true; 
-							continue; 
-						}
-						break;
-					}
-					if(iterate == false)
-					{
-						break;
-					}
-					else 
-					{
-						System.out.println("Sorry, could not find the card found. Either was misspelled, or it just doesn't exist."); 
-					}
-				}*/
+			MatchWriter.get_file_writer().write("----------------------------");
+			MatchWriter.get_file_writer().close(); 
 		}
 		System.exit(0); 
 }

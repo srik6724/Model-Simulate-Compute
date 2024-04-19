@@ -42,8 +42,8 @@ public class StormSpells {
             			String name = rs.getString("name"); 
             			String level = rs.getString("level"); 
             			String description = rs.getString("description"); 
-            			String pip_chance = rs.getString("pip_chance");
-            			String pips = rs.getString("pips"); 
+            			String pip_chance = rs.getString("pip_chance"); 
+            			String pips = rs.getString("pips");  
 									String school = rs.getString("school"); 
             			String storm_typeSpell = rs.getString("storm_typeSpell"); 
             			
@@ -113,25 +113,6 @@ public class StormSpells {
 		}
 		return null;
 	}
-	
-	/*public List<List<Spell>> defaultDeck(ArrayList<Spell> spells)
-	{
-		Spell[] collectSpells = new Spell[spells.size()]; 
-		
-		Spell[] orderedSpells = performHeapOperations(collectSpells); 
-		
-		List<List<Spell>> deckOfSpells = hp.buildDeckYESoption(orderedSpells, "storm"); 
-		
-		return deckOfSpells;
-		
-	}
-	
-	public Spell[] performHeapOperations(Spell[] spells)
-	{
-		Spell[] modifiedSpells = hp.buildHeap(spells); 
-		
-		return modifiedSpells;
-	}*/
 	
 	public void deckInformation(List<Map<String, List<String>>> setOfSpells)
 	{
