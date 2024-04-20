@@ -3,28 +3,24 @@ package wizPackage;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class MatchWriter {
+public class RoundSpellsWriter {
   private static boolean writerCreated = false; 
   private static FileWriter file_writer; 
 
-  MatchWriter() {
+  RoundSpellsWriter() {
     try {
       file_writer = Match_Recorder.getFileWriter();
-      MatchWriter.writerCreated = true; 
+      RoundSpellsWriter.writerCreated = true; 
     } catch (IOException e) {
       e.printStackTrace();
     } 
   }
 
   static FileWriter get_file_writer() {
-    if(MatchWriter.writerCreated == false) {
+    if(RoundSpellsWriter.writerCreated == false) {
       System.out.println("Calling match_writer constructor."); 
-      new MatchWriter(); 
+      new RoundSpellsWriter(); 
     }
-    if(file_writer != null) {
-      System.out.println("Returning file_writer object here."); 
-      return file_writer; 
-    }
-    return null;
+    return file_writer;
   }
 }

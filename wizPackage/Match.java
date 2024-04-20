@@ -76,7 +76,7 @@ import dataStructures.Element;
 import deckBuild.DarkmoorDeck;
 import io.netty.channel.unix.Buffer;
 import javafx.application.Application;
-public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Match_Recorder {
+public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Match_Recorder, Round {
 	// Putting match_writer here for now
 	Scanner sc = new Scanner(System.in); 
 
@@ -1298,46 +1298,46 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				playerIndex++; 
 			}
 		}
-
+		RoundSpellsWriter.get_file_writer().write("ROUND # " + Round.get_current_number() + " OF SPELLS" + "\n");
 		for(String player: playerAssociationToSchool.keySet()) {
 			System.out.println("Player " + player + ": Select a card.");
+			RoundSpellsWriter.get_file_writer().write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
 			System.out.println("The following seven cards have been generated."); 
 			Element[] sevenCards = generateSevenCards(playerAssociationToSchool.get(player).toLowerCase(), index); 
 			System.out.println("Printing out the seven cards.");
 			for(int z = 0; z < sevenCards.length; z++)
 			{
-				MatchWriter.get_file_writer().write("----------------------------");
-				MatchWriter.get_file_writer().write("\n"); 
+				RoundSpellsWriter.get_file_writer().write("----------------------------");
+				RoundSpellsWriter.get_file_writer().write("\n"); 
 				System.out.println("Card " + (z+1) + ": " + "{ "); 
-				MatchWriter.get_file_writer().write("Card " + (z+1) + ": " + "{ "); 
-				MatchWriter.get_file_writer().write("\n"); 
+				RoundSpellsWriter.get_file_writer().write("Card " + (z+1) + ": " + "{ "); 
+				RoundSpellsWriter.get_file_writer().write("\n"); 
 				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
-				MatchWriter.get_file_writer().write("Name Of Spell: " + sevenCards[z].getSpellName()); 
-				MatchWriter.get_file_writer().write("\n"); 
+				RoundSpellsWriter.get_file_writer().write("Name Of Spell: " + sevenCards[z].getSpellName()); 
+			  RoundSpellsWriter.get_file_writer().write("\n"); 
 				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
-				MatchWriter.get_file_writer().write("Pips Of Spell: " + sevenCards[z].getPips()); 
-				MatchWriter.get_file_writer().write("\n");
+				RoundSpellsWriter.get_file_writer().write("Pips Of Spell: " + sevenCards[z].getPips()); 
+				RoundSpellsWriter.get_file_writer().write("\n");
 				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
-				MatchWriter.get_file_writer().write("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
-				MatchWriter.get_file_writer().write("\n");
+				RoundSpellsWriter.get_file_writer().write("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
+				RoundSpellsWriter.get_file_writer().write("\n");
 				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
-				MatchWriter.get_file_writer().write("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
-				MatchWriter.get_file_writer().write("\n");
+				RoundSpellsWriter.get_file_writer().write("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
+				RoundSpellsWriter.get_file_writer().write("\n");
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
-				MatchWriter.get_file_writer().write("Count Of Spell: " + sevenCards[z].getCount()); 
-				MatchWriter.get_file_writer().write("\n");
+				RoundSpellsWriter.get_file_writer().write("Count Of Spell: " + sevenCards[z].getCount()); 
+				RoundSpellsWriter.get_file_writer().write("\n");
 				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
-				MatchWriter.get_file_writer().write("Description Of Spell: " + sevenCards[z].getDescription()); 
-				MatchWriter.get_file_writer().write("\n");
+				RoundSpellsWriter.get_file_writer().write("Description Of Spell: " + sevenCards[z].getDescription()); 
+				RoundSpellsWriter.get_file_writer().write("\n");
 				System.out.println("}");
-				MatchWriter.get_file_writer().write("}"); 
+				RoundSpellsWriter.get_file_writer().write("}"); 
 				System.out.println("Spell added to the Matchwriter."); 
-				MatchWriter.get_file_writer().write("\n"); 
+				RoundSpellsWriter.get_file_writer().write("\n"); 
 			}
-			MatchWriter.get_file_writer().write("----------------------------");
-			MatchWriter.get_file_writer().close(); 
+			RoundSpellsWriter.get_file_writer().write("----------------------------");
+			RoundSpellsWriter.get_file_writer().close(); 
 		}
-		System.exit(0); 
 }
 	
 private static Element[] generateSevenCards(String school, int index) {
