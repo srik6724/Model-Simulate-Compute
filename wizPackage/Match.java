@@ -15,7 +15,9 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
 
 import Credentials.WizCredentials;
 
@@ -1198,32 +1201,34 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	
 	public String[] sortTeamsAlphabetically(String[]firstTeam)
 	{
-		//Before Insertion Sort Algorithm 
+		// Before Insertion Sort Algorithm 
+
 		for(int i = 0; i < firstTeam.length; i++)
 		{
-			System.out.println("Player Element " + i + ": " + firstTeam[i]);
+			System.out.println("Player Element " + i + ": " + firstTeam[i]); 
 		}
 		
-		
-		//Insertion Sort algorithm 
-		//We are going to sort the two teams alphabetically in order. 
-		//First Team: Cowan Shadowsteed, Miguel Pearlhunter, Travis Waterblood, Anthony Firestone
+		// Insertion Sort algorithm 
+		// We are going to sort the two teams alphabetically in order. 
+		// First Team: Cowan Shadowsteed, Miguel Pearlhunter, Travis Waterblood, Anthony Firestone
 		
 		for(int i = 1; i < firstTeam.length; i++)
 		{
-			String retrieveKey = firstTeam[i]; //Cowan Shadowsteed
+			String retrieveKey = firstTeam[i]; // Cowan Shadowsteed
 			
-			//Store the index i in variable j
+			// Store the index i in variable j
 			int j = i - 1;  // 0
 			
-			//Compare the first Character to the second character
+			// Compare the first character to the second character
 			while(j >= 0 && retrieveKey.compareTo(firstTeam[j]) < 0) 
 			{
 				firstTeam[j+1] = firstTeam[j]; 
 				j = j - 1; 
 			}
+
 			firstTeam[j+1] = retrieveKey; 
 		}
+
 		return firstTeam; 
 	}
 	
@@ -1231,9 +1236,96 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	{
 		return retrieveKey.substring(0,1); 
 	}
+
+	private Set<String> extractUniqueElementsTeam(List<String> players) {
+		Set<String> uniquePlayerNames = new HashSet<String>(); 
+
+		for(String player: players) {
+			uniquePlayerNames.add(player);
+		}
+
+		return uniquePlayerNames;
+	}
+
+	private void setTeamAttributes() {
+		int playerIndex = 0; 
+		int schoolIndex = 0;
+		String playerPerson = ""; 
+
+
+		System.out.println("-------------------------------------"); 
+		System.out.println("#####################################"); 
+
+		int loop = 1; 
+		for(List<String> team: teamPlayers) {
+
+			List<String> sortedTeam = new ArrayList<>(team); 
+			Collections.sort(sortedTeam); 
+			// Sorted Team, Mark Labels on unique entries
+			Set<String> uniquePlayerNames = extractUniqueElementsTeam(sortedTeam);
+			System.out.println("UNIQUE PLAYER NAMES SIZE: " + uniquePlayerNames.size()); 
+
+			for(String uniquePlayer: uniquePlayerNames) {
+				System.out.println("UNIQUE PLAYER NAME: " + uniquePlayer); 
+				int counter = 0;
+				for(int i = 0; i < team.size(); i++) {
+					if(team.get(i).equals(uniquePlayer)) {
+						team.set(i, uniquePlayer +  " "  + String.valueOf(++counter) + " --> (TEAM " + loop + ")");
+					}
+				}
+				counter = 0; 
+			}
+			loop++;
+		}
+
+		System.out.println("#####################################"); 
+		System.out.println("-------------------------------------"); 
+
+		boolean iterationTeamDone = false; 
+		for(List<String> players: teamPlayers) {
+			for(int i = 0; i < players.size(); i++) {
+				if(i == playerIndex) {
+					playerPerson = players.get(i); 
+					System.out.println("Player to be inserted is: " + playerPerson); 
+					for(List<String> schools: schoolsOfTeam) { 
+						if(iterationTeamDone == true) {
+							iterationTeamDone = false; 
+							continue; 
+						}
+						boolean breakLoop = false; 
+						for(int j = 0; j < schools.size(); j++) { 
+							if(j == schoolIndex) {  
+								String school = schools.get(j); 
+								System.out.println("School to be inserted is: " + school); 
+								playerAssociationToSchool.put(playerPerson, school); 
+								breakLoop = true; 
+							}
+						}
+
+						if(breakLoop == true) {
+							break;
+						}
+	
+					}
+				}
+				playerIndex++;
+				schoolIndex++; 
+			}
+			iterationTeamDone = true; 
+			playerIndex = 0; 
+			schoolIndex = 0; 
+		}
+		System.exit(0);	
+	}
 	
 	public void beginMatch()
 	{
+		// Placing team members with their respective schools depending by the team they belong to
+		setTeamAttributes();
+		
+		System.out.println("TEAM ATTRIBUTES SET FOR MEMBERS OF TEAMS."); 
+		System.exit(0); 
+
 		System.out.println("Match between " + retrieveFirstTeamName + " and " + retrieveSecondTeamName + " has begun."); 
 		System.out.println("We now spin a wheel to decide who starts first. We will do this "
 				+ "the traditional way.");
@@ -1270,34 +1362,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("This is a round casted of our match between team1 and team2"); 
 
 		System.out.println("Team Players Size: " + teamPlayers.size()); 
-
-		int playerIndex = 0;
-		int schoolIndex = 0;
-		String playerPerson = ""; 
-
-		for(List<String> players: teamPlayers) {
-			for(int i = 0; i < players.size(); i++) {
-				// Extract player name here
-				if(i == playerIndex) {
-					playerPerson = players.get(i); 
-					System.out.println("Player to be inserted is: " + playerPerson); 
-				}
-				else {
-					break; 
-				}
-				for(List<String> schools: schoolsOfTeam) {
-					for(int j = 0; j < schools.size(); j++) {
-						if(j == schoolIndex) {
-							String school = schools.get(j); 
-							System.out.println("School to be inserted is: " + school); 
-							playerAssociationToSchool.put(playerPerson, school); 
-							break;
-						}
-					}
-				}
-				playerIndex++; 
-			}
-		}
+		
 		RoundSpellsWriter.get_file_writer().write("ROUND # " + Round.get_current_number() + " OF SPELLS" + "\n");
 		for(String player: playerAssociationToSchool.keySet()) {
 			System.out.println("Player " + player + ": Select a card.");
@@ -1337,6 +1402,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			}
 			RoundSpellsWriter.get_file_writer().write("----------------------------");
 			RoundSpellsWriter.get_file_writer().close(); 
+			//System.exit(0); 
 		}
 }
 	
