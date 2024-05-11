@@ -20,17 +20,14 @@ public class Team2Runnable implements Runnable {
     if(Team2Runnable.messagesCompleted == true)
     {
       System.out.println("Starting round for team 2."); 
-      if(Team1Runnable.team1Done == true)
-      {
-         try {
+      try {
+        int roundNumber = 10; 
+        for(int i = 0; i < roundNumber; i++) {
           Match.startRound(1);
-        } catch (IOException e) {
-          e.printStackTrace();
-        } 
-         Team2Runnable.team2Done = true; 
-         Thread th = new Thread(new Team1Runnable()); 
-         th.start(); 
-      }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      } 
     }
   }
 

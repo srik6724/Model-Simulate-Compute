@@ -79,7 +79,7 @@ import dataStructures.Element;
 import deckBuild.DarkmoorDeck;
 import io.netty.channel.unix.Buffer;
 import javafx.application.Application;
-public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Match_Recorder, Round {
+public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Round, Match_Singleton, Match_Recorder {
 	// Putting match_writer here for now
 	Scanner sc = new Scanner(System.in); 
 
@@ -112,7 +112,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	private String arenaSelectionPath = "arenaSelection.ser"; 
 	private String matchCountDownPath = "matchCountDown.ser"; 
 	private String matchBeginsPath = "matchBegins.ser"; 
-	private String bothTeamsRegistered = "bothTeamsRegistered.ser"; 
+	private String bothTeamsRegistered = "bothTeamsRegistered.ser";
 
 	// Setting application states here for readability purposes
 	private ApplicationState<Object> gameModeState; 
@@ -1190,6 +1190,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		{
 			return false; 
 		}
+
 		inputReceived = isRightInput; 
 		return true; 
 	}
@@ -1315,16 +1316,14 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			playerIndex = 0; 
 			schoolIndex = 0; 
 		}
-		System.exit(0);	
 	}
 	
 	public void beginMatch()
 	{
 		// Placing team members with their respective schools depending by the team they belong to
 		setTeamAttributes();
-		
+
 		System.out.println("TEAM ATTRIBUTES SET FOR MEMBERS OF TEAMS."); 
-		System.exit(0); 
 
 		System.out.println("Match between " + retrieveFirstTeamName + " and " + retrieveSecondTeamName + " has begun."); 
 		System.out.println("We now spin a wheel to decide who starts first. We will do this "
@@ -1335,102 +1334,187 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("TEAM" + retrieveSecondTeamName + ": " + "Heads or Tails");
 		String input2 = sc.nextLine(); 
 		String inputAnswer = randomizeHeadsOrTails(); 
+
 		if(inputAnswer.equals(input1)) 
 		{
-			System.out.println("TEAM" + retrieveFirstTeamName + " is starting first."); 
-			
-			Thread th = new Thread(new Team1Runnable());
-			th.start(); 
-			matchBeginsState = new ApplicationState<Object>(th, matchBeginsPath);
-			q.add(matchBeginsState); 
+			System.out.println("TEAM " + retrieveFirstTeamName + " is starting first."); 
+
+			Thread th1 = new Thread(new Team1Runnable()); 
+
+			try {
+				th1.start(); 
+				th1.join(); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 		else if(inputAnswer.equals(input2))
 		{
-			System.out.println("TEAM" + retrieveSecondTeamName + " is starting first.");  
+			System.out.println("TEAM " + retrieveFirstTeamName + " is starting first."); 
+			
+			Thread th2 = new Thread(new Team2Runnable()); 
 
-			Thread th = new Thread(new Team2Runnable()); 
-			th.start(); 
-			matchBeginsState = new ApplicationState<Object>(th, matchBeginsPath);
-			q.add(matchBeginsState); 
+			try {
+				th2.start(); 
+				th2.join(); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 		LoggingStorage.getLogger().log(Level.INFO, "The match has begun."); 
 		BreakpointVariables.setMatchBegins(true); 
 	}
+
+	public FileWriter getMatchRecorderInstance() {
+		FileWriter matchRecorder = null;
+		try {
+			matchRecorder = Match_Recorder.getFileWriter(); 
+		} catch (IOException e) {
+			e.printStackTrace(); 
+		}
+		return matchRecorder;
+	}
 	
 	public static void startRound(int index) throws IOException
 	{
-		System.out.println("This is a round casted of our match between team1 and team2"); 
+		FileWriter roundTeam1SpellsWriter = null;
+		FileWriter roundTeam2SpellsWriter = null;
+		FileWriter matchRoundByRoundWriter = null;
+		FileReader matchRoundByRoundReader = null;
+		FileWriter roundDefaultWriter = null;
 
+		int round = Round.get_current_number(); 
+
+		try {
+			matchRoundByRoundWriter = RoundByRoundWriter.get_file_writer();
+			matchRoundByRoundWriter.write(""); 
+			roundTeam1SpellsWriter = RoundTeam1SpellsWriter.get_file_writer(round); 
+			roundTeam1SpellsWriter.write(""); 
+			roundTeam2SpellsWriter = RoundTeam2SpellsWriter.get_file_writer(round); 
+			roundTeam2SpellsWriter.write(""); 
+			roundDefaultWriter = RoundOfSpellsWriter.get_file_writer(round);
+			roundDefaultWriter.write(""); 
+		} catch (Exception e) {
+			System.out.println("Caught Stream Closed Exception"); 
+			RoundByRoundWriter.setWriterCreated(false);
+			matchRoundByRoundWriter = RoundByRoundWriter.get_file_writer();
+			RoundTeam1SpellsWriter.setWriterCreated(false);
+			roundTeam1SpellsWriter = RoundTeam1SpellsWriter.get_file_writer(round);
+			RoundTeam2SpellsWriter.setWriterCreated(false);
+			roundTeam2SpellsWriter = RoundTeam2SpellsWriter.get_file_writer(round);
+			RoundOfSpellsWriter.setWriterCreated(false); 
+			roundDefaultWriter = RoundOfSpellsWriter.get_file_writer(round); 
+		}
+
+		System.out.println("This is a round casted of our match between team 1 and team 2"); 
 		System.out.println("Team Players Size: " + teamPlayers.size()); 
 		
-		RoundSpellsWriter.get_file_writer().write("ROUND # " + Round.get_current_number() + " OF SPELLS" + "\n");
+		matchRoundByRoundWriter.write("\n"); 
+		matchRoundByRoundWriter.write("ROUND # " + round + " OF SPELLS" + "\n");
+		roundDefaultWriter.write("\n"); 
+		roundDefaultWriter.write("ROUND # " + round + " OF SPELLS" + "\n"); 
+		System.out.println("Size of player assocation to school: " + playerAssociationToSchool.size());
+
 		for(String player: playerAssociationToSchool.keySet()) {
-			System.out.println("Player " + player + ": Select a card.");
-			RoundSpellsWriter.get_file_writer().write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
+			System.out.println("Player " + player + ": Select a card."); 
+			matchRoundByRoundWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
+			roundDefaultWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n");
 			System.out.println("The following seven cards have been generated."); 
 			Element[] sevenCards = generateSevenCards(playerAssociationToSchool.get(player).toLowerCase(), index); 
 			System.out.println("Printing out the seven cards.");
 			for(int z = 0; z < sevenCards.length; z++)
 			{
-				RoundSpellsWriter.get_file_writer().write("----------------------------");
-				RoundSpellsWriter.get_file_writer().write("\n"); 
+				matchRoundByRoundWriter.write("----------------------------\n");
+				roundDefaultWriter.write("----------------------------\n"); 
 				System.out.println("Card " + (z+1) + ": " + "{ "); 
-				RoundSpellsWriter.get_file_writer().write("Card " + (z+1) + ": " + "{ "); 
-				RoundSpellsWriter.get_file_writer().write("\n"); 
+				matchRoundByRoundWriter.write("Card " + (z+1) + ": " + "{\n "); 
+				roundDefaultWriter.write("Card " + (z+1) + ": " + "{\n ");
 				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
-				RoundSpellsWriter.get_file_writer().write("Name Of Spell: " + sevenCards[z].getSpellName()); 
-			  RoundSpellsWriter.get_file_writer().write("\n"); 
+				matchRoundByRoundWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
+			 	roundDefaultWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n");
 				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
-				RoundSpellsWriter.get_file_writer().write("Pips Of Spell: " + sevenCards[z].getPips()); 
-				RoundSpellsWriter.get_file_writer().write("\n");
+				matchRoundByRoundWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
+				roundDefaultWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n");
 				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
-				RoundSpellsWriter.get_file_writer().write("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
-				RoundSpellsWriter.get_file_writer().write("\n");
+				matchRoundByRoundWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
+				roundDefaultWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n");
 				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
-				RoundSpellsWriter.get_file_writer().write("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
-				RoundSpellsWriter.get_file_writer().write("\n");
+				matchRoundByRoundWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
+				roundDefaultWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
-				RoundSpellsWriter.get_file_writer().write("Count Of Spell: " + sevenCards[z].getCount()); 
-				RoundSpellsWriter.get_file_writer().write("\n");
+				matchRoundByRoundWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
+				roundDefaultWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n");
 				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
-				RoundSpellsWriter.get_file_writer().write("Description Of Spell: " + sevenCards[z].getDescription()); 
-				RoundSpellsWriter.get_file_writer().write("\n");
+				matchRoundByRoundWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
+				roundDefaultWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
 				System.out.println("}");
-				RoundSpellsWriter.get_file_writer().write("}"); 
+				matchRoundByRoundWriter.write("}\n"); 
+				roundDefaultWriter.write("}\n"); 
 				System.out.println("Spell added to the Matchwriter."); 
-				RoundSpellsWriter.get_file_writer().write("\n"); 
 			}
-			RoundSpellsWriter.get_file_writer().write("----------------------------");
-			RoundSpellsWriter.get_file_writer().close(); 
-			//System.exit(0); 
+			matchRoundByRoundWriter.write("----------------------------\n");
+			roundDefaultWriter.write("----------------------------\n"); 
 		}
+		matchRoundByRoundWriter.write("END OF ROUND\n");
+		roundDefaultWriter.write("END OF ROUND\n"); 
+		System.out.println("Reading round of spells using reader. Decide between reading team 1 or team 2 first."); 
+		matchRoundByRoundWriter.close(); 
+		roundDefaultWriter.close(); 
+		BufferedReader roundComputeReader = null;
+		try {
+			roundComputeReader = new BufferedReader(RoundOfSpellsReader.get_file_reader()); 
+			roundComputeReader.readLine(); 
+		} catch (Exception e) {
+			RoundOfSpellsReader.setReaderCreated(false); 
+			roundComputeReader = new BufferedReader(RoundOfSpellsReader.get_file_reader()); 
+		}
+		String line; 
+		boolean readFirstTeam = false; 
+		boolean readSecondTeam = false; 
+		while((line = roundComputeReader.readLine()) != null) {
+			if(line.contains("(TEAM 1)")) {
+				readFirstTeam = true; 
+				readSecondTeam = false; 
+			}
+			if(line.contains("(TEAM 2)")) {
+				readSecondTeam = true; 
+				readFirstTeam = false; 
+			}
+			if(readFirstTeam == true) {
+				System.out.println("WRITING LINE: " + line + " FOR TEAM 1"); 
+				roundTeam1SpellsWriter.write(line + "\n"); 
+			}
+			if(readSecondTeam == true) {
+				System.out.println("WRITING LINE: " + line + " FOR TEAM 2");
+				roundTeam2SpellsWriter.write(line + "\n"); 
+			}
+		}
+		roundTeam1SpellsWriter.close(); 
+		roundTeam2SpellsWriter.close();  
+		roundComputeReader.close(); 
 }
 	
 private static Element[] generateSevenCards(String school, int index) {
-
 	Element[] sevenCards = new Element[7]; 
 
 	System.out.println("School: " + school); 
-	//System.out.println("Deck Size for wizard " + index + ": " + decks.get(school).get(index).size()); 
-
 	System.out.println("Index: " + index); 
-	//System.out.println("Deck Size For School Chosen: " + decks.get(school).get(index).size());
 
-	int card1Index = (int) (Math.random() * decks.get(school).get(index).size()); 
-	int card2Index = (int) (Math.random() * decks.get(school).get(index).size()); 
-	int card3Index = (int) (Math.random() * decks.get(school).get(index).size()); 
-	int card4Index = (int) (Math.random() * decks.get(school).get(index).size()); 
-	int card5Index = (int) (Math.random() * decks.get(school).get(index).size());
-	int card6Index = (int) (Math.random() * decks.get(school).get(index).size()); 
-	int card7Index = (int) (Math.random() * decks.get(school).get(index).size()); 
-		
-	sevenCards[0] = decks.get(school).get(index).get(card1Index);
-	sevenCards[1] = decks.get(school).get(index).get(card2Index); 
-	sevenCards[2] = decks.get(school).get(index).get(card3Index); 
-	sevenCards[3] = decks.get(school).get(index).get(card4Index); 
-	sevenCards[4] = decks.get(school).get(index).get(card5Index); 
-	sevenCards[5] = decks.get(school).get(index).get(card6Index);
-	sevenCards[6] = decks.get(school).get(index).get(card7Index); 
+	int number = 0; 
+	while (number < 7) {
+    int randomIndex = (int) (Math.random() * decks.get(school).get(index).size());
+
+		if(!(decks.get(school).get(index).get(randomIndex).getSpellName().equals("X"))) {
+			// Figure out a way to change the element retrieved 
+			sevenCards[number] = decks.get(school).get(index).get(randomIndex); 
+			Element temp = new Element(sevenCards[number].getSpellName(), sevenCards[number].getCount(), sevenCards[number].getDescription(), sevenCards[number].getPipChance(), sevenCards[number].getPips(), sevenCards[number].getSchool(), sevenCards[number].getTypeSpell()); 
+			temp.setSpellName("X");
+    	decks.get(school).get(index).set(randomIndex, temp); 
+			number++; 
+		}
+	}
 
 	return sevenCards;
 }
@@ -2012,7 +2096,7 @@ public String randomizeHeadsOrTails()
 
 	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level) throws IOException
 	{
-		//Open connection to database 
+		// Open connection to database 
 		try {
 			Connection conn1 = null; 
 			String url1 = "jdbc:mysql://localhost:3306/wizard_schema";
