@@ -25,7 +25,7 @@ public class Team2Runnable implements Runnable {
         for(int i = 0; i < roundNumber; i++) {
           Match.startRound(1);
         }
-      } catch (IOException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       } 
     }

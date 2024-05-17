@@ -77,9 +77,15 @@ import Testing.StatePersistence;
 import Variables.BreakpointVariables;
 import dataStructures.Element;
 import deckBuild.DarkmoorDeck;
-import io.netty.channel.unix.Buffer;
+//import io.netty.channel.unix.Buffer;
 import javafx.application.Application;
-public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Round, Match_Singleton, Match_Recorder {
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+public class Match extends Application implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Round, Match_Singleton, Match_Recorder {
 	// Putting match_writer here for now
 	Scanner sc = new Scanner(System.in); 
 
@@ -167,8 +173,9 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		return reader;
 	}
 	
-	public void enroll2Teams() throws InterruptedException, IOException
+	public void enroll2Teams(String[]args) throws InterruptedException, IOException
 	{
+		//launch(args);
 		String[] teamStr = {"First", "Second"};  
 		for(int i = 0; i < 2; i++)
 		{
@@ -1376,14 +1383,18 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		}
 		return matchRecorder;
 	}
+
 	
-	public static void startRound(int index) throws IOException
+	
+	public static void startRound(int index) throws IOException, InterruptedException
 	{
 		FileWriter roundTeam1SpellsWriter = null;
 		FileWriter roundTeam2SpellsWriter = null;
 		FileWriter matchRoundByRoundWriter = null;
-		FileReader matchRoundByRoundReader = null;
 		FileWriter roundDefaultWriter = null;
+		FileWriter selectionLineWriter = null; 
+		FileWriter selectionLineTeam1Writer = null;
+		FileWriter selectionLineTeam2Writer = null;
 
 		int round = Round.get_current_number(); 
 
@@ -1396,6 +1407,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			roundTeam2SpellsWriter.write(""); 
 			roundDefaultWriter = RoundOfSpellsWriter.get_file_writer(round);
 			roundDefaultWriter.write(""); 
+			selectionLineWriter = SelectionLineWriter.get_file_writer(round); 
+			selectionLineWriter.write(""); 
+			selectionLineTeam1Writer = SelectionLineTeam1Writer.get_file_writer(round); 
+			selectionLineTeam1Writer.write(""); 
+			selectionLineTeam2Writer = SelectionLineTeam2Writer.get_file_writer(round); 
+			selectionLineTeam2Writer.write(""); 
 		} catch (Exception e) {
 			System.out.println("Caught Stream Closed Exception"); 
 			RoundByRoundWriter.setWriterCreated(false);
@@ -1406,6 +1423,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			roundTeam2SpellsWriter = RoundTeam2SpellsWriter.get_file_writer(round);
 			RoundOfSpellsWriter.setWriterCreated(false); 
 			roundDefaultWriter = RoundOfSpellsWriter.get_file_writer(round); 
+			SelectionLineWriter.setWriterCreated(false);
+			selectionLineWriter = SelectionLineWriter.get_file_writer(round); 
+			SelectionLineTeam1Writer.setWriterCreated(false);
+			selectionLineTeam1Writer = SelectionLineTeam1Writer.get_file_writer(round); 
+			SelectionLineTeam2Writer.setWriterCreated(false); 
+			selectionLineTeam2Writer = SelectionLineTeam2Writer.get_file_writer(round); 
 		}
 
 		System.out.println("This is a round casted of our match between team 1 and team 2"); 
@@ -1442,7 +1465,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				roundDefaultWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n");
 				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
 				matchRoundByRoundWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
-				roundDefaultWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
 				matchRoundByRoundWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
 				roundDefaultWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n");
@@ -1470,6 +1492,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			RoundOfSpellsReader.setReaderCreated(false); 
 			roundComputeReader = new BufferedReader(RoundOfSpellsReader.get_file_reader()); 
 		}
+		roundTeam1SpellsWriter.write("\n"); 
+		roundTeam2SpellsWriter.write("\n"); 
 		String line; 
 		boolean readFirstTeam = false; 
 		boolean readSecondTeam = false; 
@@ -1493,7 +1517,33 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		}
 		roundTeam1SpellsWriter.close(); 
 		roundTeam2SpellsWriter.close();  
+		System.out.println("Creating two readers for selection_line of team 1 and team 2 round of spells."); 
+		BufferedReader readerTeam1Compute = null;
+		BufferedReader readerTeam2Compute = null;
+		try {
+			readerTeam1Compute = new BufferedReader(SelectionLineReader.get_file_reader("t1", round)); 
+			readerTeam1Compute.readLine(); 
+			readerTeam2Compute = new BufferedReader(SelectionLineReader.get_file_reader("t2", round)); 
+			readerTeam2Compute.readLine(); 
+		} catch (Exception e) {
+			SelectionLineReader.setReaderCreated(false);
+			readerTeam1Compute = new BufferedReader(SelectionLineReader.get_file_reader("t1", round)); 
+			SelectionLineReader.setReaderCreated(false); 
+			readerTeam2Compute = new BufferedReader(SelectionLineReader.get_file_reader("t2", round)); 
+		}
+		Thread th1 = new Thread(new FileOperation(readerTeam1Compute, selectionLineTeam1Writer)); 
+		Thread th2 = new Thread(new FileOperation(readerTeam2Compute, selectionLineTeam2Writer));
+		th1.start(); 
+		th2.start(); 
+		th1.join(); 
+		th2.join(); 
+		System.out.println("Both readers finished reading selection_line of team 1 and team 2 round of spells."); 
 		roundComputeReader.close(); 
+		readerTeam1Compute.close(); 
+		readerTeam2Compute.close(); 
+		selectionLineTeam1Writer.close(); 
+		selectionLineTeam2Writer.close(); 
+		
 }
 	
 private static Element[] generateSevenCards(String school, int index) {
@@ -1504,14 +1554,15 @@ private static Element[] generateSevenCards(String school, int index) {
 
 	int number = 0; 
 	while (number < 7) {
-    int randomIndex = (int) (Math.random() * decks.get(school).get(index).size());
+		// System.out.println("Size of TC deck: " + decks.get(school).get(index).size()); 
+		int randomIndex = (int) (Math.random() * decks.get(school).get(index).size());
 
 		if(!(decks.get(school).get(index).get(randomIndex).getSpellName().equals("X"))) {
 			// Figure out a way to change the element retrieved 
 			sevenCards[number] = decks.get(school).get(index).get(randomIndex); 
-			Element temp = new Element(sevenCards[number].getSpellName(), sevenCards[number].getCount(), sevenCards[number].getDescription(), sevenCards[number].getPipChance(), sevenCards[number].getPips(), sevenCards[number].getSchool(), sevenCards[number].getTypeSpell()); 
-			temp.setSpellName("X");
-    	decks.get(school).get(index).set(randomIndex, temp); 
+			//Element temp = new Element(sevenCards[number].getSpellName(), sevenCards[number].getCount(), sevenCards[number].getDescription(), sevenCards[number].getPipChance(), sevenCards[number].getPips(), sevenCards[number].getSchool(), sevenCards[number].getTypeSpell()); 
+			//temp.setSpellName("X");
+    	//decks.get(school).get(index).set(randomIndex, temp); 
 			number++; 
 		}
 	}
@@ -2307,6 +2358,23 @@ public String randomizeHeadsOrTails()
 				}
 				System.out.println(extractGearType); 
 				return null;
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		TextField textField = new TextField(); 
+    Button button = new Button("Submit"); 
+    button.setOnAction(e -> {
+            String input = textField.getText();
+            System.out.println("You entered: " + input);
+        });
+
+    VBox vbox = new VBox(textField, button);
+    Scene scene = new Scene(vbox, 300, 200);
+
+    primaryStage.setTitle("JavaFX Input Example");
+    primaryStage.setScene(scene);
+    primaryStage.show();
 	}
 
 	
