@@ -1,9 +1,14 @@
 package wizPackage;
 
+import java.awt.BorderLayout;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Scanner;
 import java.util.function.Predicate;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class Main {
 	public static void main(String[]args) throws InterruptedException, IOException

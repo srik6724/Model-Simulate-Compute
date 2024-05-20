@@ -11,7 +11,7 @@ interface Selection_Line_Path {
   }
 
   static FileReader getFileReader(String team, int round) throws IOException {
-    return new FileReader("round_" + round + "_" + team + "_selection_cast" + "_compute.txt"); 
+    return new FileReader("round_" + round + "_" + team + "_compute.txt"); 
   }
 
 }

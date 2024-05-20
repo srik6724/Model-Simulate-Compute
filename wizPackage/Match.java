@@ -85,7 +85,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-public class Match extends Application implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Round, Match_Singleton, Match_Recorder {
+public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Round, Match_Singleton, Match_Recorder {
 	// Putting match_writer here for now
 	Scanner sc = new Scanner(System.in); 
 
@@ -1386,7 +1386,7 @@ public class Match extends Application implements MooshuArena, DragonSpyreArena,
 
 	
 	
-	public static void startRound(int index) throws IOException, InterruptedException
+	public static void startRound(int index, FileWriter matchWriterFinalizer) throws IOException, InterruptedException
 	{
 		FileWriter roundTeam1SpellsWriter = null;
 		FileWriter roundTeam2SpellsWriter = null;
@@ -1395,6 +1395,12 @@ public class Match extends Application implements MooshuArena, DragonSpyreArena,
 		FileWriter selectionLineWriter = null; 
 		FileWriter selectionLineTeam1Writer = null;
 		FileWriter selectionLineTeam2Writer = null;
+		FileWriter roundRemainingSpellsWriter = null;
+		FileWriter roundRemaniningTeam1SpellsWriter = null;
+		FileWriter roundRemainingTeam2SpellsWriter = null;
+		FileWriter roundExcessSpellsWriter = null;
+		FileWriter roundExcessSpellsTeam1Writer = null;
+		FileWriter roundExcessSpellsTeam2Writer = null;
 
 		int round = Round.get_current_number(); 
 
@@ -1436,6 +1442,7 @@ public class Match extends Application implements MooshuArena, DragonSpyreArena,
 		
 		matchRoundByRoundWriter.write("\n"); 
 		matchRoundByRoundWriter.write("ROUND # " + round + " OF SPELLS" + "\n");
+		matchWriterFinalizer.write("ROUND # " + round + " OF SPELLS" + "\n"); 
 		roundDefaultWriter.write("\n"); 
 		roundDefaultWriter.write("ROUND # " + round + " OF SPELLS" + "\n"); 
 		System.out.println("Size of player assocation to school: " + playerAssociationToSchool.size());
@@ -1443,6 +1450,7 @@ public class Match extends Application implements MooshuArena, DragonSpyreArena,
 		for(String player: playerAssociationToSchool.keySet()) {
 			System.out.println("Player " + player + ": Select a card."); 
 			matchRoundByRoundWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
+			matchWriterFinalizer.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
 			roundDefaultWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n");
 			System.out.println("The following seven cards have been generated."); 
 			Element[] sevenCards = generateSevenCards(playerAssociationToSchool.get(player).toLowerCase(), index); 
@@ -1450,38 +1458,51 @@ public class Match extends Application implements MooshuArena, DragonSpyreArena,
 			for(int z = 0; z < sevenCards.length; z++)
 			{
 				matchRoundByRoundWriter.write("----------------------------\n");
+				matchWriterFinalizer.write("----------------------------\n"); 
 				roundDefaultWriter.write("----------------------------\n"); 
 				System.out.println("Card " + (z+1) + ": " + "{ "); 
 				matchRoundByRoundWriter.write("Card " + (z+1) + ": " + "{\n "); 
+				matchWriterFinalizer.write("Card " + (z+1) + ": " + "{\n "); 
 				roundDefaultWriter.write("Card " + (z+1) + ": " + "{\n ");
 				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
 				matchRoundByRoundWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
+				matchWriterFinalizer.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
 			 	roundDefaultWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n");
 				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
 				matchRoundByRoundWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
+				matchWriterFinalizer.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
 				roundDefaultWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n");
 				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
 				matchRoundByRoundWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
+				matchWriterFinalizer.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
 				roundDefaultWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n");
 				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
 				matchRoundByRoundWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
+				matchWriterFinalizer.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
 				matchRoundByRoundWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
+				matchWriterFinalizer.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
 				roundDefaultWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n");
 				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
 				matchRoundByRoundWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
+				matchWriterFinalizer.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n");
 				roundDefaultWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
 				System.out.println("}");
 				matchRoundByRoundWriter.write("}\n"); 
+				matchWriterFinalizer.write("}\n"); 
 				roundDefaultWriter.write("}\n"); 
 				System.out.println("Spell added to the Matchwriter."); 
 			}
 			matchRoundByRoundWriter.write("----------------------------\n");
+			matchWriterFinalizer.write("----------------------------\n"); 
 			roundDefaultWriter.write("----------------------------\n"); 
 		}
 		matchRoundByRoundWriter.write("END OF ROUND\n");
+		matchWriterFinalizer.write("END OF ROUND\n"); 
+		matchWriterFinalizer.write("############################\n"); 
 		roundDefaultWriter.write("END OF ROUND\n"); 
 		System.out.println("Reading round of spells using reader. Decide between reading team 1 or team 2 first."); 
+
 		matchRoundByRoundWriter.close(); 
 		roundDefaultWriter.close(); 
 		BufferedReader roundComputeReader = null;
@@ -1501,13 +1522,22 @@ public class Match extends Application implements MooshuArena, DragonSpyreArena,
 			if(line.contains("(TEAM 1)")) {
 				readFirstTeam = true; 
 				readSecondTeam = false; 
+				String selectionLine = line.replace("SPELLS SELECTION", "OPTION CHOSEN"); 
+				selectionLineWriter.write(selectionLine); 
+				selectionLineTeam1Writer.write(selectionLine); 
 			}
 			if(line.contains("(TEAM 2)")) {
 				readSecondTeam = true; 
-				readFirstTeam = false; 
+				readFirstTeam = false;
+				String selectionLine = line.replace("SPELLS SELECTION", "OPTION CHOSEN");
+				selectionLineWriter.write(selectionLine); 
+				selectionLineTeam2Writer.write(selectionLine); 
 			}
 			if(readFirstTeam == true) {
 				System.out.println("WRITING LINE: " + line + " FOR TEAM 1"); 
+				String selectionLine = line.replace("SPELLS SELECTION", "OPTION CHOSEN"); 
+				selectionLineWriter.write(selectionLine); 
+				selectionLineTeam1Writer.write(selectionLine); 
 				roundTeam1SpellsWriter.write(line + "\n"); 
 			}
 			if(readSecondTeam == true) {
@@ -1523,21 +1553,23 @@ public class Match extends Application implements MooshuArena, DragonSpyreArena,
 		try {
 			readerTeam1Compute = new BufferedReader(SelectionLineReader.get_file_reader("t1", round)); 
 			readerTeam1Compute.readLine(); 
+			System.out.println("Line Read By Team 1 Reader: " + line); 
 			readerTeam2Compute = new BufferedReader(SelectionLineReader.get_file_reader("t2", round)); 
 			readerTeam2Compute.readLine(); 
+			System.out.println("Line Read By Team 2 Reader: " + line); 
 		} catch (Exception e) {
 			SelectionLineReader.setReaderCreated(false);
 			readerTeam1Compute = new BufferedReader(SelectionLineReader.get_file_reader("t1", round)); 
 			SelectionLineReader.setReaderCreated(false); 
 			readerTeam2Compute = new BufferedReader(SelectionLineReader.get_file_reader("t2", round)); 
 		}
-		Thread th1 = new Thread(new FileOperation(readerTeam1Compute, selectionLineTeam1Writer)); 
-		Thread th2 = new Thread(new FileOperation(readerTeam2Compute, selectionLineTeam2Writer));
-		th1.start(); 
-		th2.start(); 
-		th1.join(); 
-		th2.join(); 
-		System.out.println("Both readers finished reading selection_line of team 1 and team 2 round of spells."); 
+		new FileOperation(readerTeam1Compute, selectionLineTeam1Writer).run(); 
+		new FileOperation(readerTeam2Compute, selectionLineTeam2Writer).run(); 
+		//Thread th2 = new Thread(new FileOperation(readerTeam2Compute, selectionLineTeam2Writer));
+		//th1.start(); 
+		//th2.start();
+		//System.out.println("Both readers finished reading selection_line of team 1 and team 2 round of spells."); 
+		System.exit(0); 
 		roundComputeReader.close(); 
 		readerTeam1Compute.close(); 
 		readerTeam2Compute.close(); 
@@ -2359,24 +2391,4 @@ public String randomizeHeadsOrTails()
 				System.out.println(extractGearType); 
 				return null;
 	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		TextField textField = new TextField(); 
-    Button button = new Button("Submit"); 
-    button.setOnAction(e -> {
-            String input = textField.getText();
-            System.out.println("You entered: " + input);
-        });
-
-    VBox vbox = new VBox(textField, button);
-    Scene scene = new Scene(vbox, 300, 200);
-
-    primaryStage.setTitle("JavaFX Input Example");
-    primaryStage.setScene(scene);
-    primaryStage.show();
-	}
-
-	
-
 }

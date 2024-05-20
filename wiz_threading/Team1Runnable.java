@@ -1,9 +1,11 @@
 package wiz_threading;
 
+import java.io.FileWriter;
 import java.io.IOException;
 
 import Messages.MessageDirectory;
 import wizPackage.Match;
+import wizPackage.MatchWriter;
 
 public class Team1Runnable implements Runnable {
   protected static boolean messagesCompleted; 
@@ -22,10 +24,12 @@ public class Team1Runnable implements Runnable {
     {
       System.out.println("Starting round for team 1."); 
       try {
+        FileWriter matchWriterFinalizer = MatchWriter.get_file_writer(); 
         int roundNumber = 10; 
         for(int i = 0; i < roundNumber; i++) {
-          Match.startRound(0);
+          Match.startRound(0, matchWriterFinalizer);
         }
+        matchWriterFinalizer.close(); 
       } catch (Exception e) {
         e.printStackTrace();
       }
