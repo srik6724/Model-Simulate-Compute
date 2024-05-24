@@ -24,4 +24,9 @@ class RoundDiscardSpellsTeam2Writer {
     }
     return file_writer;
   }
+
+
+  static void setWriterCreated(boolean var) {
+    RoundDiscardSpellsTeam2Writer.writerCreated = var;
+  }
 }

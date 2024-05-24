@@ -23,4 +23,8 @@ class RoundLeftOverSpellsWriter {
     }
     return file_writer;
   }
+
+  public static void setWriterCreated(boolean var) {
+    RoundLeftOverSpellsWriter.writerCreated = var; 
+  }
 }

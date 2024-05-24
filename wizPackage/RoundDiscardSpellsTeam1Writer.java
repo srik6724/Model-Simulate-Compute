@@ -9,7 +9,7 @@ class RoundDiscardSpellsTeam1Writer {
 
   RoundDiscardSpellsTeam1Writer(int round, String team) {
     try {
-      file_writer = Round_Remaining.getFileWriter(team, round);
+      file_writer = Round_Discarder.getFileWriter(team, round);
       RoundDiscardSpellsTeam1Writer.writerCreated = true; 
     } catch (IOException e) {
       e.printStackTrace();
@@ -22,6 +22,10 @@ class RoundDiscardSpellsTeam1Writer {
       new RoundDiscardSpellsTeam1Writer(round, "t1"); 
     }
     return file_writer;
+  }
+
+  static void setWriterCreated(boolean var) {
+    RoundDiscardSpellsTeam1Writer.writerCreated = var;
   }
 
 

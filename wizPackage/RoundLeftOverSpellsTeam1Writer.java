@@ -24,5 +24,9 @@ class RoundLeftOverSpellsTeam1Writer {
     }
     return file_writer;
   }
+
+  static void setWriterCreated(boolean var) {
+    RoundLeftOverSpellsTeam1Writer.writerCreated = var; 
+  }
   
 }

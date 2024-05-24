@@ -18,12 +18,21 @@ public class Main {
 			return fileName.endsWith(".txt") && (fileName.contains("round") || fileName.contains("match")); 
 		}; 
 
+		Predicate<Path> fileCountCriteria = path -> {
+			String fileName = path.getFileName().toString(); 
+			return fileName.contains("round"); 
+		};
+
 		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/wiz-simulator-new");
 
 		deleteFiles(startPath, criteria);
 
 		Match match = new Match(); 
 		match.enroll2Teams(args); 
+
+		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/wiz-simulator-new");
+		long fileCount = Files.list(directory).filter(fileCountCriteria).count();
+		System.out.println("Final count of round, match files in local directory: " + fileCount);
 	}
 
 	private static void deleteFiles(Path startPath, Predicate<Path> criteria) throws IOException {
@@ -34,7 +43,7 @@ public class Main {
                     Files.delete(file);
                     System.out.println("Deleted file: " + file);
                 }
-                return FileVisitResult.CONTINUE;
+                return FileVisitResult.CONTINUE; 
             }
 
             @Override

@@ -17,10 +17,14 @@ class RoundDiscardSpellsWriter {
   }
 
   static FileWriter get_file_writer(int round) {
-    if(RoundDiscardSpellsWriter.writerCreated == true) {
+    if(RoundDiscardSpellsWriter.writerCreated == false) {
       System.out.println("Calling round_remaining constructor.");
       new RoundDiscardSpellsWriter(round, "default");
     }
     return file_writer;
+  }
+
+  public static void setWriterCreated(boolean var) {
+    RoundDiscardSpellsWriter.writerCreated = var; 
   }
 }

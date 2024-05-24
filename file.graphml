@@ -18,10 +18,10 @@
         </edge>
         <edge source="John" target="Dog">
             <data key="owns">1</data>
-        </edge>
+        </edge> 
         <edge source="Mary" target="Cat">
             <data key="owns">1</data>
-        </edge>
+        </edge> 
         <edge source="Justin" target="Mary">
             <data key="Friends">1</data>
         </edge>
