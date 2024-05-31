@@ -38,6 +38,9 @@ import AeonStats.AeonHatStats;
 import AeonStats.AeonRingStats;
 import AeonStats.AeonRobeStats;
 import AeonStats.AeonWandStats;
+import Arena_Setups.Arena_1;
+import Arena_Setups.Arena_Default;
+import Arena_Setups.Arena_Default_System;
 import CustomExceptions.TypeException;
 import DragoonStats.DragoonClass;
 import EternalStats.EternalClass;
@@ -85,7 +88,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, HeapArena, Arena, AvalonArena, Round, Match_Singleton, Match_Recorder {
+public class Match extends Arena_Default_System implements Round, Match_Singleton, Match_Recorder {
+
+	private static File initialFile; 
+
+	Match(File file) {
+		Match.initialFile = file;
+	}
 
 	// Putting match_writer here for now
 	Scanner sc = new Scanner(System.in); 
@@ -97,6 +106,10 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	String line_curr = ""; 
 	File team1 = new File("team_1_information.txt"); 
 	File team2 = new File("team_2_information.txt");
+
+
+
+	// round_reading file
 
 	// Arrays to store information about the firstTeam and secondTeam. 
 	int teamSize; 
@@ -434,82 +447,12 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("Player " + (i+1) + " School: " + teamSchools[i]); 
 		}
 		Match.schoolsOfTeam.add(Arrays.asList(teamSchools)); 
-
-		// Create a method for the player identities
-
-		/*boolean checkIdentities = true; 
-		while(checkIdentities)
-		{
-			for(int i = 0; i < teamSize; i++)
-			{
-				System.out.println("Write down " + team[i] + " school"); 
-				String playerSchool = sc.nextLine(); 
-				if(isNumeric(playerSchool))
-				{
-					System.out.println("Player School " + playerSchool + " cannot be a number."); 
-					checkIdentities = true; 
-					break;
-				}
-				else if((playerSchool.equals("Ice")) || (playerSchool.equals("Fire")) || (playerSchool.equals("Death"))
-				|| (playerSchool.equals("Balance")) || (playerSchool.equals("Life")) || (playerSchool.equals("Myth")) 
-				|| (playerSchool.equals("Storm")))
-				{
-					System.out.println("Player School added of type " + playerSchool); 
-					teamSchools[i] = playerSchool; 
-					checkIdentities = false; 
-				}
-				else 
-				{
-					checkIdentities = true;
-					break;
-				}
-			}
-		}
-		List<String> identitiesOfTeam = new ArrayList<String>(); 
-		for(int i = 0; i < teamSchools.length; i++) {
-			System.out.println("School here: " + teamSchools[i]);
-			identitiesOfTeam.add(teamSchools[i]); 
-		}
-		schoolsOfTeam.add(identitiesOfTeam);
-		System.out.println();
-		System.out.println(); 
-		System.out.println(); 
-		System.out.println(); 
-
-		LoggingStorage.getLogger().log(Level.INFO, "Player Schools set for each player on team");
-		BreakpointVariables.setPlayerSchools(true);
-		playerSchoolsState = new ApplicationState<Object>(teamSchools, playerSchoolsPath);
-		q.add(playerSchoolsState);*/
 	}
 
 	void selectPlayerLevelsForTeam() {
-		// boolean checkPlayerLevels = true; 
 		for(int i = 0; i < teamLevels.length; i++) {
 			System.out.println("Added " + teamLevels[i] + " level of " + "player " + team[i]); 
 		}
-		/*while(checkPlayerLevels)
-		{
-			for(int i = 0; i < teamSize; i++)
-			{
-				System.out.println("Write down " + team[i] + " level."); 
-				String playerLevel = sc.nextLine(); 
-				if(!(isNumeric(playerLevel)))
-				{
-					System.out.println("Level " + playerLevel + " not recognizable."); 
-					checkPlayerLevels = true; 
-					break;
-				}
-				else if(Integer.parseInt(playerLevel) > 160)
-				{
-					System.out.println("Player Level Chosen " + playerLevel + " exceeds 160"); 
-				}
-				else {
-					Match.teamLevels[i] = playerLevel; 
-					System.out.println("Added " + teamLevels[i] + " level of " + "player " + team[i]); 
-					checkPlayerLevels = false;
-				}
-			}
-		}*/
 		LoggingStorage.getLogger().log(Level.INFO, "Levels for each player on team selected."); 
 		BreakpointVariables.setPlayerLevels(true);  
 		playerLevelsState = new ApplicationState<Object>(Match.teamLevels, playerLevelsPath); 
@@ -526,25 +469,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		System.out.println("We humbly request it is done in this order as we would hope to avoid any technical "
 				+ "issues on our end for registering all teams. Thank you! "); 
 		
-		/*while(checkPlayerNames)
-		{
-			for(int i = 0; i < teamSize; i++)
-			{
-				System.out.println("Please write down player " + (i+1) + " of your team."); 
-				String player = sc.nextLine(); 
-				if(isNumeric(player))
-				{
-					System.out.println("Not a valid name for " + player); 
-					checkPlayerNames = true; 
-					break;
-				}
-				else
-				{
-					checkPlayerNames = false; 
-					team[i] = player;  
-				}
-			}
-		}*/
 		List<String> playersOnTeam = new ArrayList<String>(); 
 		System.out.println("Team Length: " + team.length); 
 		for(int i = 0; i < team.length; i++) {
@@ -588,20 +512,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			System.out.println("----------------4v4----------------------");
 			Thread.sleep(1000);  
 			System.out.println("Choose which one to play based on those options."); 
-			/*gameMode = sc.nextLine(); 
-			if(isNumeric(gameMode))
-			{
-				System.out.println("Not a valid input entered for game mode: " + gameMode); 
-				iterate = true; 
-				continue; 
-			}
-			if(!((gameMode.equals("1v1") || gameMode.equals("2v2") || gameMode.equals("3v3") || gameMode.equals("4v4"))))
-			{
-				System.out.println("Game Mode: " + gameMode + " doesn't exist."); 
-				iterate = true; 
-				continue; 
-			}
-			System.out.println("Game Mode selection chosen is " + gameMode); */
 			if(gameMode.contains("1v1"))
 			{
 				teamSize = _1v1_.teamSize(); 
@@ -790,7 +700,6 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	}
 
 	private void generatePossibleOrders(int left, int right, int length, int firstIteration, String[]orderCreated, List<String> firstTeamSchools, HashMap<Integer, List<String>> orderDetail) {
-
 		// Implement a backtracking algorithm that generates all the possible combinations of orders that one can look at.
 		// Use hashmap to store the information of each order. 
 		// Make sure to terminate the base case if there are duplicates and no other potential combinations can be created. 
@@ -1100,8 +1009,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 	
 	public void randomizeArenaSelection()
 	{
-		int ArenaNumber = Arena.ArenaNumber();
-		int AvalonArenaNumber = AvalonArena.returnAvalonArenaNumber(); 
+		int ArenaNumber = Arena_Default.ArenaNumber();
+		int AvalonArenaNumber = Arena_1.returnAvalonArenaNumber(); 
 		int DragonSpyreArenaNumber = DragonSpyreArena.DragonSpyreArenaNumber(); 
 		int GrizzleheimArenaNumber = GrizzleheimArena.GrizzleheimArenaNumber(); 
 		int HeapArenaNumber = HeapArena.HeapArenaNumber(); 
@@ -1112,7 +1021,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		int ArenaNumberSelected = (int)(Math.random() * 6) + 1; 
 		
 		int[] arenaNumbers = {ArenaNumber, AvalonArenaNumber, DragonSpyreArenaNumber, GrizzleheimArenaNumber, HeapArenaNumber, MooshuArenaNumber};
-		String[] arenaNames = {ArenaName(), AvalonArenaName(), DragonSpyreArenaName(), GrizzleheimArenaName(), HeapArenaName(), MooshuArenaName()}; 
+		/*String[] arenaNames = {ArenaName(), AvalonArenaName(), DragonSpyreArenaName(), GrizzleheimArenaName(), HeapArenaName(), MooshuArenaName()}; 
 		
 		
 		boolean matchArenaNumber = true; 
@@ -1135,7 +1044,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		BreakpointVariables.setArenaSelection(true);
 		// Storing arenaName
 		arenaSelectionState = new ApplicationState<Object>(arenaName, arenaSelectionPath);
-		q.add(arenaSelectionState); 
+		q.add(arenaSelectionState); */
 	}
 	
 	public void matchCountDown(String firstTeamName, String secondTeamName)
@@ -1279,7 +1188,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				int counter = 0;
 				for(int i = 0; i < team.size(); i++) {
 					if(team.get(i).equals(uniquePlayer)) {
-						team.set(i, uniquePlayer +  " "  + String.valueOf(++counter) + " --> (TEAM " + loop + ")");
+						team.set(i, uniquePlayer +  " MEMBER "  + String.valueOf(++counter) + " --> (TEAM " + loop + ")");
 					}
 				}
 				counter = 0; 
@@ -1387,10 +1296,11 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 
 	
 	
-	public static void startRound(int index, FileWriter matchWriterFinalizer) throws IOException, InterruptedException
+	public static void startRound(int index, FileWriter matchWriterFinalizer, FileReader roundReading) throws IOException, InterruptedException
 	{
 		FileWriter roundTeam1SpellsWriter = null;
 		FileWriter roundTeam2SpellsWriter = null;
+		FileWriter matchCombineWriter = null;
 		FileWriter matchRoundByRoundWriter = null;
 		FileWriter matchExcessSpellsWriter = null;
 		FileWriter matchExcessSpellsTeam1Writer = null;
@@ -1401,6 +1311,7 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		FileWriter matchSelectionLineWriter = null;
 		FileWriter matchSelectionLineTeam1Writer = null;
 		FileWriter matchSelectionLineTeam2Writer = null;
+		FileWriter roundCombineWriter = null;
 		FileWriter roundDefaultWriter = null;
 		FileWriter roundSelectionLineWriter = null; 
 		FileWriter roundSelectionLineTeam1Writer = null;
@@ -1413,8 +1324,57 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		FileWriter roundExcessSpellsTeam2Writer = null;
 
 		int round = Round.get_current_number(); 
+		System.out.println("PLAYER ASSOCIATION TO SCHOOL SIZE: " + playerAssociationToSchool.size()); 
 
 		try {
+			if(playerAssociationToSchool.size() == 2) {
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+			}
+			else if(playerAssociationToSchool.size() == 4) {
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam1MemberSpellsWriter.file_writers[0].write(""); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam1MemberSpellsWriter.file_writers[1].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1);
+				RoundTeam2MemberSpellsWriter.file_writers[0].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam2MemberSpellsWriter.file_writers[1].write(""); 
+			}
+			else if(playerAssociationToSchool.size() == 6) {
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam1MemberSpellsWriter.file_writers[0].write(""); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam1MemberSpellsWriter.file_writers[1].write(""); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 3); 
+				RoundTeam1MemberSpellsWriter.file_writers[2].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam2MemberSpellsWriter.file_writers[0].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam2MemberSpellsWriter.file_writers[1].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 3); 
+				RoundTeam2MemberSpellsWriter.file_writers[2].write(""); 
+			}
+			else if(playerAssociationToSchool.size() == 8) {
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam1MemberSpellsWriter.file_writers[0].write(""); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam1MemberSpellsWriter.file_writers[1].write(""); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 3); 
+				RoundTeam1MemberSpellsWriter.file_writers[2].write(""); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 4); 
+				RoundTeam1MemberSpellsWriter.file_writers[3].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam2MemberSpellsWriter.file_writers[0].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam2MemberSpellsWriter.file_writers[1].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 3); 
+				RoundTeam2MemberSpellsWriter.file_writers[2].write(""); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 4); 
+				RoundTeam2MemberSpellsWriter.file_writers[3].write(""); 
+			}
+			matchCombineWriter = MatchCombineWriter.get_file_writer();
+			matchCombineWriter.write(""); 
 			matchRoundByRoundWriter = RoundByRoundWriter.get_file_writer();
 			matchRoundByRoundWriter.write(""); 
 			matchExcessSpellsWriter = MatchDiscardSpellsWriter.get_file_writer();
@@ -1435,6 +1395,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			matchSelectionLineTeam1Writer.write(""); 
 			matchSelectionLineTeam2Writer = MatchSelectionLineTeam2Writer.get_file_writer();
 			matchSelectionLineTeam2Writer.write(""); 
+			roundCombineWriter = RoundCombineWriter.get_file_writer(round); 
+			roundCombineWriter.write(""); 
 			roundTeam1SpellsWriter = RoundTeam1SpellsWriter.get_file_writer(round); 
 			roundTeam1SpellsWriter.write(""); 
 			roundTeam2SpellsWriter = RoundTeam2SpellsWriter.get_file_writer(round); 
@@ -1460,7 +1422,57 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			roundExcessSpellsTeam2Writer = RoundDiscardSpellsTeam2Writer.get_file_writer(round); 
 			roundExcessSpellsTeam2Writer.write(""); 
 		} catch (Exception e) {
+			if(playerAssociationToSchool.size() == 2) {
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false);
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+			}
+			else if(playerAssociationToSchool.size() == 4) {
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false);
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1);
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 2); 
+			}
+			else if(playerAssociationToSchool.size() == 6) {
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false);
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 3); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 3); 
+			}
+			else if(playerAssociationToSchool.size() == 8) {
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false);
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 3); 
+				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam1MemberSpellsWriter.get_file_writer(round, 4); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 2); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 3); 
+				RoundTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundTeam2MemberSpellsWriter.get_file_writer(round, 4); 
+			}
 			System.out.println("Caught Stream Closed Exception"); 
+			MatchCombineWriter.setWriterCreated(false); 
+			matchCombineWriter = MatchCombineWriter.get_file_writer();
 			RoundByRoundWriter.setWriterCreated(false);
 			matchRoundByRoundWriter = RoundByRoundWriter.get_file_writer();
 			MatchDiscardSpellsWriter.setWriterCreated(false);
@@ -1481,6 +1493,8 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			matchSelectionLineTeam1Writer = MatchSelectionLineTeam1Writer.get_file_writer();
 			MatchSelectionLineTeam2Writer.setWriterCreated(false);
 			matchSelectionLineTeam2Writer = MatchSelectionLineTeam2Writer.get_file_writer();
+			RoundCombineWriter.setWriterCreated(false); 
+			roundCombineWriter = RoundCombineWriter.get_file_writer(round); 
 			RoundTeam1SpellsWriter.setWriterCreated(false);
 			roundTeam1SpellsWriter = RoundTeam1SpellsWriter.get_file_writer(round);
 			RoundTeam2SpellsWriter.setWriterCreated(false);
@@ -1507,23 +1521,26 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			roundExcessSpellsTeam2Writer = RoundDiscardSpellsTeam2Writer.get_file_writer(round); 
 		}
 
-		System.exit(0); 
-
 		System.out.println("This is a round casted of our match between team 1 and team 2"); 
-		System.out.println("Team Players Size: " + teamPlayers.size()); 
+		System.out.println("Team Players Size inclusive of both team 1 and team 2: " + teamPlayers.size()); 
 		
 		matchRoundByRoundWriter.write("\n"); 
 		matchRoundByRoundWriter.write("ROUND # " + round + " OF SPELLS" + "\n");
 		matchWriterFinalizer.write("ROUND # " + round + " OF SPELLS" + "\n"); 
 		roundDefaultWriter.write("\n"); 
 		roundDefaultWriter.write("ROUND # " + round + " OF SPELLS" + "\n"); 
+		roundCombineWriter.write("ROUND # " + round + " OF SPELLS" + "\n");
 		System.out.println("Size of player assocation to school: " + playerAssociationToSchool.size());
-
+		// 2 players <-> 1:1
+		// 4 players <-> 2:2
+		// 6 players <-> 3:3
+		// 8 players <-> 4:4
 		for(String player: playerAssociationToSchool.keySet()) {
 			System.out.println("Player " + player + ": Select a card."); 
 			matchRoundByRoundWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
 			matchWriterFinalizer.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
-			roundDefaultWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n");
+			roundDefaultWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n");	
+			roundCombineWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
 			System.out.println("The following seven cards have been generated."); 
 			Element[] sevenCards = generateSevenCards(playerAssociationToSchool.get(player).toLowerCase(), index); 
 			System.out.println("Printing out the seven cards.");
@@ -1532,47 +1549,59 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 				matchRoundByRoundWriter.write("----------------------------\n");
 				matchWriterFinalizer.write("----------------------------\n"); 
 				roundDefaultWriter.write("----------------------------\n"); 
+				roundCombineWriter.write("----------------------------\n");
 				System.out.println("Card " + (z+1) + ": " + "{ "); 
 				matchRoundByRoundWriter.write("Card " + (z+1) + ": " + "{\n "); 
 				matchWriterFinalizer.write("Card " + (z+1) + ": " + "{\n "); 
 				roundDefaultWriter.write("Card " + (z+1) + ": " + "{\n ");
+				roundCombineWriter.write("Card " + (z+1) + ": " + "{\n ");
 				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
 				matchRoundByRoundWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
 				matchWriterFinalizer.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
 			 	roundDefaultWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n");
+				roundCombineWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
 				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
 				matchRoundByRoundWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
 				matchWriterFinalizer.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
 				roundDefaultWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n");
+				roundCombineWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
 				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
 				matchRoundByRoundWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
 				matchWriterFinalizer.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
 				roundDefaultWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n");
+				roundCombineWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
 				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
 				matchRoundByRoundWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
 				matchWriterFinalizer.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
+				roundDefaultWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
+				roundCombineWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
 				matchRoundByRoundWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
 				matchWriterFinalizer.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
 				roundDefaultWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n");
+				roundCombineWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
 				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
 				matchRoundByRoundWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
 				matchWriterFinalizer.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n");
 				roundDefaultWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
+				roundCombineWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
 				System.out.println("}");
 				matchRoundByRoundWriter.write("}\n"); 
 				matchWriterFinalizer.write("}\n"); 
 				roundDefaultWriter.write("}\n"); 
+				roundCombineWriter.write("}\n"); 
 				System.out.println("Spell added to the Matchwriter."); 
 			}
 			matchRoundByRoundWriter.write("----------------------------\n");
 			matchWriterFinalizer.write("----------------------------\n"); 
 			roundDefaultWriter.write("----------------------------\n"); 
+			roundCombineWriter.write("----------------------------\n");
 		}
 		matchRoundByRoundWriter.write("END OF ROUND\n");
 		matchWriterFinalizer.write("END OF ROUND\n"); 
 		matchWriterFinalizer.write("############################\n"); 
 		roundDefaultWriter.write("END OF ROUND\n"); 
+		roundCombineWriter.write("END OF ROUND\n"); 
 		System.out.println("Reading round of spells using reader. Decide between reading team 1 or team 2 first."); 
 
 		matchRoundByRoundWriter.close(); 
@@ -1590,33 +1619,102 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 		String line; 
 		boolean readFirstTeam = false; 
 		boolean readSecondTeam = false; 
-		while((line = roundComputeReader.readLine()) != null) {
+		String selectionStmtLine_t1 = null;
+		String discardStmtLine_t1 = null;
+		String remainingStmtLine_t1 = null;
+		String selectionStmtLine_t2 = null;
+		String discardStmtLine_t2 = null;
+		String remainingStmtLine_t2 = null;
+		while((line = roundComputeReader.readLine()) != null) { 
 			if(line.contains("(TEAM 1)")) {
 				System.out.println("CONTAINS TEAM 1"); 
 				readFirstTeam = true; 
 				readSecondTeam = false; 
-				line = line.replace("SPELLS SELECTION", "OPTION CHOSEN"); 
+				
+				line = line.replace("SPELLS SELECTION", "SPELL SELECTED"); 
 				roundSelectionLineWriter.write(line + "\n"); 
 				roundSelectionLineTeam1Writer.write(line + "\n"); 
+				//roundCombineWriter.write(line + "\n"); 
+				selectionStmtLine_t1 = line;
+				String discardLine = line; 
+				discardLine = discardLine.replace("SPELL SELECTED", "SPELLS DISCARDED"); 
+				roundExcessSpellsWriter.write(discardLine + "\n"); 
+				roundExcessSpellsTeam1Writer.write(discardLine + "\n"); 
+				discardStmtLine_t1 = discardLine;
+				//roundCombineWriter.write(discardLine + "\n"); 
+				String remainingLine = line; 
+				remainingLine = remainingLine.replace("SPELL SELECTED", "SPELLS REMAINING"); 
+				roundRemainingSpellsWriter.write(remainingLine + "\n"); 
+				roundRemainingTeam1SpellsWriter.write(remainingLine + "\n"); 
+				roundRemainingTeam2SpellsWriter.write(remainingLine + "\n"); 
+				remainingStmtLine_t1 = remainingLine;
+				//roundCombineWriter.write(remainingLine + "\n"); 
 			}
 			if(line.contains("(TEAM 2)")) {
 				readSecondTeam = true; 
 				readFirstTeam = false;
-				line = line.replace("SPELLS SELECTION", "OPTION CHOSEN");
+				line = line.replace("SPELLS SELECTION", "SPELL SELECTED");
 				roundSelectionLineWriter.write(line + "\n"); 
 				roundSelectionLineTeam2Writer.write(line + "\n");  
+				selectionStmtLine_t2 = line;
+				//roundCombineWriter.write(line + "\n"); 
+				String discardLine = line; 
+				discardLine = discardLine.replace("SPELL SELECTED", "SPELL DISCARDED"); 
+				roundExcessSpellsWriter.write(discardLine + "\n"); 
+				roundExcessSpellsTeam2Writer.write(discardLine + "\n"); 
+				discardStmtLine_t2 = discardLine;
+				//roundCombineWriter.write(discardLine + "\n"); 
+				String remainingLine = line; 
+				remainingLine = remainingLine.replace("SPELL SELECTED", "SPELL REMAINING"); 
+				roundRemainingSpellsWriter.write(remainingLine + "\n"); 
+				roundRemainingTeam1SpellsWriter.write(remainingLine + "\n"); 
+				roundRemainingTeam2SpellsWriter.write(remainingLine + "\n"); 
+				remainingStmtLine_t2 = remainingLine;
+				//roundCombineWriter.write(remainingLine + "\n"); 
 			}
 			if(readFirstTeam == true) {
 				System.out.println("WRITING LINE: " + line + " FOR TEAM 1"); 
 				roundTeam1SpellsWriter.write(line + "\n"); 
+				System.out.println("Extracting member_no information"); 
+				if(line.contains("MEMBER")) {
+					int memberCharLoc = line.indexOf("M");
+					int stringNoLoc = line.indexOf(" ", memberCharLoc) + 1; 
+					int memberNoLoc = Integer.parseInt(line.substring(stringNoLoc, stringNoLoc+1)); 
+					System.out.println("memberNoLoc index: " + memberNoLoc); 
+					RoundTeam1MemberSpellsWriter.file_writers[memberNoLoc-1].write(line + "\n"); 
+				}
 			}
 			if(readSecondTeam == true) {
 				System.out.println("WRITING LINE: " + line + " FOR TEAM 2");
 				roundTeam2SpellsWriter.write(line + "\n"); 
+				System.out.println("Extracting member_no information"); 
+				if(line.contains("MEMBER")) {
+					int memberCharLoc = line.indexOf("M"); 
+					int stringNoLoc = line.indexOf(" ", memberCharLoc) + 1; 
+					int memberNoLoc = Integer.parseInt(line.substring(stringNoLoc, stringNoLoc+1)); 
+					System.out.println("memberNoLoc index: " + memberNoLoc); 
+ 					RoundTeam2MemberSpellsWriter.file_writers[memberNoLoc-1].write(line + "\n");
+				}
 			}
 		}
 		roundTeam1SpellsWriter.close(); 
+		try {
+			RoundTeam1MemberSpellsWriter.file_writers[0].close(); 
+			RoundTeam1MemberSpellsWriter.file_writers[1].close(); 
+			RoundTeam1MemberSpellsWriter.file_writers[2].close(); 
+			RoundTeam1MemberSpellsWriter.file_writers[3].close(); 
+		} catch (Exception e) {
+			System.out.println("A member writer for team 1 failed to close"); ; 
+		}
 		roundTeam2SpellsWriter.close();  
+		try {
+			RoundTeam2MemberSpellsWriter.file_writers[0].close(); 
+			RoundTeam2MemberSpellsWriter.file_writers[1].close(); 
+			RoundTeam2MemberSpellsWriter.file_writers[2].close(); 
+			RoundTeam2MemberSpellsWriter.file_writers[3].close(); 
+		} catch (Exception e) {
+			System.out.println("A member writer for team 2 failed to close"); 
+		}
 		System.out.println("Creating two readers for selection_line of team 1 and team 2 round of spells."); 
 		BufferedReader readerTeam1Compute = null;
 		BufferedReader readerTeam2Compute = null;
@@ -1633,14 +1731,23 @@ public class Match implements MooshuArena, DragonSpyreArena, GrizzleheimArena, H
 			RoundSelectionLineReader.setReaderCreated(false); 
 			readerTeam2Compute = new BufferedReader(RoundSelectionLineReader.get_file_reader("t2", round)); 
 		}
-		//new FileOperation(readerTeam1Compute, roundSelectionLineTeam1Writer, roundExcessSpellsTeam1Writer, roundRemainingTeam1SpellsWriter, "t1", round).run(); 
-		new FileOperation(readerTeam2Compute, roundSelectionLineTeam2Writer, roundExcessSpellsTeam2Writer, roundRemainingTeam2SpellsWriter, "t2", round).run(); 
+		new FileOperation(readerTeam1Compute, roundSelectionLineTeam1Writer, roundExcessSpellsTeam1Writer, roundRemainingTeam1SpellsWriter, roundCombineWriter, new FileReader(Match.initialFile), "t1", round, selectionStmtLine_t1, discardStmtLine_t1, remainingStmtLine_t1).run(); 
+		//Thread.sleep(30000);
+		new FileOperation(readerTeam2Compute, roundSelectionLineTeam2Writer, roundExcessSpellsTeam2Writer, roundRemainingTeam2SpellsWriter, roundCombineWriter, new FileReader(Match.initialFile), "t2", round, selectionStmtLine_t2, discardStmtLine_t2, remainingStmtLine_t2).run(); 
+		//Thread.sleep(30000); 
 		roundComputeReader.close(); 
 		readerTeam1Compute.close(); 
 		readerTeam2Compute.close(); 
 		roundSelectionLineWriter.close();
 		roundSelectionLineTeam1Writer.close(); 
 		roundSelectionLineTeam2Writer.close(); 
+		roundExcessSpellsWriter.close(); 
+		roundExcessSpellsTeam1Writer.close(); 
+		roundExcessSpellsTeam2Writer.close(); 
+		roundRemainingSpellsWriter.close(); 
+		roundRemainingTeam1SpellsWriter.close(); 
+		roundRemainingTeam2SpellsWriter.close(); 
+		roundCombineWriter.close(); 
 }
 	
 private static Element[] generateSevenCards(String school, int index) {
@@ -1651,15 +1758,11 @@ private static Element[] generateSevenCards(String school, int index) {
 
 	int number = 0; 
 	while (number < 7) {
-		// System.out.println("Size of TC deck: " + decks.get(school).get(index).size()); 
 		int randomIndex = (int) (Math.random() * decks.get(school).get(index).size());
 
 		if(!(decks.get(school).get(index).get(randomIndex).getSpellName().equals("X"))) {
 			// Figure out a way to change the element retrieved 
 			sevenCards[number] = decks.get(school).get(index).get(randomIndex); 
-			//Element temp = new Element(sevenCards[number].getSpellName(), sevenCards[number].getCount(), sevenCards[number].getDescription(), sevenCards[number].getPipChance(), sevenCards[number].getPips(), sevenCards[number].getSchool(), sevenCards[number].getTypeSpell()); 
-			//temp.setSpellName("X");
-    	//decks.get(school).get(index).set(randomIndex, temp); 
 			number++; 
 		}
 	}
@@ -2204,11 +2307,6 @@ public String randomizeHeadsOrTails()
 		TypeException ex = new TypeException();
 		ex.message(gearName); 
 		return null;
-	}
-
-	public static void main(String[]args)
-	{
-		
 	}
 
 	public boolean checkGearName(String gearName, String pieceOfGear, StringBuilder gearType, String school, int level) throws IOException

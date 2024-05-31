@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -24,28 +25,39 @@ class FileOperation {
   private FileWriter writer1;
   private FileWriter writer2; 
   private FileWriter writer3;  
+  private FileWriter writerTemp;
+  private FileReader reader1;
   private String label;
   private int round;
+  private String line1; 
+  private String line2; 
+  private String line3;
 
-  FileOperation(BufferedReader reader, FileWriter selectionWriter, FileWriter excessWriter, FileWriter remainsWriter, String teamLabel, int round) throws IOException {
+  FileOperation(BufferedReader reader, FileWriter selectionWriter, FileWriter excessWriter, FileWriter remainsWriter, FileWriter combineWriter, FileReader processReader, String teamLabel, int round, String selectionStart, String discardStart, String remainingStart) throws IOException {
     this.reader = reader; 
     this.writer1 = selectionWriter; 
     this.writer2 = excessWriter; 
     this.writer3 = remainsWriter; 
+    this.reader1 = processReader;
+    this.writerTemp = combineWriter;
     this.label = teamLabel;
     this.round = round;
+    this.line1 = selectionStart;
+    this.line2 = discardStart;
+    this.line3 = remainingStart;
     System.out.println("Calling file operation for a task.");
     System.out.println("Cross checking team-label: " + this.label); 
-    //run(); 
   }
 
-  public void run() {
-    // Reading lines from the reader
-    System.out.println("Reading lines from the reader.");
+  public void run() throws IOException {
+    System.out.println("Read full-card-list or card-by-card for round?"); ; 
+    BufferedReader round_reader = new BufferedReader(reader1); 
+    String input = round_reader.readLine(); 
+    round_reader.close(); 
+    /*System.out.println("Line Read: " + reader.readLine()); 
     Scanner sc = new Scanner(System.in); 
-    System.out.println("Read full-card-list or card-by-card for round?"); 
-    String optionSelected = sc.nextLine(); 
-    if(optionSelected.equals("full-card-list")) {
+    String input = sc.nextLine(); */
+    if(input.equals("full-card-list")) {
       try {
         String line; 
         int number = 0;
@@ -107,38 +119,65 @@ class FileOperation {
               if(checkBox1.isSelected() && !checkBox2.isSelected()) {
                 System.out.println("Check-box selected on window-closing."); 
                 try {
-                  writer1.write("----------------------------");
-                  writer1.write(nameOfSpell); 
-                  writer1.write(pipsOfSpell);
-                  writer1.write(pipChanceOfSpell);
-                  writer1.write(countOfSpell);
-                  writer1.write(descriptionOfSpell);
-                  writer1.write("----------------------------");
+                  writer1.write(line1 + "\n");
+                  writerTemp.write(line1 + "\n");
+                  writer1.write("----------------------------\n");
+                  writerTemp.write("----------------------------\n");
+                  writer1.write(nameOfSpell + "\n"); 
+                  writerTemp.write(nameOfSpell + "\n"); 
+                  writer1.write(pipsOfSpell + "\n");
+                  writerTemp.write(pipsOfSpell + "\n"); 
+                  writer1.write(pipChanceOfSpell + "\n");
+                  writerTemp.write(pipChanceOfSpell + "\n");
+                  writer1.write(countOfSpell + "\n");
+                  writerTemp.write(countOfSpell + "\n"); 
+                  writer1.write(descriptionOfSpell + "\n");
+                  writerTemp.write(descriptionOfSpell + "\n");
+                  writer1.write("----------------------------\n");
+                  writerTemp.write("----------------------------\n");
                   writer1.close(); 
                 } catch (IOException e1) {
                   try {
                     if(label.equals("t1")) {
                       RoundSelectionLineTeam1Writer.setWriterCreated(false);
                       writer1 = RoundSelectionLineTeam1Writer.get_file_writer(round);
-                      writer1.write("----------------------------");
-                      writer1.write(nameOfSpell); 
-                      writer1.write(pipsOfSpell);
-                      writer1.write(pipChanceOfSpell);
-                      writer1.write(countOfSpell);
-                      writer1.write(descriptionOfSpell);
-                      writer1.write("----------------------------");
+                      //writer1.write(line1 + "\n"); 
+                      //writerTemp.write(line1 + "\n");
+                      writer1.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
+                      writer1.write(nameOfSpell + "\n"); 
+                      writerTemp.write(nameOfSpell + "\n");
+                      writer1.write(pipsOfSpell + "\n");
+                      writerTemp.write(pipsOfSpell + "\n");
+                      writer1.write(pipChanceOfSpell + "\n");
+                      writerTemp.write(pipChanceOfSpell + "\n");
+                      writer1.write(countOfSpell  + "\n");
+                      writerTemp.write(countOfSpell + "\n");
+                      writer1.write(descriptionOfSpell + "\n");
+                      writerTemp.write(descriptionOfSpell + "\n");
+                      writer1.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
                       writer1.close(); 
                     }
                     else if(label.equals("t2")) {
                       RoundSelectionLineTeam2Writer.setWriterCreated(false);
                       writer1 = RoundSelectionLineTeam2Writer.get_file_writer(round);
-                      writer1.write("----------------------------");
-                      writer1.write(nameOfSpell); 
-                      writer1.write(pipsOfSpell);
-                      writer1.write(pipChanceOfSpell);
-                      writer1.write(countOfSpell);
-                      writer1.write(descriptionOfSpell);
-                      writer1.write("----------------------------");
+                      //writer1.write(line1 + "\n");
+                      //writerTemp.write(line1 + "\n");
+                      writer1.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
+                      writer1.write(nameOfSpell + "\n"); 
+                      writerTemp.write(nameOfSpell + "\n");
+                      writer1.write(pipsOfSpell + "\n");
+                      writerTemp.write(pipsOfSpell + "\n");
+                      writer1.write(pipChanceOfSpell + "\n");
+                      writerTemp.write(pipChanceOfSpell + "\n");
+                      writer1.write(countOfSpell + "\n");
+                      writerTemp.write(countOfSpell + "\n");
+                      writer1.write(descriptionOfSpell + "\n");
+                      writerTemp.write(descriptionOfSpell + "\n");
+                      writer1.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
                       writer1.close(); 
                     }
                   } catch (IOException sube1) {
@@ -149,38 +188,65 @@ class FileOperation {
               else if(checkBox2.isSelected() && !checkBox1.isSelected()) {
                 try {
                   System.out.println("Check-box not selected on window-closing."); 
-                  writer2.write("----------------------------");
-                  writer2.write(nameOfSpell); 
-                  writer2.write(pipsOfSpell); 
-                  writer2.write(pipChanceOfSpell); 
-                  writer2.write(countOfSpell); 
-                  writer2.write(descriptionOfSpell); 
-                  writer2.write("----------------------------");
+                  writer2.write(line2 + "\n");
+                  writerTemp.write(line2 + "\n");
+                  writer2.write("----------------------------\n");
+                  writerTemp.write("----------------------------\n");
+                  writer2.write(nameOfSpell + "\n"); 
+                  writerTemp.write(nameOfSpell + "\n");
+                  writer2.write(pipsOfSpell + "\n"); 
+                  writerTemp.write(pipsOfSpell + "\n");
+                  writer2.write(pipChanceOfSpell + "\n"); 
+                  writerTemp.write(pipChanceOfSpell + "\n");
+                  writer2.write(countOfSpell + "\n"); 
+                  writerTemp.write(countOfSpell + "\n");
+                  writer2.write(descriptionOfSpell + "\n"); 
+                  writerTemp.write(descriptionOfSpell + "\n");
+                  writer2.write("----------------------------\n");
+                  writerTemp.write("----------------------------\n");
                   writer2.close(); 
                 } catch (IOException e2) {
                   try {
                     if(label.equals("t1")) {
                       RoundDiscardSpellsTeam1Writer.setWriterCreated(false);
                       writer2 = RoundDiscardSpellsTeam1Writer.get_file_writer(round); 
-                      writer2.write("----------------------------");
-                      writer2.write(nameOfSpell); 
-                      writer2.write(pipsOfSpell); 
-                      writer2.write(pipChanceOfSpell); 
-                      writer2.write(countOfSpell); 
-                      writer2.write(descriptionOfSpell); 
-                      writer2.write("----------------------------");
+                      //writer2.write(line2 + "\n"); 
+                      //writerTemp.write(line2 + "\n"); 
+                      writer2.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
+                      writer2.write(nameOfSpell + "\n"); 
+                      writerTemp.write(nameOfSpell + "\n");
+                      writer2.write(pipsOfSpell + "\n"); 
+                      writerTemp.write(pipsOfSpell + "\n");
+                      writer2.write(pipChanceOfSpell + "\n"); 
+                      writerTemp.write(pipChanceOfSpell + "\n");
+                      writer2.write(countOfSpell + "\n"); 
+                      writerTemp.write(countOfSpell + "\n");
+                      writer2.write(descriptionOfSpell + "\n"); 
+                      writerTemp.write(descriptionOfSpell + "\n");
+                      writer2.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
                       writer2.close(); 
                     }
                     else if(label.equals("t2")) {
                       RoundDiscardSpellsTeam2Writer.setWriterCreated(false);
                       writer2 = RoundDiscardSpellsTeam2Writer.get_file_writer(round); 
-                      writer2.write("----------------------------");
-                      writer2.write(nameOfSpell); 
-                      writer2.write(pipsOfSpell); 
-                      writer2.write(pipChanceOfSpell); 
-                      writer2.write(countOfSpell); 
-                      writer2.write(descriptionOfSpell); 
-                      writer2.write("----------------------------");
+                      //writer2.write(line2 + "\n");
+                      //writerTemp.write(line2 + "\n");
+                      writer2.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
+                      writer2.write(nameOfSpell + "\n"); 
+                      writerTemp.write(nameOfSpell + "\n"); 
+                      writer2.write(pipsOfSpell + "\n"); 
+                      writerTemp.write(pipsOfSpell + "\n"); 
+                      writer2.write(pipChanceOfSpell + "\n"); 
+                      writerTemp.write(pipChanceOfSpell + "\n"); 
+                      writer2.write(countOfSpell + "\n"); 
+                      writerTemp.write(countOfSpell + "\n");
+                      writer2.write(descriptionOfSpell + "\n"); 
+                      writerTemp.write(descriptionOfSpell + "\n"); 
+                      writer2.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
                       writer2.close(); 
                     }
                   } catch (IOException sube2) {
@@ -191,38 +257,65 @@ class FileOperation {
               else if(!checkBox1.isSelected() && !checkBox2.isSelected()) {
                 try {
                   System.out.println("No boxes selected on window-closing."); 
-                  writer3.write("----------------------------"); 
-                  writer3.write(nameOfSpell); 
-                  writer3.write(pipsOfSpell); 
-                  writer3.write(pipChanceOfSpell); 
-                  writer3.write(countOfSpell); 
-                  writer3.write(descriptionOfSpell); 
-                  writer3.write("----------------------------");
+                  writer3.write(line3 + "\n");
+                  writerTemp.write(line3 + "\n");
+                  writer3.write("----------------------------\n"); 
+                  writerTemp.write("----------------------------\n");
+                  writer3.write(nameOfSpell + "\n"); 
+                  writerTemp.write(nameOfSpell + "\n"); 
+                  writer3.write(pipsOfSpell + "\n"); 
+                  writerTemp.write(pipsOfSpell + "\n");
+                  writer3.write(pipChanceOfSpell + "\n"); 
+                  writerTemp.write(pipChanceOfSpell + "\n"); 
+                  writer3.write(countOfSpell + "\n"); 
+                  writerTemp.write(countOfSpell + "\n");
+                  writer3.write(descriptionOfSpell + "\n"); 
+                  writerTemp.write(descriptionOfSpell + "\n");
+                  writer3.write("----------------------------\n");
+                  writerTemp.write("----------------------------\n");
                   writer3.close(); 
                 } catch (IOException e3) {
                   try {
                     if(label.equals("t1")) {
                       RoundLeftOverSpellsTeam1Writer.setWriterCreated(false);
                       writer3 = RoundLeftOverSpellsTeam1Writer.get_file_writer(round); 
-                      writer3.write("----------------------------"); 
-                      writer3.write(nameOfSpell); 
-                      writer3.write(pipsOfSpell); 
-                      writer3.write(pipChanceOfSpell); 
-                      writer3.write(countOfSpell); 
-                      writer3.write(descriptionOfSpell); 
-                      writer3.write("----------------------------");
+                      //writer3.write(line3 + "\n");
+                      //writerTemp.write(line3 + "\n");
+                      writer3.write("----------------------------\n"); 
+                      writerTemp.write("----------------------------\n"); 
+                      writer3.write(nameOfSpell + "\n"); 
+                      writerTemp.write(nameOfSpell + "\n"); 
+                      writer3.write(pipsOfSpell + "\n"); 
+                      writerTemp.write(pipsOfSpell + "\n"); 
+                      writer3.write(pipChanceOfSpell + "\n"); 
+                      writerTemp.write(pipChanceOfSpell + "\n");
+                      writer3.write(countOfSpell + "\n"); 
+                      writerTemp.write(countOfSpell + "\n");
+                      writer3.write(descriptionOfSpell + "\n"); 
+                      writerTemp.write(descriptionOfSpell + "\n");
+                      writer3.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
                       writer3.close(); 
                     }
                     else if(label.equals("t2")) {
                       RoundLeftOverSpellsTeam2Writer.setWriterCreated(false);
                       writer3 = RoundLeftOverSpellsTeam2Writer.get_file_writer(round); 
-                      writer3.write("----------------------------"); 
-                      writer3.write(nameOfSpell); 
-                      writer3.write(pipsOfSpell); 
-                      writer3.write(pipChanceOfSpell); 
-                      writer3.write(countOfSpell); 
-                      writer3.write(descriptionOfSpell); 
-                      writer3.write("----------------------------");
+                      //writer3.write(line3 + "\n"); 
+                      //writerTemp.write(line3 + "\n");
+                      writer3.write("----------------------------\n"); 
+                      writerTemp.write("----------------------------\n");
+                      writer3.write(nameOfSpell + "\n"); 
+                      writerTemp.write(nameOfSpell + "\n"); 
+                      writer3.write(pipsOfSpell + "\n"); 
+                      writerTemp.write(pipsOfSpell + "\n");
+                      writer3.write(pipChanceOfSpell + "\n"); 
+                      writerTemp.write(pipChanceOfSpell + "\n");
+                      writer3.write(countOfSpell + "\n"); 
+                      writerTemp.write(countOfSpell + "\n"); 
+                      writer3.write(descriptionOfSpell + "\n"); 
+                      writerTemp.write(descriptionOfSpell + "\n");
+                      writer3.write("----------------------------\n");
+                      writerTemp.write("----------------------------\n");
                       writer3.close(); 
                     }
                   } catch (IOException sube3) {
@@ -241,11 +334,11 @@ class FileOperation {
         e.printStackTrace();
       }
     }
-    else if(optionSelected.equals("card-by-card")) {
+    else if(reader.readLine().equals("card-by-card")) {
       try {
         String line; 
         while((line = reader.readLine()) != null) {
-
+          
         }
       } catch (IOException e) {
         e.printStackTrace();

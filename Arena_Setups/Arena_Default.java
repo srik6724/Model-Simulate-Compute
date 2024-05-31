@@ -1,6 +1,6 @@
-package wizPackage;
+package Arena_Setups;
 
-public interface Arena {
+public interface Arena_Default {
 	
 	static int ArenaNumber()
 	{

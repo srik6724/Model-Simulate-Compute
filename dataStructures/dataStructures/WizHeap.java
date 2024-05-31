@@ -186,7 +186,6 @@ public class WizHeap {
 
 	public Element[] buildHeap(Element[]elements, String identity, int deckNo, String deckType) throws InterruptedException
 	{
-
 		for(int i = (int)Math.floor(elements.length/2); i >= 1; i--)
 		{
 			minHeapify(elements, i); 
@@ -228,30 +227,36 @@ public class WizHeap {
 			/*try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
 				String line; 
 				int countDelimiters = 0; 
-				String[] lines = new String[8]; 
+				String[] lines = null;
+				if(deckType.equals("main")) {
+					lines = new String[449]; 
+				}
+				else if(deckType.equals("tc")) {
+					lines = new String[281]; 
+				}
 				int index = 0; 
 				while((line = reader.readLine()) != null) {
 					System.out.println("Line Read: " + line); 
 					if(line.contains("-"))
 					{
 						countDelimiters++; 
-						if(countDelimiters == 2)
+						if((countDelimiters == 65 && deckType.equals("main")) || (countDelimiters == 41 && deckType.equals("tc")))
 						{
 							new Parser(Arrays.asList(lines)); 
-							//System.exit(0);
+							System.exit(0);
 						}
 					}
 					else 
 					{
-						if(index < 8)
+						if(index < Integer.MAX_VALUE)
 						{
 							lines[index] = line; 
 							index++; 
 						}
 					}
 				}
-			}
-			f.close();*/
+			}*/
+			f.close();
 		}catch(IOException e)
 		{
 			e.printStackTrace();

@@ -1,6 +1,6 @@
-package wizPackage;
+package Arena_Setups;
 
-public interface AvalonArena {
+public interface Arena_1 {
 	
 	static int returnAvalonArenaNumber() 
 	{

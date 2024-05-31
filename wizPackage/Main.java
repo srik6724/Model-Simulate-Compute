@@ -1,6 +1,8 @@
 package wizPackage;
 
 import java.awt.BorderLayout;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -27,7 +29,11 @@ public class Main {
 
 		deleteFiles(startPath, criteria);
 
-		Match match = new Match(); 
+		File round_reading = new File("round_reading.txt");
+		FileWriter round_reading_writer = new FileWriter(round_reading);
+		round_reading_writer.write("full-card-list"); 
+		round_reading_writer.close();
+		Match match = new Match(round_reading); 
 		match.enroll2Teams(args); 
 
 		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/wiz-simulator-new");
@@ -50,7 +56,7 @@ public class Main {
             public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
                 // Handle the situation when a file visit fails (e.g., due to permissions issues)
                 System.err.println("Failed to visit file: " + file + " due to " + exc);
-                return FileVisitResult.CONTINUE;
+                return FileVisitResult.CONTINUE; 
             }
 		}); 
 	}

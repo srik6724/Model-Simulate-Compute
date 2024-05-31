@@ -19,11 +19,6 @@ public class LexicalAnalyzer {
   int index; 
   static boolean first_iteration = false; 
   private String description_of_spell = ""; 
-  private String[] reserved_tokens = {"DECK", "SPELL", "LIFE", "DEATH", "BALANCE", "ICE", "MYTH", "FIRE", "STORM", 
-                                      "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", 
-                                      "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "X", 
-                                      "NUM", "ATTACK", "DEFENSE", "REGENERATION", "DAMAGE", "HEALING", 
-                                      "SPELL_PERCENTAGE", "PERCENTAGE", "ACTION", "STMT", "TARGET", "ERROR", "END_OF_FILE"};
  
   private List<Token> token_list = new ArrayList<Token>(); 
   private Token tmp = new Token(); 
@@ -31,6 +26,7 @@ public class LexicalAnalyzer {
   public LexicalAnalyzer(List<String> inputLines) 
   {
     System.out.println("Input Lines Length: " + inputLines.size()); 
+
     List<String> testLines = new ArrayList<String>(); 
 
     for(String line: inputLines)
@@ -38,23 +34,17 @@ public class LexicalAnalyzer {
       System.out.println("Line Description: " + line); 
       testLines.add(line); 
     }
+
     //Initializes initial token to empty with token_type as ERROR
     tmp.lexeme = ""; 
     tmp.token_type = TokenType.ERROR; 
 
-    Token token = GetTokenMain(testLines.get(0)); 
-
-    for(String line: testLines)
-    {
-      testLines.remove(line); 
-      break;
-    }
-    index = 0; 
-
-    while(token.token_type != TokenType.END_OF_FILE)
+    while(tmp.token_type != TokenType.END_OF_FILE)
     { 
+      System.out.println("Test Lines Length: " + testLines.size()); 
+
       if(testLines.size() > 0) {
-        token = GetTokenMain(testLines.get(0));
+        setTokenDefs(testLines.get(0));
 
         for(String line: testLines)
         {
@@ -63,11 +53,11 @@ public class LexicalAnalyzer {
         }
       }
       else {
-        token.lexeme = ""; 
-        token.token_type = TokenType.END_OF_FILE;
+        tmp.lexeme = ""; 
+        tmp.token_type = TokenType.END_OF_FILE;
       }
     }
-    token_list.add(token); 
+    token_list.add(tmp); 
 
     System.out.println("Finished parsing input lines and creating tokens."); 
     System.out.println("Token List Size: " + token_list.size()); 
@@ -75,12 +65,10 @@ public class LexicalAnalyzer {
       System.out.println("Lexeme of token: "  + get_token.lexeme);
       System.out.println("TokenType of token: " + get_token.token_type); 
     }
-    System.exit(0); 
   }
 
-  boolean SkipSpace(String line)
+  void token_def(String line)
   {
-    boolean ret = false; 
     // Take a line, analyze it and place the necessary words inside the input buffer
     InputBuffer buffer = new InputBuffer(line); 
     // Get the Input Buffer
@@ -89,54 +77,64 @@ public class LexicalAnalyzer {
     int vector_index = 0; 
     String line_descriptor = ""; 
     boolean first_iteration_action_verb = true; 
-    boolean second_iteration_spell_occurrence = true; 
+    boolean second_iteration_spell_occurrence = false; 
     System.out.println("Input Buffer Size: " + inputBuffer.size()); 
+    List<Object> descriptionAnnotations = new ArrayList<Object>(); 
+    Token token; 
     while(inputBuffer.size() > 0) {
       String element = inputBuffer.get(vector_index); 
       System.out.println("Element: " + element);
       if(element.equals("BALANCE")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.BALANCE; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.BALANCE; 
+        token_list.add(token); 
       }
       else if(element.equals("LIFE")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.LIFE; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.LIFE; 
+        token_list.add(token); 
       }
       else if(element.equals("DEATH")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.DEATH; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.DEATH; 
+        token_list.add(token); 
       }
       else if(element.equals("ICE")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.ICE; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.ICE; 
+        token_list.add(token); 
       }
       else if(element.equals("FIRE")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.FIRE; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.FIRE; 
+        token_list.add(token); 
       }
       else if(element.equals("STORM")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.STORM; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.STORM; 
+        token_list.add(token); 
       }
       else if(element.equals("MYTH")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.MYTH; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.MYTH; 
+        token_list.add(token); 
       }
       else if(element.equals("DECK")) {
-        tmp.lexeme = element; 
-        tmp.token_type = TokenType.DECK; 
-        token_list.add(tmp); 
+        token = new Token(); 
+        token.lexeme = ""; 
+        token.token_type = TokenType.DECK; 
+        token_list.add(token); 
       }
       else if(element.equals("Spell")) {
         line_descriptor += element; 
-        System.out.println("Line Descriptor for Spell: " + line_descriptor); 
+        System.out.println("LINE DESCRIPTOR FOR SPELL: " + line_descriptor); 
         if(second_iteration_spell_occurrence) {
           line_descriptor += ": "; 
           second_iteration_spell_occurrence = false; 
@@ -172,14 +170,17 @@ public class LexicalAnalyzer {
         System.out.println("Line Descriptor for Of: " + line_descriptor); 
         line_descriptor += element; 
         line_descriptor += " "; 
+        second_iteration_spell_occurrence = true; 
       }
       else if(!element.isEmpty()) {
         if(line_descriptor.contains("Spell Name: "))  {
           if(inputBuffer.size() == 1) {
             line_descriptor += element; 
-            tmp.lexeme = line_descriptor; 
-            tmp.token_type = TokenType.SPELL;
-            token_list.add(tmp); 
+            line_descriptor = line_descriptor.replace("Spell Name: ", ""); 
+            token = new Token(); 
+            token.lexeme = line_descriptor; 
+            token.token_type = TokenType.SPELL;
+            token_list.add(token); 
             line_descriptor = ""; 
           }
           else {
@@ -189,17 +190,13 @@ public class LexicalAnalyzer {
         }
         else if(line_descriptor.contains("Description: ")) {
             System.out.println("Line Descriptor for Description every iteration: " + line_descriptor); 
-            Token t = new Token(); 
-
             if(first_iteration_action_verb) {
-              Token token = new Token(); 
+              token = new Token(); 
               token.lexeme = element; 
-              token.token_type = TokenType.DESCRIPTION; 
-              token_list.add(token); 
-              t.lexeme = element; 
+              descriptionAnnotations.add(token.lexeme); 
               first_iteration_action_verb = false; 
-              t.token_type = TokenType.ACTION; 
-              token_list.add(t); 
+              token.token_type = TokenType.ACTION; 
+              token_list.add(token); 
               continue; 
             }
             try {
@@ -207,28 +204,71 @@ public class LexicalAnalyzer {
               if(parsedValue instanceof Integer) {
                 System.out.println("Found the number: " + parsedValue); 
                 System.out.println("Setting the token type now.");
-                t.lexeme = element; 
-                t.token_type = TokenType.NUM; 
-                token_list.add(t); 
+                token = new Token(); 
+                token.lexeme = element; 
+                descriptionAnnotations.add(token.lexeme); 
+                token.token_type = TokenType.NUM; 
+                token_list.add(token); 
               }
             }catch(Exception e) {
               System.out.println("The element: " + element + " is not a number."); 
             }
             if(element.toLowerCase().equals("enemy") || element.toLowerCase().equals("self")) {
-              t.lexeme = element; 
-              t.token_type = TokenType.TARGET; 
-              token_list.add(t); 
-            }
-            if(inputBuffer.size() == 1) {
-              t.lexeme = "self"; 
-              t.token_type = TokenType.TARGET; 
-              token_list.add(t); 
+              System.out.println("Element: " + element.toLowerCase());
+              token = new Token(); 
+              token.lexeme = element; 
+              //#####################################//
+              String stmt = line_descriptor; 
+              int firstSpaceIndex = stmt.indexOf(" "); 
+              String firstWord = stmt.substring(0, firstSpaceIndex);
+              stmt = stmt.replace(firstWord, ""); 
+              String descriptiveNoun = stmt; 
+              descriptionAnnotations.add(descriptiveNoun); 
+              Action action = new Action(descriptionAnnotations.get(0).toString(), (int)descriptionAnnotations.get(1), descriptionAnnotations.get(2).toString(), descriptionAnnotations.get(3).toString());
+              action.curr_info();
+              //#####################################//
+              token.token_type = TokenType.TARGET; 
+              token_list.add(token); 
+              descriptionAnnotations.add(token.lexeme); 
               line_descriptor += element; 
-              t.lexeme = line_descriptor; 
-              t.token_type = TokenType.STMT; 
-              description_of_spell = t.lexeme;
-              System.out.println("Parsed the description."); 
+              token = new Token(); 
+              token.lexeme = line_descriptor;
+              token.token_type = TokenType.STMT; 
+              token_list.add(token); 
+              descriptionAnnotations.add(token.lexeme); 
+            }
+            else if(inputBuffer.size() == 1) {
+              token = new Token(); 
+              token.lexeme = "self"; 
+              token.token_type = TokenType.TARGET; 
+              descriptionAnnotations.add(token.lexeme); 
+              token_list.add(token); 
+              //#####################################//
+              line_descriptor += element; 
+              String stmt = line_descriptor; 
+              stmt = stmt.replace("Description: ", "");
+              int firstSpaceIndex = stmt.indexOf(" "); 
+              String firstWord = stmt.substring(0, firstSpaceIndex);
+              stmt = stmt.replace(firstWord, ""); 
+              String descriptiveNoun = stmt; 
+              System.out.println("Descriptive Noun:" + descriptiveNoun);
+              descriptionAnnotations.add(descriptiveNoun); 
+              Action action = new Action(descriptionAnnotations.get(0).toString(), Integer.parseInt(descriptionAnnotations.get(1).toString()), descriptionAnnotations.get(3).toString(), descriptionAnnotations.get(2).toString()); 
+              action.curr_info();
+              // [Player] [TEAM_NO] casts [SPELL_NAME] = [ACTION_VERB] 1 stun effect on [TARGET] ... [ACTION_VERB] 1 stun effect on [TARGET] # (ROUND 1)  
+              // [Travis Waterblood] [TEAM_1] casts [Stun Block] = [resist] 1 stun effect on [self] [Travis Waterblood] [TEAM_1] ... [resist] 1 stun effect on [self] [Travis Waterblood] [TEAM_1] # (ROUND 1)
+              // [Travis Waterblood] [TEAM_2] casts [Satyr] = [heal] 1 health on self ... [heal] 2 health on self ... [heal] 3 health on self ... ... [heal] 860 health on self # (ROUND 1)
+              // [Travis Waterblood] [TEAM_1] casts [Fire Dragon] = [flame] 540 damage + 635 overtime damage on [enemy] [Blake Sparkleforge] [TEAM_2] ... [flame] 540 + 635 damage on [enemy] [Paul Duskglade] [TEAM_2] ... [flame] 540 + 635 damage on [enemy] [Paul Shadow] [TEAM_2] ... [flame] 540 + 635 damage on [enemy] [Travis Waterblood] [TEAM_2] # (ROUND 1)
+              System.exit(0); 
+              //#####################################//
+              token = new Token(); 
+              token.lexeme = line_descriptor; 
+              System.out.println("TOKEN LEXEME FOR DESCRIPTION: " + token.lexeme); 
+              token.token_type = TokenType.STMT; 
+              System.out.println("TOKEN TYPE FOR DESCRIPTION: " + token.token_type);
+              description_of_spell = token.lexeme;
               inputBuffer.remove(element); 
+              System.out.println("Parsed the description."); 
               continue;
             }
             line_descriptor += element;
@@ -239,8 +279,9 @@ public class LexicalAnalyzer {
           if(element.contains("%")) {
             System.out.println("Pip Chance finished decoding."); 
             line_descriptor += element; 
-            tmp.token_type = TokenType.SPELL_PERCENTAGE; 
-            token_list.add(tmp); 
+            token = new Token(); 
+            token.token_type = TokenType.PERCENTAGE; 
+            token_list.add(token); 
             line_descriptor = ""; 
           }
         }
@@ -332,21 +373,15 @@ public class LexicalAnalyzer {
       inputBuffer.remove(element); 
       System.out.println("InputBuffer Size before next iteration: " + inputBuffer.size()); 
     }
-    return ret; 
   }
 
-  Token GetTokenMain(String line)
+  void setTokenDefs(String line)
   {
     System.out.println("Line Read Here: " + line); 
-
-    SkipSpace(line); 
-    //tmp.lexeme = ""; 
-    //tmp.token_type = TokenType.END_OF_FILE; 
-
-    return tmp; 
+    token_def(line); 
   }
 
-  public List<Token> get_token_list() {
+  List<Token> get_token_list() {
     return token_list;
   }
 }

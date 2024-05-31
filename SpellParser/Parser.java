@@ -16,6 +16,7 @@ public class Parser {
     // Get the token_list as it contains all the tokens
     token_list = lexer.get_token_list(); 
     System.out.println(token_list.size()); 
+    System.exit(0); 
     // this.parse_deck_list(); 
   }
   

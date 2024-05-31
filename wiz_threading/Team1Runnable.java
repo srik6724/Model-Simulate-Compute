@@ -1,5 +1,6 @@
 package wiz_threading;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,10 +26,12 @@ public class Team1Runnable implements Runnable {
       System.out.println("Starting round for team 1."); 
       try {
         FileWriter matchWriterFinalizer = MatchWriter.get_file_writer(); 
+        FileReader roundReading = new FileReader("round_reading.txt");
         int roundNumber = 76; 
         for(int i = 0; i < roundNumber; i++) {
-          Match.startRound(0, matchWriterFinalizer);
+          Match.startRound(0, matchWriterFinalizer, roundReading);
         }
+        roundReading.close(); 
         matchWriterFinalizer.close(); 
       } catch (Exception e) {
         e.printStackTrace();

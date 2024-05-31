@@ -3,17 +3,27 @@ package SpellParser;
 class Action {
   private String verb; 
   private int number; 
-  private String descriptive_noun; 
   private String entity; 
+  private String descriptive_noun; 
   private static Action head; 
   static Action tail_mover; 
   Action next; 
 
+  void curr_info() {
+    System.out.println("#####################################"); 
+    System.out.println("Displaying current action information."); 
+    System.out.println("Action Verb: " + this.verb);
+    System.out.println("Action Number: " + this.number); 
+    System.out.println("Action Descriptive Noun:" + this.descriptive_noun); 
+    System.out.println("Action Entity: " + this.entity); 
+    System.out.println("#####################################"); 
+  }
+
   public Action(String verb, int number, String descriptive_noun, String entity) {
     this.verb = verb; 
     this.number = number; 
-    this.descriptive_noun = descriptive_noun; 
     this.entity = entity; 
+    this.descriptive_noun = descriptive_noun; 
     next = null; 
   }
 
