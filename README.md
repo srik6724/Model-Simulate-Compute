@@ -1,4 +1,4 @@
 # Match (Model, Simulate, Compute)
-1. MODEL A MATCH
-2. SIMULATE A MATCH
-3. COMPUTE A MATCH
+1. Model a Match
+2. Simulate a Match
+3. Compute a Match
