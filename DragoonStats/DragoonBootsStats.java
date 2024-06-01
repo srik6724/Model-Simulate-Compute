@@ -2,7 +2,7 @@ package DragoonStats;
 
 import Gear.Boot;
 import Gear.StatsInfo;
-import Healing.Healing;
+import Regeneration.Healing;
 
 public class DragoonBootsStats extends Boot implements StatsInfo {
 

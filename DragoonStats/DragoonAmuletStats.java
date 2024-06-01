@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Amulet;
 import Gear.StatsInfo;
-import Sockets.Socket;
+import Model_Extensions.Socket;
 
 public class DragoonAmuletStats extends Amulet implements StatsInfo {
   private int health; 

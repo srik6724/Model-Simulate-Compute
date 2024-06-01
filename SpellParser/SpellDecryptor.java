@@ -1,5 +1,0 @@
-package SpellParser;
-
-class SpellDecryptor {
-  
-}

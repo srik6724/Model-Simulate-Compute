@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import dataStructures.Element;
-import dataStructures.WizHeap;
+import Data_Structures.Deck.Element;
+import Data_Structures.Deck.WizHeap;
 
 public class LifeSpells {
 	

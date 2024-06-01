@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dataStructures.Element;
+import Data_Structures.Deck.Element;
 
 public class schoolSpells {
 	

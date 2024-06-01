@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Athame;
 import Gear.StatsInfo;
-import Sockets.Socket;
+import Model_Extensions.*;
 
 public class EternalAthameStats extends Athame implements StatsInfo {
   private int health; 

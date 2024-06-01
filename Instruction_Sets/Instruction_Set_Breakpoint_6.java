@@ -1,6 +1,6 @@
 package Instruction_Sets;
 
-import dataStructures.NodeStack;
+import Data_Structures.Deck.NodeStack;
 
 public final class Instruction_Set_Breakpoint_6 {
   private static NodeStack<Instruction> instruction_set_6 = new NodeStack<Instruction>(); 

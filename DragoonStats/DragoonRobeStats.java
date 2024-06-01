@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import Credentials.WizCredentials;
 import Gear.Robe;
 import Gear.StatsInfo;
-import Healing.Healing;
+import Regeneration.Healing;
 
 public class DragoonRobeStats extends Robe implements StatsInfo {
 

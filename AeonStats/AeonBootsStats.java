@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Boot;
 import Gear.StatsInfo;
-import Sockets.Socket;
+import Model_Extensions.*;
 
 public class AeonBootsStats extends Boot implements StatsInfo {
 

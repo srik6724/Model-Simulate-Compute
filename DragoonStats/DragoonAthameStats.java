@@ -11,8 +11,8 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Athame;
 import Gear.StatsInfo;
-import Healing.Healing;
-import Sockets.Socket;
+import Model_Extensions.*;
+import Regeneration.Healing;
 
 public class DragoonAthameStats extends Athame implements StatsInfo {
   

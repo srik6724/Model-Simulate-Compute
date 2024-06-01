@@ -11,8 +11,8 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Ring;
 import Gear.StatsInfo;
-import Healing.Healing;
-import Sockets.Socket;
+import Model_Extensions.Socket;
+import Regeneration.Healing;
 
 public class JadeRingOption1Stats extends Ring implements StatsInfo {
   private int health; 

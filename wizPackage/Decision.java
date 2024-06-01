@@ -1,5 +1,0 @@
-package wizPackage;
-
-interface Decision {
-  
-}

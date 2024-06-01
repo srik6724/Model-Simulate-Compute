@@ -12,9 +12,9 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Hat;
 import Gear.StatsInfo;
-import Sockets.Socket;
-import wizPackage.Match;
-import wizPackage.Option;
+import Match_Process.Match;
+import Match_Process.Option;
+import Model_Extensions.Socket;
 
 public class AeonHatStats extends Hat implements StatsInfo {
   private int health; 

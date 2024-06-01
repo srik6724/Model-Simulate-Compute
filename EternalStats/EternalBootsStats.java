@@ -12,7 +12,7 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Boot;
 import Gear.StatsInfo;
-import Sockets.Socket;
+import Model_Extensions.*;
 
 public class EternalBootsStats extends Boot implements StatsInfo {
   private int health; 

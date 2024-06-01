@@ -9,8 +9,8 @@ import java.sql.Statement;
 import Credentials.WizCredentials;
 import Gear.Robe;
 import Gear.StatsInfo;
-import Healing.Healing;
 import ItemCards.ItemCard;
+import Regeneration.Healing;
 
 public class SpookyRobeStats extends Robe implements StatsInfo {
   private int health;

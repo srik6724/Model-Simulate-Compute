@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.StatsInfo;
 import Gear.Wand;
-import Sockets.Socket;
+import Model_Extensions.Socket;
 
 public class EternalWandStats extends Wand implements StatsInfo {
   private int block; 

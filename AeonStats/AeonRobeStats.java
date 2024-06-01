@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Robe;
 import Gear.StatsInfo;
-import Sockets.Socket;
+import Model_Extensions.Socket;
 
 public class AeonRobeStats extends Robe implements StatsInfo {
   private int health;

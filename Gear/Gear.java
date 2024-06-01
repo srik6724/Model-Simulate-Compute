@@ -1,6 +1,6 @@
 package Gear;
 
-import Pets.Pet;
+import Customizations.Pet;
 
 public class Gear {
 

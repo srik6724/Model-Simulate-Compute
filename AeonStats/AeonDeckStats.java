@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Credentials.WizCredentials;
 import Gear.Deck;
 import Gear.StatsInfo;
-import Sockets.Socket;
+import Model_Extensions.Socket;
 
 public class AeonDeckStats extends Deck implements StatsInfo {
   private int max_spells; 

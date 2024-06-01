@@ -3,7 +3,7 @@ package Instruction_Sets;
 import java.util.ArrayList;
 import java.util.List;
 
-import dataStructures.NodeStack;
+import Data_Structures.Deck.NodeStack;
 
 public class Instruction_List {
   private List<NodeStack<Instruction>> fullInstructionList = new ArrayList<NodeStack<Instruction>>(); 
@@ -22,5 +22,5 @@ public class Instruction_List {
     return this.fullInstructionList;
   }
 
-  
+
 }
