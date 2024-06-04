@@ -11,7 +11,6 @@ class RoundTeam1MemberSpellsWriter {
   RoundTeam1MemberSpellsWriter(String team, int memberNo, int round) {
     try {
       file_writers[memberNo-1] = Round_Recorder.getFileWriter(team, memberNo, round); 
-      file_writers[memberNo-1].write("TEST"); 
       RoundTeam1MemberSpellsWriter.writerCreated = true; 
     } catch (IOException e) {
       e.printStackTrace();

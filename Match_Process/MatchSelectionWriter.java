@@ -3,28 +3,28 @@ package Match_Process;
 import java.io.FileWriter;
 import java.io.IOException;
 
-class MatchSelectionLineTeam2Writer {
+class MatchSelectionWriter {
   private static boolean writerCreated = false; 
   private static FileWriter file_writer; 
 
-  MatchSelectionLineTeam2Writer(String team) {
+  MatchSelectionWriter(String team) {
     try {
-      file_writer = Match_Selection_Line_Path.getFileWriter(team); 
-      MatchSelectionLineTeam2Writer.writerCreated = true; 
+      file_writer = Match_Selection.getFileWriter(team); 
+      Match_Selection.getFileWriter(team); 
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   static FileWriter get_file_writer() {
-    if(MatchSelectionLineTeam2Writer.writerCreated == true) {
+    if(MatchSelectionWriter.writerCreated == false) {
       System.out.println("Calling match_selection constructor."); 
-      new MatchSelectionLineTeam2Writer("t2"); 
+      new MatchSelectionWriter("default"); 
     }
     return file_writer;
   }
 
   static void setWriterCreated(boolean var) {
-    MatchSelectionLineTeam2Writer.writerCreated = var; 
+    MatchSelectionWriter.writerCreated = var; 
   }
 }

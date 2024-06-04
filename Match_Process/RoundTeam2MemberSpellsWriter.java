@@ -10,7 +10,6 @@ class RoundTeam2MemberSpellsWriter {
   RoundTeam2MemberSpellsWriter(String team, int memberNo, int round) {
     try {
       file_writers[memberNo-1] = Round_Recorder.getFileWriter(team, memberNo, round); 
-      file_writers[memberNo-1].write("TEST"); 
       RoundTeam2MemberSpellsWriter.writerCreated = true; 
     } catch (IOException e) {
       e.printStackTrace();

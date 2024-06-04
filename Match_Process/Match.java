@@ -1294,7 +1294,7 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 		FileWriter roundTeam1SpellsWriter = null;
 		FileWriter roundTeam2SpellsWriter = null;
 		FileWriter matchCombineWriter = null;
-		FileWriter matchRoundByRoundWriter = null;
+		FileWriter matchRoundByRoundWriter = null; 
 		FileWriter matchExcessSpellsWriter = null;
 		FileWriter matchExcessSpellsTeam1Writer = null;
 		FileWriter matchExcessSpellsTeam2Writer = null;
@@ -1317,12 +1317,32 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 		FileWriter roundExcessSpellsTeam2Writer = null;
 
 		int round = Round.get_current_number(); 
+		int size = 0;
 		System.out.println("PLAYER ASSOCIATION TO SCHOOL SIZE: " + playerAssociationToSchool.size()); 
 
 		try {
 			if(playerAssociationToSchool.size() == 2) {
+				RoundCombineTeam1MemberWriter.get_file_writer(round, 1); 
+				RoundCombineTeam1MemberWriter.file_writers[0].write(""); 
 				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam1MemberSpellsWriter.file_writers[0].write("");
+				RoundLeftOverTeam1MemberSpellsWriter.get_file_writer(round, 1);
+				RoundLeftOverTeam1MemberSpellsWriter.file_writers[0].write(""); 
+				RoundDiscardTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundDiscardTeam1MemberSpellsWriter.file_writers[0].write(""); 
+				RoundSelectionTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundSelectionTeam1MemberSpellsWriter.file_writers[0].write(""); 
+				RoundCombineTeam2MemberWriter.get_file_writer(round, 1);
+				RoundCombineTeam2MemberWriter.file_writers[0].write(""); 
 				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundTeam2MemberSpellsWriter.file_writers[0].write(""); 
+				RoundLeftOverTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundLeftOverTeam2MemberSpellsWriter.file_writers[0].write("");
+				RoundDiscardTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundDiscardTeam2MemberSpellsWriter.file_writers[0].write(""); 
+				RoundSelectionTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundSelectionTeam2MemberSpellsWriter.file_writers[0].write(""); 
+				size = 1; 
 			}
 			else if(playerAssociationToSchool.size() == 4) {
 				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
@@ -1333,6 +1353,7 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 				RoundTeam2MemberSpellsWriter.file_writers[0].write(""); 
 				RoundTeam2MemberSpellsWriter.get_file_writer(round, 2); 
 				RoundTeam2MemberSpellsWriter.file_writers[1].write(""); 
+				size = 4; 
 			}
 			else if(playerAssociationToSchool.size() == 6) {
 				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
@@ -1347,6 +1368,7 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 				RoundTeam2MemberSpellsWriter.file_writers[1].write(""); 
 				RoundTeam2MemberSpellsWriter.get_file_writer(round, 3); 
 				RoundTeam2MemberSpellsWriter.file_writers[2].write(""); 
+				size = 6; 
 			}
 			else if(playerAssociationToSchool.size() == 8) {
 				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
@@ -1365,6 +1387,7 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 				RoundTeam2MemberSpellsWriter.file_writers[2].write(""); 
 				RoundTeam2MemberSpellsWriter.get_file_writer(round, 4); 
 				RoundTeam2MemberSpellsWriter.file_writers[3].write(""); 
+				size = 8; 
 			}
 			matchCombineWriter = MatchCombineWriter.get_file_writer();
 			matchCombineWriter.write(""); 
@@ -1382,11 +1405,11 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			matchRemainingSpellsTeam1Writer.write(""); 
 			matchRemainingSpellsTeam2Writer = MatchLeftOverSpellsTeam2Writer.get_file_writer();
 			matchRemainingSpellsTeam2Writer.write(""); 
-			matchSelectionLineWriter = MatchSelectionLineWriter.get_file_writer(); 
+			matchSelectionLineWriter = MatchSelectionWriter.get_file_writer(); 
 			matchSelectionLineWriter.write(""); 
-			matchSelectionLineTeam1Writer = MatchSelectionLineTeam1Writer.get_file_writer();
+			matchSelectionLineTeam1Writer = MatchSelectionTeam1Writer.get_file_writer();
 			matchSelectionLineTeam1Writer.write(""); 
-			matchSelectionLineTeam2Writer = MatchSelectionLineTeam2Writer.get_file_writer();
+			matchSelectionLineTeam2Writer = MatchSelectionTeam2Writer.get_file_writer();
 			matchSelectionLineTeam2Writer.write(""); 
 			roundCombineWriter = RoundCombineWriter.get_file_writer(round); 
 			roundCombineWriter.write(""); 
@@ -1396,11 +1419,11 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			roundTeam2SpellsWriter.write(""); 
 			roundDefaultWriter = RoundOfSpellsWriter.get_file_writer(round);
 			roundDefaultWriter.write(""); 
-			roundSelectionLineWriter = RoundSelectionLineWriter.get_file_writer(round); 
+			roundSelectionLineWriter = RoundSelectionWriter.get_file_writer(round); 
 			roundSelectionLineWriter.write(""); 
-			roundSelectionLineTeam1Writer = RoundSelectionLineTeam1Writer.get_file_writer(round); 
+			roundSelectionLineTeam1Writer = RoundSelectionTeam1Writer.get_file_writer(round); 
 			roundSelectionLineTeam1Writer.write(""); 
-			roundSelectionLineTeam2Writer = RoundSelectionLineTeam2Writer.get_file_writer(round); 
+			roundSelectionLineTeam2Writer = RoundSelectionTeam2Writer.get_file_writer(round); 
 			roundSelectionLineTeam2Writer.write(""); 
 			roundRemainingSpellsWriter = RoundLeftOverSpellsWriter.get_file_writer(round);
 			roundRemainingSpellsWriter.write(""); 
@@ -1416,10 +1439,26 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			roundExcessSpellsTeam2Writer.write(""); 
 		} catch (Exception e) {
 			if(playerAssociationToSchool.size() == 2) {
+				RoundCombineTeam1MemberWriter.setWriterCreated(false);
+				RoundCombineTeam1MemberWriter.get_file_writer(round, 1);
 				RoundTeam1MemberSpellsWriter.setWriterCreated(false); 
 				RoundTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundLeftOverTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundLeftOverTeam1MemberSpellsWriter.get_file_writer(round, 1);
+				RoundDiscardTeam1MemberSpellsWriter.setWriterCreated(false);
+				RoundDiscardTeam1MemberSpellsWriter.get_file_writer(round, 1);
+				RoundSelectionTeam1MemberSpellsWriter.setWriterCreated(false); 
+				RoundSelectionTeam1MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundCombineTeam2MemberWriter.setWriterCreated(false); 
+				RoundCombineTeam2MemberWriter.get_file_writer(round, 1); 
 				RoundTeam2MemberSpellsWriter.setWriterCreated(false);
 				RoundTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundLeftOverTeam2MemberSpellsWriter.setWriterCreated(false);
+				RoundLeftOverTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundDiscardTeam2MemberSpellsWriter.setWriterCreated(false); 
+				RoundDiscardTeam2MemberSpellsWriter.get_file_writer(round, 1); 
+				RoundSelectionTeam2MemberSpellsWriter.setWriterCreated(false);
+				RoundSelectionTeam2MemberSpellsWriter.get_file_writer(round, 1);
 			}
 			else if(playerAssociationToSchool.size() == 4) {
 				RoundTeam1MemberSpellsWriter.setWriterCreated(false);
@@ -1480,12 +1519,12 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			matchRemainingSpellsTeam1Writer = MatchLeftOverSpellsTeam1Writer.get_file_writer();
 			MatchLeftOverSpellsTeam2Writer.setWriterCreated(false); 
 			matchRemainingSpellsTeam2Writer = MatchLeftOverSpellsTeam2Writer.get_file_writer();
-			MatchSelectionLineWriter.setWriterCreated(false);
-			matchSelectionLineWriter = MatchSelectionLineWriter.get_file_writer();
-			MatchSelectionLineTeam1Writer.setWriterCreated(false); 
-			matchSelectionLineTeam1Writer = MatchSelectionLineTeam1Writer.get_file_writer();
-			MatchSelectionLineTeam2Writer.setWriterCreated(false);
-			matchSelectionLineTeam2Writer = MatchSelectionLineTeam2Writer.get_file_writer();
+			MatchSelectionWriter.setWriterCreated(false);
+			matchSelectionLineWriter = MatchSelectionWriter.get_file_writer();
+			MatchSelectionTeam1Writer.setWriterCreated(false); 
+			matchSelectionLineTeam1Writer = MatchSelectionTeam1Writer.get_file_writer();
+			MatchSelectionTeam2Writer.setWriterCreated(false);
+			matchSelectionLineTeam2Writer = MatchSelectionTeam2Writer.get_file_writer();
 			RoundCombineWriter.setWriterCreated(false); 
 			roundCombineWriter = RoundCombineWriter.get_file_writer(round); 
 			RoundTeam1SpellsWriter.setWriterCreated(false);
@@ -1494,12 +1533,12 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			roundTeam2SpellsWriter = RoundTeam2SpellsWriter.get_file_writer(round);
 			RoundOfSpellsWriter.setWriterCreated(false); 
 			roundDefaultWriter = RoundOfSpellsWriter.get_file_writer(round); 
-			RoundSelectionLineWriter.setWriterCreated(false);
-			roundSelectionLineWriter = RoundSelectionLineWriter.get_file_writer(round); 
-			RoundSelectionLineTeam1Writer.setWriterCreated(false);
-			roundSelectionLineTeam1Writer = RoundSelectionLineTeam1Writer.get_file_writer(round); 
-			RoundSelectionLineTeam2Writer.setWriterCreated(false); 
-			roundSelectionLineTeam2Writer = RoundSelectionLineTeam2Writer.get_file_writer(round); 
+			RoundSelectionWriter.setWriterCreated(false);
+			roundSelectionLineWriter = RoundSelectionWriter.get_file_writer(round); 
+			RoundSelectionTeam1Writer.setWriterCreated(false);
+			roundSelectionLineTeam1Writer = RoundSelectionTeam1Writer.get_file_writer(round); 
+			RoundSelectionTeam2Writer.setWriterCreated(false); 
+			roundSelectionLineTeam2Writer = RoundSelectionTeam2Writer.get_file_writer(round); 
 			RoundLeftOverSpellsWriter.setWriterCreated(false); 
 			roundRemainingSpellsWriter = RoundLeftOverSpellsWriter.get_file_writer(round); 
 			RoundLeftOverSpellsTeam1Writer.setWriterCreated(false); 
@@ -1712,21 +1751,21 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 		BufferedReader readerTeam1Compute = null;
 		BufferedReader readerTeam2Compute = null;
 		try {
-			readerTeam1Compute = new BufferedReader(RoundSelectionLineReader.get_file_reader("t1", round)); 
+			readerTeam1Compute = new BufferedReader(RoundSelectionReader.get_file_reader("t1", round)); 
 			readerTeam1Compute.readLine(); 
 			System.out.println("Line Read By Team 1 Reader: " + line); 
-			readerTeam2Compute = new BufferedReader(RoundSelectionLineReader.get_file_reader("t2", round)); 
+			readerTeam2Compute = new BufferedReader(RoundSelectionReader.get_file_reader("t2", round)); 
 			readerTeam2Compute.readLine(); 
 			System.out.println("Line Read By Team 2 Reader: " + line); 
 		} catch (Exception e) {
-			RoundSelectionLineReader.setReaderCreated(false);
-			readerTeam1Compute = new BufferedReader(RoundSelectionLineReader.get_file_reader("t1", round)); 
-			RoundSelectionLineReader.setReaderCreated(false); 
-			readerTeam2Compute = new BufferedReader(RoundSelectionLineReader.get_file_reader("t2", round)); 
+			RoundSelectionReader.setReaderCreated(false);
+			readerTeam1Compute = new BufferedReader(RoundSelectionReader.get_file_reader("t1", round)); 
+			RoundSelectionReader.setReaderCreated(false); 
+			readerTeam2Compute = new BufferedReader(RoundSelectionReader.get_file_reader("t2", round)); 
 		}
-		new FileOperation(readerTeam1Compute, roundSelectionLineTeam1Writer, roundExcessSpellsTeam1Writer, roundRemainingTeam1SpellsWriter, roundCombineWriter, new FileReader(Match.initialFile), "t1", round, selectionStmtLine_t1, discardStmtLine_t1, remainingStmtLine_t1).run(); 
+		new FileOperation(readerTeam1Compute, roundSelectionLineTeam1Writer, roundExcessSpellsTeam1Writer, roundRemainingTeam1SpellsWriter, roundCombineWriter, new FileReader(Match.initialFile), "t1", round, selectionStmtLine_t1, discardStmtLine_t1, remainingStmtLine_t1, size).run(); 
 		//Thread.sleep(30000);
-		new FileOperation(readerTeam2Compute, roundSelectionLineTeam2Writer, roundExcessSpellsTeam2Writer, roundRemainingTeam2SpellsWriter, roundCombineWriter, new FileReader(Match.initialFile), "t2", round, selectionStmtLine_t2, discardStmtLine_t2, remainingStmtLine_t2).run(); 
+		new FileOperation(readerTeam2Compute, roundSelectionLineTeam2Writer, roundExcessSpellsTeam2Writer, roundRemainingTeam2SpellsWriter, roundCombineWriter, new FileReader(Match.initialFile), "t2", round, selectionStmtLine_t2, discardStmtLine_t2, remainingStmtLine_t2, size).run(); 
 		//Thread.sleep(30000); 
 		roundComputeReader.close(); 
 		readerTeam1Compute.close(); 

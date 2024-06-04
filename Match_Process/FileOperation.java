@@ -32,8 +32,9 @@ class FileOperation {
   private String line1; 
   private String line2; 
   private String line3;
+  private int size; 
 
-  FileOperation(BufferedReader reader, FileWriter selectionWriter, FileWriter excessWriter, FileWriter remainsWriter, FileWriter combineWriter, FileReader processReader, String teamLabel, int round, String selectionStart, String discardStart, String remainingStart) throws IOException {
+  FileOperation(BufferedReader reader, FileWriter selectionWriter, FileWriter excessWriter, FileWriter remainsWriter, FileWriter combineWriter, FileReader processReader, String teamLabel, int round, String selectionStart, String discardStart, String remainingStart, int size) throws IOException {
     this.reader = reader; 
     this.writer1 = selectionWriter; 
     this.writer2 = excessWriter; 
@@ -45,6 +46,7 @@ class FileOperation {
     this.line1 = selectionStart;
     this.line2 = discardStart;
     this.line3 = remainingStart;
+    this.size = size; 
     System.out.println("Calling file operation for a task.");
     System.out.println("Cross checking team-label: " + this.label); 
   }
@@ -54,9 +56,6 @@ class FileOperation {
     BufferedReader round_reader = new BufferedReader(reader1); 
     String input = round_reader.readLine(); 
     round_reader.close(); 
-    /*System.out.println("Line Read: " + reader.readLine()); 
-    Scanner sc = new Scanner(System.in); 
-    String input = sc.nextLine(); */
     if(input.equals("full-card-list")) {
       try {
         String line; 
@@ -136,13 +135,33 @@ class FileOperation {
                   writer1.write("----------------------------\n");
                   writerTemp.write("----------------------------\n");
                   writer1.close(); 
+                  if(label.equals("t1")) {
+                    for(int i = 0; i < size; i++) {
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(line1 + "\n"); 
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                    }
+                  }
+                  else if(label.equals("t2")) {
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(line1 + "\n"); 
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                  }
                 } catch (IOException e1) {
                   try {
                     if(label.equals("t1")) {
-                      RoundSelectionLineTeam1Writer.setWriterCreated(false);
-                      writer1 = RoundSelectionLineTeam1Writer.get_file_writer(round);
-                      //writer1.write(line1 + "\n"); 
-                      //writerTemp.write(line1 + "\n");
+                      RoundSelectionTeam1Writer.setWriterCreated(false);
+                      writer1 = RoundSelectionTeam1Writer.get_file_writer(round);
                       writer1.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer1.write(nameOfSpell + "\n"); 
@@ -158,12 +177,19 @@ class FileOperation {
                       writer1.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer1.close(); 
+                      for(int i = 0; i < size; i++) {
+                        RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        RoundSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      }
                     }
                     else if(label.equals("t2")) {
-                      RoundSelectionLineTeam2Writer.setWriterCreated(false);
-                      writer1 = RoundSelectionLineTeam2Writer.get_file_writer(round);
-                      //writer1.write(line1 + "\n");
-                      //writerTemp.write(line1 + "\n");
+                      RoundSelectionTeam2Writer.setWriterCreated(false);
+                      writer1 = RoundSelectionTeam2Writer.get_file_writer(round);
                       writer1.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer1.write(nameOfSpell + "\n"); 
@@ -179,6 +205,15 @@ class FileOperation {
                       writer1.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer1.close(); 
+                      for(int i = 0; i < size; i++) {
+                        RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        RoundSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      } 
                     }
                   } catch (IOException sube1) {
                     System.out.println("Will not reach unless problem reading file.");
@@ -205,13 +240,35 @@ class FileOperation {
                   writer2.write("----------------------------\n");
                   writerTemp.write("----------------------------\n");
                   writer2.close(); 
+                  if(label.equals("t1")) {
+                    for(int i = 0; i < size; i++) {
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                    }
+                  }
+                  else if(label.equals("t2")) {
+                    for(int i = 0; i < size; i++) {
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                    }
+                  }
                 } catch (IOException e2) {
                   try {
                     if(label.equals("t1")) {
                       RoundDiscardSpellsTeam1Writer.setWriterCreated(false);
                       writer2 = RoundDiscardSpellsTeam1Writer.get_file_writer(round); 
-                      //writer2.write(line2 + "\n"); 
-                      //writerTemp.write(line2 + "\n"); 
                       writer2.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer2.write(nameOfSpell + "\n"); 
@@ -227,12 +284,20 @@ class FileOperation {
                       writer2.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer2.close(); 
+                      for(int i = 0; i < size; i++) {
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      }
                     }
                     else if(label.equals("t2")) {
                       RoundDiscardSpellsTeam2Writer.setWriterCreated(false);
                       writer2 = RoundDiscardSpellsTeam2Writer.get_file_writer(round); 
-                      //writer2.write(line2 + "\n");
-                      //writerTemp.write(line2 + "\n");
                       writer2.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer2.write(nameOfSpell + "\n"); 
@@ -248,6 +313,16 @@ class FileOperation {
                       writer2.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer2.close(); 
+                      for(int i = 0; i < size; i++) {
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      }
                     }
                   } catch (IOException sube2) {
                     System.out.println("Will not reach unless problem reading file."); 
@@ -274,13 +349,35 @@ class FileOperation {
                   writer3.write("----------------------------\n");
                   writerTemp.write("----------------------------\n");
                   writer3.close(); 
+                  if(label.equals("t1")) {
+                    for(int i = 0; i < size; i++) {
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      RoundDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                    }
+                  }
+                  else if(label.equals("t2")) {
+                    for(int i = 0; i < size; i++) {
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      RoundDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                    }
+                  }
                 } catch (IOException e3) {
                   try {
                     if(label.equals("t1")) {
                       RoundLeftOverSpellsTeam1Writer.setWriterCreated(false);
                       writer3 = RoundLeftOverSpellsTeam1Writer.get_file_writer(round); 
-                      //writer3.write(line3 + "\n");
-                      //writerTemp.write(line3 + "\n");
                       writer3.write("----------------------------\n"); 
                       writerTemp.write("----------------------------\n"); 
                       writer3.write(nameOfSpell + "\n"); 
@@ -296,12 +393,20 @@ class FileOperation {
                       writer3.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer3.close(); 
+                      for(int i = 0; i < size; i++) {
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        RoundLeftOverTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      }
                     }
                     else if(label.equals("t2")) {
                       RoundLeftOverSpellsTeam2Writer.setWriterCreated(false);
                       writer3 = RoundLeftOverSpellsTeam2Writer.get_file_writer(round); 
-                      //writer3.write(line3 + "\n"); 
-                      //writerTemp.write(line3 + "\n");
                       writer3.write("----------------------------\n"); 
                       writerTemp.write("----------------------------\n");
                       writer3.write(nameOfSpell + "\n"); 
@@ -317,6 +422,16 @@ class FileOperation {
                       writer3.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer3.close(); 
+                      for(int i = 0; i < size; i++) {
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        RoundLeftOverTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      }
                     }
                   } catch (IOException sube3) {
                     System.out.println("Will not reach unless problem reading file."); 

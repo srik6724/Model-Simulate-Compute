@@ -17,7 +17,7 @@ public class Match_Entry_Portal {
 	{
 		Predicate<Path> criteria = path -> {
 			String fileName = path.getFileName().toString(); 
-			return fileName.endsWith(".txt") && (fileName.contains("round") || fileName.contains("match")); 
+			return fileName.endsWith(".txt") && (fileName.contains("round") || fileName.contains("match") || fileName.contains("category")); 
 		}; 
 
 		Predicate<Path> fileCountCriteria = path -> {
@@ -27,7 +27,7 @@ public class Match_Entry_Portal {
 
 		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
 
-		deleteFiles(startPath, criteria);
+		deleteFiles(startPath, criteria); 
 
 		File round_reading = new File("round_reading.txt");
 		FileWriter round_reading_writer = new FileWriter(round_reading);
@@ -36,7 +36,7 @@ public class Match_Entry_Portal {
 		Match match = new Match(round_reading); 
 		match.enroll2Teams(args); 
 
-		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/");
+		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
 		long fileCount = Files.list(directory).filter(fileCountCriteria).count();
 		System.out.println("Final count of round, match files in local directory: " + fileCount);
 	}

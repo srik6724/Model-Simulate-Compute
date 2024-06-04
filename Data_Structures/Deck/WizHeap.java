@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Filter;
 
+import Collections.Type_Set;
 import CustomExceptions.TypeException;
 import Deck_Build.DarkmoorDeck;
 import Deck_Build.MainDeck;
@@ -222,6 +223,8 @@ public class WizHeap {
 				f.write("Type Of Spell: " + e.getTypeSpell() + "\n"); 
 				System.out.println("-----------------------------------"); 
 				f.write("-----------------------------------" + "\n");
+				System.out.println("Extracting type of spell info: " + e.getTypeSpell()); 
+				Type_Set.initialize(e.getTypeSpell(), e);
 			}
 			System.out.println("Reading the deck file now"); 
 			/*try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
@@ -651,16 +654,6 @@ public class WizHeap {
 			ex.printStackTrace();
 			System.out.println("An error occurred. Maybe user/password is invalid. Something not working. ");
 	 }
-	}
-
-	public static void main(String[]args)
-	{
-		/*WizHeap hp = new WizHeap(); 
-		System.out.println(hp.mainDeckSpells.size()); 
-		System.out.println(hp.tcDeckSpells.size()); 
-		hp.selectNOoption("balance", "NO");
-		hp.fillMainDeck(hp.mainDeckSpells, "balance");
-		hp.fillTcDeck(hp.tcDeckSpells, "balance");*/
 	}
 
 }
