@@ -11,7 +11,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
 import java.util.Set;
 
-import Data_Structures.Deck.Element;
+import Data_Structures.Object_Types.Element;
 
 public class Type_Set {
   /*

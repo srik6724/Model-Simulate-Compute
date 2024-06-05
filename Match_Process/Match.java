@@ -28,32 +28,20 @@ import java.util.Scanner;
 import java.util.Set;
 
 import Credentials.WizCredentials;
-
-import AeonStats.AeonAmuletStats;
-import AeonStats.AeonAthameStats;
-import AeonStats.AeonBootsStats;
-import AeonStats.AeonClass;
-import AeonStats.AeonDeckStats;
-import AeonStats.AeonHatStats;
-import AeonStats.AeonRingStats;
-import AeonStats.AeonRobeStats;
-import AeonStats.AeonWandStats;
-import Arena_Container_Systems.*;
-import CustomExceptions.TypeException;
-import DragoonStats.DragoonClass;
-import EternalStats.EternalClass;
-import Gear.Amulet;
-import Gear.Athame;
-import Gear.Boot;
-import Gear.Deck;
-import Gear.Gear;
-import Gear.Hat;
-import Customizations.*; 
-import Gear.Ring;
-import Gear.Robe;
-import Gear.Wand;
-import JadeStats.JadeClass;
-import Input_Logging.LoggingStorage;
+import Components.Amulet;
+import Components.Athame;
+import Components.Boot;
+import Components.Deck;
+import Components.Gear;
+import Components.Hat;
+import Components.Ring;
+import Components.Robe;
+import Components.Wand;
+import Configuration_Specifications_1_1.SpookyClass;
+import Configuration_Specifications_1_2.JadeClass;
+import Configuration_Specifications_2_2.NightMireClass;
+import Customizations.*;
+import Data_Structures.Object_Types.Element;
 
 import java.util.logging.*;
 
@@ -62,18 +50,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import NightMireStats.NightMireClass;
+import Arena_Systems_Build.*;
 import Match_Threading.*;
-import PlayerStats.Player;
-import SchoolSpells.Spell;
-import SchoolSpells.schoolSpells;
 import Model_Extensions.Socket;
-import SpookyStats.SpookyClass;
+import Object_Types.Spell;
+import Object_Types.schoolSpells;
+import Object_Types_Build.*;
 import Jar_Executable.*;
-import State_Management.*;
-import Input_Variables.*;
-import Data_Structures.Deck.Element;
-import Deck_Build.*;
+import Logging_Process.LoggingStorage;
+import System_State.*;
+import System_Variables.*;
+import RunTime.Failure.TypeException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -1924,27 +1911,27 @@ public String randomizeHeadsOrTails()
 	private void findGearClass(String word, String gearName, String pieceOfGear) throws IOException {
 				if(word.toLowerCase().equals("aeon"))
 				{
-					new AeonClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_0.AeonClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("eternal"))
 				{
-					new EternalClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_1.EternalClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("dragoon"))
 				{
-					new DragoonClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_1_0.DragoonClass(gearName, pieceOfGear); 
 				}	
 				else if(word.toLowerCase().equals("spooky"))
 				{
-					new SpookyClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_1_1.SpookyClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("night mire"))
 				{
-					new NightMireClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_2.NightMireClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("jade"))
 				{
-					new JadeClass(gearName, pieceOfGear);
+					new Configuration_Specifications_1_2.JadeClass(gearName, pieceOfGear);
 				}
 	}
 

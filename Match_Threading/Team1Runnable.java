@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import Match_Communication.MessageDirectory;
+import Match_Documentation.MessageDirectory;
 import Match_Process.Match;
 import Match_Process.MatchWriter;
 
