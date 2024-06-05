@@ -1,15 +1,16 @@
-package Jar_Executable;
+package Jar;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class SpringBootExecutable implements Runnable {
+public class Data_Store implements Runnable {
 
     //Find a way to send deck data from the console application Spring Boot Application
 
-    public SpringBootExecutable() {
+    public Data_Store() {
         run();
     }
 
