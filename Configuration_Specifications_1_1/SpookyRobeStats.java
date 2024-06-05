@@ -10,7 +10,7 @@ import Components.Robe;
 import Components.StatsInfo;
 import Credentials.WizCredentials;
 import Features.ItemCard;
-import Regeneration.Healing;
+import Generative_Restore.Healing;
 
 public class SpookyRobeStats extends Robe implements StatsInfo {
   private int health;

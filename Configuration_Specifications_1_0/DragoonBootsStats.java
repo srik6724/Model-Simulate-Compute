@@ -2,7 +2,7 @@ package Configuration_Specifications_1_0;
 
 import Components.Boot;
 import Components.StatsInfo;
-import Regeneration.Healing;
+import Generative_Restore.Healing;
 
 public class DragoonBootsStats extends Boot implements StatsInfo {
 

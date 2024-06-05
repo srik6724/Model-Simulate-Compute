@@ -1,4 +1,4 @@
-package Regeneration;
+package Generative_Restore;
 
 public class Healing {
   public String description; 

@@ -9,8 +9,8 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Credentials.WizCredentials;
+import Generative_Restore.Healing;
 import Model_Extensions.*;
-import Regeneration.Healing;
 
 public class DragoonAthameStats extends Components.Athame implements Components.StatsInfo {
   

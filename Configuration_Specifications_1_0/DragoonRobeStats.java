@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import Credentials.WizCredentials;
-import Regeneration.Healing;
+import Generative_Restore.Healing;
 
 public class DragoonRobeStats extends Components.Robe implements Components.StatsInfo {
 
