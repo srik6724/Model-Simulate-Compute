@@ -1,8 +1,0 @@
-{
-  "java.project.referencedLibraries": [
-    "lib/**/*.jar",
-    "c:\\Users\\srik6\\Desktop\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32\\mysql-connector-j-8.0.32.jar",
-    "c:\\Users\\srik6\\Downloads\\jython-installer-2.7.3.jar",
-    "c:\\Users\\srik6\\Downloads\\jython-standalone-2.7.3.jar"
-  ]
-}

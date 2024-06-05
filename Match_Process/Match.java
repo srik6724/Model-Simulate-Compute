@@ -39,7 +39,7 @@ import Components.Robe;
 import Components.Wand;
 import Configuration_Specifications_1_1.SpookyClass;
 import Configuration_Specifications_1_2.JadeClass;
-import Configuration_Specifications_2_2.NightMireClass;
+import Configuration_Specifications_Release.Configuration_Specifications_2_2.NightMireClass;
 import Customizations.*;
 import Data_Structures.Object_Types.Element;
 import Jar.Data_Store;
@@ -1917,7 +1917,7 @@ public String randomizeHeadsOrTails()
 				}
 				else if(word.toLowerCase().equals("eternal"))
 				{
-					new Configuration_Specifications_2_1.EternalClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_Release.Configuration_Specifications_2_1.EternalClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("dragoon"))
 				{
@@ -1929,7 +1929,7 @@ public String randomizeHeadsOrTails()
 				}
 				else if(word.toLowerCase().equals("night mire"))
 				{
-					new Configuration_Specifications_2_2.NightMireClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_Release.Configuration_Specifications_2_2.NightMireClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("jade"))
 				{
