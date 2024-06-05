@@ -4,7 +4,3 @@
 3. Compute a Match
 
 Inspired by Wizard101
-
-Associated with Oracle, OpenAI, Google, Kingsisle Entertainment
-
-For hiring inquiries, send all emails to sbs0101@enigmaidentity.com
