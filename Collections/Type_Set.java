@@ -74,5 +74,8 @@ public class Type_Set {
     }
   }
 
+  public static Set<StringBuilder> getTypes() {
+    return Type_Set.types; 
+  }
 
 }

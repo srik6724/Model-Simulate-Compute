@@ -1,5 +1,6 @@
 package Deck_Parser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class Parser {
   private LexicalAnalyzer lexer; 
   private List<Token> token_list;
 
-  public Parser(List<String> inputLines)
+  public Parser(List<String> inputLines) throws IOException
   {
     lexer = new LexicalAnalyzer(inputLines);
     // Get the token_list as it contains all the tokens

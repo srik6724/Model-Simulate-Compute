@@ -20,7 +20,7 @@ public class Match_Entry_Portal {
 			return fileName.endsWith(".txt") && (fileName.contains("round") || fileName.contains("match") || fileName.contains("category")); 
 		}; 
 
-		Predicate<Path> fileCountCriteria = path -> {
+		Predicate<Path> fileCountCriteria = path -> { 
 			String fileName = path.getFileName().toString(); 
 			return fileName.contains("round"); 
 		};

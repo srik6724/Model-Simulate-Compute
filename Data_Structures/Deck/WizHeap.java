@@ -61,7 +61,7 @@ public class WizHeap {
 		return optionSelected; 
 	}
 
-	public List<List<Element>> storeSpellsInHeap(String input, Spell[]mD, Spell[]tC, String identity, int selectionNo) throws InterruptedException
+	public List<List<Element>> storeSpellsInHeap(String input, Spell[]mD, Spell[]tC, String identity, int selectionNo) throws InterruptedException, IOException
 	{
 		if(input.equals("CD"))
 			if(mainDeckInfo.getElements() != null && tcDeckInfo.getElements() != null)
@@ -185,7 +185,7 @@ public class WizHeap {
 		}
 	}
 
-	public Element[] buildHeap(Element[]elements, String identity, int deckNo, String deckType) throws InterruptedException
+	public Element[] buildHeap(Element[]elements, String identity, int deckNo, String deckType) throws InterruptedException, IOException
 	{
 		for(int i = (int)Math.floor(elements.length/2); i >= 1; i--)
 		{
@@ -197,8 +197,7 @@ public class WizHeap {
 		Thread.sleep(1000); 
 		System.out.println("Here it goes."); 
 		Thread.sleep(1000); 
-		try
-		{
+		
 			File f1 = new File("deck" + deckNo + "_" + deckType + ".txt"); 
 			File[] files = new File[1]; 
 			files[0] = f1; 
@@ -226,46 +225,28 @@ public class WizHeap {
 				System.out.println("Extracting type of spell info: " + e.getTypeSpell()); 
 				Type_Set.initialize(e.getTypeSpell(), e);
 			}
+			f.close(); 
 			System.out.println("Reading the deck file now"); 
-			/*try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
+			try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
 				String line; 
 				int countDelimiters = 0; 
 				String[] lines = null;
 				if(deckType.equals("main")) {
-					lines = new String[449]; 
+					lines = new String[514]; 
 				}
 				else if(deckType.equals("tc")) {
-					lines = new String[281]; 
+					lines = new String[322]; 
 				}
 				int index = 0; 
 				while((line = reader.readLine()) != null) {
-					System.out.println("Line Read: " + line); 
-					if(line.contains("-"))
-					{
-						countDelimiters++; 
-						if((countDelimiters == 65 && deckType.equals("main")) || (countDelimiters == 41 && deckType.equals("tc")))
-						{
-							new Parser(Arrays.asList(lines)); 
-							System.exit(0);
-						}
-					}
-					else 
-					{
-						if(index < Integer.MAX_VALUE)
-						{
-							lines[index] = line; 
-							index++; 
-						}
-					}
+					lines[index] = line;
+					index++;
 				}
-			}*/
-			f.close();
-		}catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		return elements; 
-	}
+				new Parser(Arrays.asList(lines));
+				//System.exit(0); 
+			}
+			return elements; 
+}
 
 	public List<List<Element>> selectYESOption(String identity, String input, int selectionNo) throws InterruptedException, IOException
 	{
@@ -337,7 +318,7 @@ public class WizHeap {
 		return null; 
 	}
 	
-	public List<Map<String, List<String>>> selectNOoption(String identity, String input, int selectionNo) throws InterruptedException
+	public List<Map<String, List<String>>> selectNOoption(String identity, String input, int selectionNo) throws InterruptedException, IOException
 	{
 		List<Map<String, List<String>>> fullDeck = new ArrayList<>();
 

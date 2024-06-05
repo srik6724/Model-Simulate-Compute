@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.DriverManager; 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -99,8 +99,6 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 	String line_curr = ""; 
 	File team1 = new File("team_1_information.txt"); 
 	File team2 = new File("team_2_information.txt");
-
-
 
 	// round_reading file
 
