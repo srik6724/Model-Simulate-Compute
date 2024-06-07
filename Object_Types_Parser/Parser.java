@@ -11,33 +11,27 @@ public class Parser {
   private LexicalAnalyzer lexer; 
   private List<Token> token_list;
 
-  public Parser(List<String> inputLines) throws IOException
+  public Parser(List<String> inputLines, String deckType) throws IOException
   {
-    lexer = new LexicalAnalyzer(inputLines);
+    lexer = new LexicalAnalyzer(inputLines, deckType);
     // Get the token_list as it contains all the tokens
-    token_list = lexer.get_token_list(); 
-    System.out.println(token_list.size()); 
-    System.exit(0); 
-    // this.parse_deck_list(); 
+    //token_list = lexer.get_token_list(); 
+    //System.out.println(token_list.size()); 
+    this.parse_deck_list(); 
   }
   
-  /*void syntax_error()
+  void syntax_error()
   {
 	  System.out.println("SYNTAX ERROR!!!\n"); 
   }
 
   Token expect(TokenType expected_type)
   {
-    Token t = lexer.GetToken(); 
+    System.out.println("PROCESSING TOKEN"); 
+    Token t = lexer.getToken(); 
     if (t.token_type != expected_type)
         syntax_error(); 
     return t; 
-  }
-
-  public Parser() {
-    new InputBuffer(); 
-    System.out.println("Starting the process for parser."); 
-    parse_deck_list(); 
   }
 
    void parse_number_players_affected()
@@ -45,33 +39,33 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == ONE)
+    if(t.token_type == TokenType.ONE)
     {
-      expect(ONE); 
+      expect(TokenType.ONE); 
     }
-    else if(t.token_type == TWO)
+    else if(t.token_type == TokenType.TWO)
     {
-      expect(TWO); 
+      expect(TokenType.TWO); 
     }
-    else if(t.token_type == THREE)
+    else if(t.token_type == TokenType.THREE)
     {
-      expect(THREE); 
+      expect(TokenType.THREE); 
     }
-    else if(t.token_type == FOUR)
+    else if(t.token_type == TokenType.FOUR)
     {
-      expect(FOUR); 
+      expect(TokenType.FOUR); 
     }
   }
 
   void parse_conditional()
   {
-    expect(STMT); 
-    expect(TARGET); 
+    expect(TokenType.STMT); 
+    expect(TokenType.TARGET); 
   }
 
   void parse_proposition()
   {
-    expect(ACTION); 
+    expect(TokenType.ACTION); 
     parse_conditional(); 
   }
 
@@ -80,7 +74,7 @@ public class Parser {
     parse_proposition(); 
     Token t; 
     t = lexer.peek(1); 
-    if(t.token_type == ACTION)
+    if(t.token_type == TokenType.ACTION)
     {
       parse_proposition_list();
     }
@@ -91,11 +85,11 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == TEXT)
+    if(t.token_type == TokenType.TEXT)
     {
-      expect(TEXT); 
+      expect(TokenType.TEXT); 
       parse_proposition_list(); 
-      expect(NUM); 
+      expect(TokenType.NUM); 
       parse_number_players_affected(); 
     }
   }
@@ -103,7 +97,7 @@ public class Parser {
   void parse_regeneration()
   {
     parse_number_players_affected();
-    expect(HEALING); 
+    expect(TokenType.HEALING); 
   }
 
   void parse_conditional_protect_percentage()
@@ -111,13 +105,13 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == NUM)
+    if(t.token_type == TokenType.NUM)
     {
-      expect(NUM); 
+      expect(TokenType.NUM); 
       t = lexer.peek(1); 
-      if(t.token_type == PERCENTAGE)
+      if(t.token_type == TokenType.PERCENTAGE)
       {
-        expect(PERCENTAGE); 
+        expect(TokenType.PERCENTAGE); 
       }
     }
   }
@@ -131,7 +125,7 @@ public class Parser {
   void parse_attack()
   {
     parse_number_players_affected(); 
-    expect(DAMAGE); 
+    expect(TokenType.DAMAGE); 
   }
 
   void parse_type_of_spell()
@@ -139,19 +133,19 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == ATTACK)
+    if(t.token_type == TokenType.ATTACK)
     {
-      expect(ATTACK); 
+      expect(TokenType.ATTACK); 
       parse_attack(); 
     }
-    else if(t.token_type == DEFENSE)
+    else if(t.token_type == TokenType.UTILITY)
     {
-      expect(DEFENSE); 
+      expect(TokenType.UTILITY); 
       parse_defense();
     }
-    else if(t.token_type == REGENERATION)
+    else if(t.token_type == TokenType.REGENERATION)
     {
-      expect(REGENERATION); 
+      expect(TokenType.REGENERATION); 
       parse_regeneration(); 
     }
   }
@@ -161,73 +155,73 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == ZERO)
+    if(t.token_type == TokenType.ZERO)
     {
-      expect(ZERO); 
+      expect(TokenType.ZERO); 
     }
-    else if(t.token_type == ONE)
+    else if(t.token_type == TokenType.ONE)
     {
-      expect(ONE); 
+      expect(TokenType.ONE); 
     }
-    else if(t.token_type == TWO)
+    else if(t.token_type == TokenType.TWO)
     {
-      expect(TWO); 
+      expect(TokenType.TWO); 
     }
-    else if(t.token_type == THREE)
+    else if(t.token_type == TokenType.THREE)
     {
-      expect(THREE); 
+      expect(TokenType.THREE); 
     }
-    else if(t.token_type == FOUR)
+    else if(t.token_type == TokenType.FOUR)
     {
-      expect(FOUR); 
+      expect(TokenType.FOUR); 
     }
-    else if(t.token_type == FIVE)
+    else if(t.token_type == TokenType.FIVE)
     {
-      expect(FIVE); 
+      expect(TokenType.FIVE); 
     }
-    else if(t.token_type == SIX)
+    else if(t.token_type == TokenType.SIX)
     {
-      expect(SIX); 
+      expect(TokenType.SIX); 
     }
-    else if(t.token_type == SEVEN)
+    else if(t.token_type == TokenType.SEVEN)
     {
-      expect(SEVEN); 
+      expect(TokenType.SEVEN); 
     }
-    else if(t.token_type == EIGHT)
+    else if(t.token_type == TokenType.EIGHT)
     {
-      expect(EIGHT); 
+      expect(TokenType.EIGHT); 
     }
-    else if(t.token_type == NINE)
+    else if(t.token_type == TokenType.NINE)
     {
-      expect(NINE); 
+      expect(TokenType.NINE); 
     }
-    else if(t.token_type == TEN)
+    else if(t.token_type == TokenType.TEN)
     {
-      expect(TEN);  
+      expect(TokenType.TEN);  
     }
-    else if(t.token_type == ELEVEN)
+    else if(t.token_type == TokenType.ELEVEN)
     {
-      expect(ELEVEN); 
+      expect(TokenType.ELEVEN); 
     }
-    else if(t.token_type == TWELVE)
+    else if(t.token_type == TokenType.TWELVE)
     {
-      expect(TWELVE); 
+      expect(TokenType.TWELVE); 
     }
-    else if(t.token_type == THIRTEEN)
+    else if(t.token_type == TokenType.THIRTEEN)
     {
-      expect(THIRTEEN); 
+      expect(TokenType.THIRTEEN); 
     }
-    else if(t.token_type == X)
+    else if(t.token_type == TokenType.X)
     {
-      expect(X); 
+      expect(TokenType.X); 
     }
   }
 
   void parse_pip_chance() {
     Token t; 
     t = lexer.peek(1); 
-    if(t.token_type == SPELL_PERCENTAGE) {
-      expect(SPELL_PERCENTAGE); 
+    if(t.token_type == TokenType.PERCENTAGE) {
+      expect(TokenType.PERCENTAGE); 
     }
   }
 
@@ -236,33 +230,33 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == LIFE)
+    if(t.token_type == TokenType.LIFE)
     {
-      expect(LIFE); 
+      expect(TokenType.LIFE); 
     }
-    else if(t.token_type == DEATH)
+    else if(t.token_type == TokenType.DEATH)
     {
-      expect(DEATH); 
+      expect(TokenType.DEATH); 
     }
-    else if(t.token_type == BALANCE)
+    else if(t.token_type == TokenType.BALANCE)
     {
-      expect(BALANCE); 
+      expect(TokenType.BALANCE); 
     }
-    else if(t.token_type == ICE) 
+    else if(t.token_type == TokenType.ICE) 
     {
-      expect(ICE); 
+      expect(TokenType.ICE); 
     }
-    else if(t.token_type == MYTH) 
+    else if(t.token_type == TokenType.MYTH) 
     {
-      expect(MYTH); 
+      expect(TokenType.MYTH); 
     }
-    else if(t.token_type == FIRE) 
+    else if(t.token_type == TokenType.FIRE) 
     {
-      expect(FIRE); 
+      expect(TokenType.FIRE); 
     }
-    else if(t.token_type == STORM)
+    else if(t.token_type == TokenType.STORM)
     {
-      expect(STORM); 
+      expect(TokenType.STORM); 
     }
   }
 
@@ -280,12 +274,12 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == SPELL)
+    if(t.token_type == TokenType.SPELL)
     {
-      expect(SPELL); 
+      expect(TokenType.SPELL); 
       parse_spell(); 
       t = lexer.peek(1); 
-      if(t.token_type == END_OF_FILE)
+      if(t.token_type == TokenType.END_OF_FILE)
       {
         return; 
       }
@@ -301,33 +295,33 @@ public class Parser {
     Token t; 
     t = lexer.peek(1); 
 
-    if(t.token_type == LIFE) 
+    if(t.token_type == TokenType.LIFE) 
     {
-      expect(LIFE); 
+      expect(TokenType.LIFE); 
     }
-    else if(t.token_type == DEATH)
+    else if(t.token_type == TokenType.DEATH)
     {
-      expect(DEATH); 
+      expect(TokenType.DEATH); 
     }
-    else if(t.token_type == BALANCE)
+    else if(t.token_type == TokenType.BALANCE)
     {
-      expect(BALANCE); 
+      expect(TokenType.BALANCE); 
     }
-    else if(t.token_type == ICE)
+    else if(t.token_type == TokenType.ICE)
     {
-      expect(ICE); 
+      expect(TokenType.ICE); 
     }
-    else if(t.token_type == MYTH) 
+    else if(t.token_type == TokenType.MYTH) 
     {
-      expect(MYTH); 
+      expect(TokenType.MYTH); 
     }
-    else if(t.token_type == FIRE) 
+    else if(t.token_type == TokenType.FIRE) 
     {
-      expect(FIRE); 
+      expect(TokenType.FIRE); 
     }
-    else if(t.token_type == STORM)
+    else if(t.token_type == TokenType.STORM)
     {
-      expect(STORM); 
+      expect(TokenType.STORM); 
     }
   }
 
@@ -339,11 +333,11 @@ public class Parser {
 
   void parse_deck_list() 
   {
-    expect(DECK); 
+    expect(TokenType.DECK); 
     parse_deck(); 
     Token t; 
     t = lexer.peek(1); 
-    if(t.token_type == DECK)
+    if(t.token_type == TokenType.DECK)
     {
       parse_deck_list(); 
     }
@@ -351,5 +345,5 @@ public class Parser {
 
   List<Token> get_deck_list() {
     return this.token_list;
-  }*/
+  }
 }

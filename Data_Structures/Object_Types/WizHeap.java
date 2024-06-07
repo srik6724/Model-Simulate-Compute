@@ -229,7 +229,6 @@ public class WizHeap {
 			System.out.println("Reading the deck file now"); 
 			try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
 				String line; 
-				int countDelimiters = 0; 
 				String[] lines = null;
 				if(deckType.equals("main")) {
 					lines = new String[514]; 
@@ -242,8 +241,7 @@ public class WizHeap {
 					lines[index] = line;
 					index++;
 				}
-				new Parser(Arrays.asList(lines));
-				//System.exit(0); 
+				new Parser(Arrays.asList(lines), deckType);
 			}
 			return elements; 
 }

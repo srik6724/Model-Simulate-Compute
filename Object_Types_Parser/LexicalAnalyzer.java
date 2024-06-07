@@ -21,7 +21,6 @@ public class LexicalAnalyzer {
   int index; 
   static boolean first_iteration = false; 
   private String description_of_spell = ""; 
-  private int line_counter = 0; 
   private List<Token> token_list = new ArrayList<Token>(); 
   private Set<StringBuilder> types = Type_Set.getTypes(); 
   private File[] files = new File[types.size()]; 
@@ -29,11 +28,11 @@ public class LexicalAnalyzer {
   private FileWriter general_writer; 
   private Token tmp = new Token(); 
 
-  public LexicalAnalyzer(List<String> inputLines) throws IOException
+  LexicalAnalyzer(List<String> inputLines, String deckType) throws IOException
   {
     System.out.println("Looping through types defined by Type_Set implementation"); 
     int fIndex = 0; 
-    general_writer = new FileWriter(new File("token_list_full_types_representation.txt")); 
+    general_writer = new FileWriter(new File("token_list_full_types_representation_" + deckType + ".txt")); 
     for(StringBuilder c: types) {
       // tokens list corresponding to spell (apply filter by type of spell)
       // Examples: token_list_
@@ -73,13 +72,26 @@ public class LexicalAnalyzer {
       }
     }
     token_list.add(tmp); 
-
-    System.out.println("Finished parsing input lines and creating tokens."); 
+    try {
+      general_writer.write("TOKEN DEFINITIONS LIST\n");
+      for(Token t: token_list) {
+        general_writer.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); 
+        general_writer.write("Token Lexeme: " + t.lexeme.toUpperCase() + "\n"); 
+        general_writer.write("TokenType Of Token: " + t.token_type + "\n"); 
+      }
+      general_writer.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); 
+      general_writer.write("TOKEN DEFINITIONS END\n");
+      general_writer.write("############################################\n");
+      general_writer.close(); 
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    /*System.out.println("Finished parsing input lines and creating tokens."); 
     System.out.println("Token List Size: " + token_list.size()); 
     for(Token get_token: token_list) {
       System.out.println("Lexeme of token: "  + get_token.lexeme);
       System.out.println("TokenType of token: " + get_token.token_type); 
-    } 
+    }*/
   }
 
   void token_def(String line)
@@ -258,6 +270,7 @@ public class LexicalAnalyzer {
               token_list.add(token); 
               descriptionAnnotations.add(token.lexeme); 
               token = new Token(); 
+              System.out.println("Line Descriptor: " + line_descriptor);
               String stmt = line_descriptor; 
               stmt = stmt.replace("Description: ", "");
               int firstSpaceIndex = stmt.indexOf(" "); 
@@ -345,109 +358,112 @@ public class LexicalAnalyzer {
         else if(line_descriptor.equals("Pips")) {
           System.out.println("Pips Here: " + line_descriptor);
           line_descriptor += ": "; 
+          try {
           if(Integer.valueOf(Integer.parseInt(element)) instanceof Integer) {
             System.out.println("Pips of Spell finished decoding."); 
             line_descriptor += element;
             System.out.println("Final Line Descriptor: " + line_descriptor); 
-            if(element.equals("0")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.ZERO; 
-              token_list.add(token); 
+              if(element.equals("0")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.ZERO; 
+                token_list.add(token); 
+              }
+              else if(element.equals("1")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.ONE; 
+                token_list.add(token); 
+              }
+              else if(element.equals("2")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.TWO; 
+                token_list.add(token);
+              }
+              else if(element.equals("3")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.THREE;
+                token_list.add(token); 
+              }
+              else if(element.equals("4")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.FOUR;
+                token_list.add(token); 
+              }
+              else if(element.equals("5")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.FIVE;
+                token_list.add(token); 
+              }
+              else if(element.equals("6")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.SIX;
+                token_list.add(token); 
+              } 
+              else if(element.equals("7")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.SEVEN;
+                token_list.add(token); 
+              }
+              else if(element.equals("8")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.EIGHT;
+                token_list.add(token); 
+              }
+              else if(element.equals("9")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.NINE;
+                token_list.add(token); 
+              }
+              else if(element.equals("10")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.TEN;
+                token_list.add(token); 
+              } 
+              else if(element.equals("11")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.ELEVEN;
+                token_list.add(token); 
+              }
+              else if(element.equals("12")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.TWELVE;
+                token_list.add(token); 
+              }
+              else if(element.equals("13")) {
+                token = new Token(); 
+                line_descriptor = line_descriptor.replace("Pips: ", "");
+                token.lexeme = line_descriptor;
+                token.token_type = TokenType.THIRTEEN;
+                token_list.add(token); 
+              }
             }
-            else if(element.equals("1")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.ONE; 
-              token_list.add(token); 
-            }
-            else if(element.equals("2")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.TWO; 
-              token_list.add(token);
-            }
-            else if(element.equals("3")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.THREE;
-              token_list.add(token); 
-            }
-            else if(element.equals("4")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.FOUR;
-              token_list.add(token); 
-            }
-            else if(element.equals("5")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.FIVE;
-              token_list.add(token); 
-            }
-            else if(element.equals("6")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.SIX;
-              token_list.add(token); 
-            } 
-            else if(element.equals("7")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.SEVEN;
-              token_list.add(token); 
-            }
-            else if(element.equals("8")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.EIGHT;
-              token_list.add(token); 
-            }
-            else if(element.equals("9")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.NINE;
-              token_list.add(token); 
-            }
-            else if(element.equals("10")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.TEN;
-              token_list.add(token); 
-            } 
-            else if(element.equals("11")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.ELEVEN;
-              token_list.add(token); 
-            }
-            else if(element.equals("12")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.TWELVE;
-              token_list.add(token); 
-            }
-            else if(element.equals("13")) {
-              token = new Token(); 
-              line_descriptor = line_descriptor.replace("Pips: ", "");
-              token.lexeme = line_descriptor;
-              token.token_type = TokenType.THIRTEEN;
-              token_list.add(token); 
-            }
-            else if(element.equals("X")) {
+          } catch (NumberFormatException e) {
+            if(element.equals("X")) {
               token = new Token(); 
               line_descriptor = line_descriptor.replace("Pips: ", "");
               token.lexeme = line_descriptor;
@@ -508,33 +524,35 @@ public class LexicalAnalyzer {
       System.out.println("InputBuffer Size before next iteration: " + inputBuffer.size()); 
     }
     System.out.println("TOKEN_LIST SIZE: " + token_list.size()); 
-    try {
-      general_writer.write("TOKEN DEFINITIONS LIST\n");
-      for(Token t: token_list) {
-        general_writer.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); 
-        general_writer.write("Token Lexeme: " + t.lexeme.toUpperCase() + "\n"); 
-        general_writer.write("TokenType Of Token: " + t.token_type + "\n"); 
-      }
-      general_writer.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"); 
-      general_writer.write("TOKEN DEFINITIONS END\n");
-      general_writer.write("############################################\n");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
   void setTokenDefs(String line) throws IOException
   {
-    line_counter++; 
     System.out.println("Line Read Here: " + line); 
     token_def(line); 
-    if(line_counter == 50) {
-      general_writer.close();
-      System.exit(0); 
-    }
   }
 
   List<Token> get_token_list() {
     return token_list;
+  }
+
+  Token getToken() {
+    Token temp = null;
+    for(Token t: token_list) {
+      temp = t; 
+      token_list.remove(t); 
+      break;
+    }
+    return temp;
+  }
+
+  Token peek(int index) {
+    Token temp = null;
+    for(int i = 0; i < token_list.size();) {
+      temp = token_list.get(index-1);
+      token_list.remove(token_list.get(index-1)); 
+      break;
+    }
+    return temp;
   }
 }

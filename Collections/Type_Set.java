@@ -8,7 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import Data_Structures.Object_Types.Element;
@@ -18,10 +22,12 @@ public class Type_Set {
    * Set for storage of unique type spell definitions
    */
   private static Set<StringBuilder> types; 
+  private static Map<String, Integer> UNIQUE_SPELL_TYPES_COUNT; 
   
   private Type_Set() {
     if(Type_Set.types == null) {
       types = new HashSet<StringBuilder>(); 
+      UNIQUE_SPELL_TYPES_COUNT = new HashMap<String, Integer>(); 
     }
   }
 
@@ -47,7 +53,7 @@ public class Type_Set {
     String fileName = "category_type_" + type.toLowerCase() + ".txt";
 		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
     Path filePath = directory.resolve(fileName); 
-    FileWriter file_writer;
+    FileWriter file_writer; 
     if(!(Files.exists(filePath))) {
       file = new File(fileName);
       file_writer = new FileWriter(file); 
@@ -60,6 +66,8 @@ public class Type_Set {
       file_writer.write("Pips: " + e.getPips()); 
       file_writer.write("School: " + e.getSchool()); 
       file_writer.write("Type Of Spell: " + e.getTypeSpell());
+      Type_Set.UNIQUE_SPELL_TYPES_COUNT.put(e.getTypeSpell(), 11); 
+      System.out.println("INITIAL PLACEMENT: " + UNIQUE_SPELL_TYPES_COUNT.get(e.getTypeSpell())); 
     }
     else {
       String objectContainer = "-----------------------------------\n"
@@ -71,11 +79,26 @@ public class Type_Set {
                               + "School: " + e.getSchool() + "\n"
                               + "Type Of Spell: " + e.getTypeSpell() + "\n";
       Files.write(filePath, objectContainer.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND); 
+      int count = UNIQUE_SPELL_TYPES_COUNT.get(e.getTypeSpell());
+      System.out.println("COUNT RETRIEVAL: " + count); 
+      String numberWord = String.valueOf(count); 
+      System.out.println("NUMBER WORD: " + numberWord); 
+      String digitWordForm = numberWord.substring(1); 
+      System.out.println("DIGIT WORD FORM: " + digitWordForm); 
+      int numberCount = Integer.parseInt(digitWordForm); 
+      numberCount++; 
+      String modifiedNumberWord = numberWord.substring(0,1) + numberCount;
+      System.out.println("MODIFIED NUMBER WORD: " + modifiedNumberWord);
+      Type_Set.UNIQUE_SPELL_TYPES_COUNT.put(e.getTypeSpell(), Integer.parseInt(modifiedNumberWord));
     }
   }
 
   public static Set<StringBuilder> getTypes() {
     return Type_Set.types; 
+  }
+
+  public static Map<String, Integer> getUniqueSpellsTypeCount() {
+    return Type_Set.UNIQUE_SPELL_TYPES_COUNT;
   }
 
 }

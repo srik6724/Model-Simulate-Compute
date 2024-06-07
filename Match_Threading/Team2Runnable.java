@@ -12,7 +12,7 @@ public class Team2Runnable implements Runnable {
   protected static boolean messagesCompleted; 
   protected static boolean team2Done = true; 
 
-  public void run()
+  public void run() 
   {
     System.out.println("Accessing Team 2's run method."); 
     System.out.println("This will be the second team's thread in the 4v4 match."); 

@@ -39,11 +39,10 @@ import Components.Robe;
 import Components.Wand;
 import Configuration_Specifications_1_1.SpookyClass;
 import Configuration_Specifications_1_2.JadeClass;
-import Configuration_Specifications_Release.Configuration_Specifications_2_2.NightMireClass;
+import Configuration_Specifications_2_2.NightMireClass;
 import Customizations.*;
 import Data_Structures.Object_Types.Element;
 import Jar.Data_Store;
-import Match_Executable.*;
 
 import java.util.logging.*;
 
@@ -58,7 +57,6 @@ import Model_Extensions.Socket;
 import Object_Types.Spell;
 import Object_Types.schoolSpells;
 import Object_Types_Build.*;
-import Jar_Executable.*;
 import Logging_Process.LoggingStorage;
 import System_State.*;
 import System_Variables.*;
@@ -1302,6 +1300,9 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 		FileWriter roundExcessSpellsWriter = null;
 		FileWriter roundExcessSpellsTeam1Writer = null;
 		FileWriter roundExcessSpellsTeam2Writer = null;
+		FileWriter roundComputationSpellsWriter = null;
+		FileWriter roundComputationSpellsTeam1Writer = null; 
+		FileWriter roundComputationSpellsTeam2Writer = null;
 
 		int round = Round.get_current_number(); 
 		int size = 0;
@@ -1424,6 +1425,12 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			roundExcessSpellsTeam1Writer.write(""); 
 			roundExcessSpellsTeam2Writer = RoundDiscardSpellsTeam2Writer.get_file_writer(round); 
 			roundExcessSpellsTeam2Writer.write(""); 
+			roundComputationSpellsWriter = RoundOutputSpellsWriter.get_file_writer(round);
+			roundComputationSpellsWriter.write("");
+			roundComputationSpellsTeam1Writer = RoundOutputSpellsTeam1Writer.get_file_writer(round); 
+			roundComputationSpellsTeam1Writer.write(""); 
+			roundComputationSpellsTeam2Writer = RoundOutputSpellsTeam2Writer.get_file_writer(round); 
+			roundComputationSpellsTeam2Writer.write(""); 
 		} catch (Exception e) {
 			if(playerAssociationToSchool.size() == 2) {
 				RoundCombineTeam1MemberWriter.setWriterCreated(false);
@@ -1538,17 +1545,25 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			roundExcessSpellsTeam1Writer = RoundDiscardSpellsTeam1Writer.get_file_writer(round); 
 			RoundDiscardSpellsTeam2Writer.setWriterCreated(false); 
 			roundExcessSpellsTeam2Writer = RoundDiscardSpellsTeam2Writer.get_file_writer(round); 
+			RoundOutputSpellsWriter.setWriterCreated(false); 
+			roundComputationSpellsWriter = RoundOutputSpellsWriter.get_file_writer(round); 
+			RoundOutputSpellsTeam1Writer.setWriterCreated(false);
+			roundComputationSpellsTeam1Writer = RoundOutputSpellsTeam1Writer.get_file_writer(round); 
+			RoundOutputSpellsTeam2Writer.setWriterCreated(false); 
+			roundComputationSpellsTeam2Writer = RoundOutputSpellsTeam2Writer.get_file_writer(round); 
 		}
-
+		// Blade, Blade, Blade, Trap 
+		// Trap, Trap, Trap, Empower
 		System.out.println("This is a round casted of our match between team 1 and team 2"); 
 		System.out.println("Team Players Size inclusive of both team 1 and team 2: " + teamPlayers.size()); 
-		
 		matchRoundByRoundWriter.write("\n"); 
 		matchRoundByRoundWriter.write("ROUND # " + round + " OF SPELLS" + "\n");
 		matchWriterFinalizer.write("ROUND # " + round + " OF SPELLS" + "\n"); 
 		roundDefaultWriter.write("\n"); 
 		roundDefaultWriter.write("ROUND # " + round + " OF SPELLS" + "\n"); 
 		roundCombineWriter.write("ROUND # " + round + " OF SPELLS" + "\n");
+		roundComputationSpellsWriter.write("ROUND # " + round + " COMPUTATION " + "\n"); 
+		roundComputationSpellsWriter.write("________________________________________\n"); 
 		System.out.println("Size of player assocation to school: " + playerAssociationToSchool.size());
 		// 2 players <-> 1:1
 		// 4 players <-> 2:2
@@ -1594,6 +1609,8 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 				matchWriterFinalizer.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
 				roundDefaultWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
 				roundCombineWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
+				Type_Spell.startToFinish(sevenCards[z].getTypeSpell());
+				roundComputationSpellsWriter.write("SHEET STATEMENT: " + Type_Spell.configureInUseToEnd[0] + " OUT OF " + Type_Spell.configureInUseToEnd[1] + " " + sevenCards[z].getTypeSpell().toUpperCase() + " SPELLS\n");
 				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
 				matchRoundByRoundWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
 				matchWriterFinalizer.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
@@ -1615,12 +1632,16 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 			matchWriterFinalizer.write("----------------------------\n"); 
 			roundDefaultWriter.write("----------------------------\n"); 
 			roundCombineWriter.write("----------------------------\n");
+			
 		}
 		matchRoundByRoundWriter.write("END OF ROUND\n");
 		matchWriterFinalizer.write("END OF ROUND\n"); 
 		matchWriterFinalizer.write("############################\n"); 
 		roundDefaultWriter.write("END OF ROUND\n"); 
 		roundCombineWriter.write("END OF ROUND\n"); 
+		roundComputationSpellsWriter.write("________________________________________\n"); 
+		roundComputationSpellsWriter.write("END OF COMPUTATION\n"); 
+		roundComputationSpellsWriter.close(); 
 		System.out.println("Reading round of spells using reader. Decide between reading team 1 or team 2 first."); 
 
 		matchRoundByRoundWriter.close(); 
@@ -1917,7 +1938,7 @@ public String randomizeHeadsOrTails()
 				}
 				else if(word.toLowerCase().equals("eternal"))
 				{
-					new Configuration_Specifications_Release.Configuration_Specifications_2_1.EternalClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_1.EternalClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("dragoon"))
 				{
@@ -1929,7 +1950,7 @@ public String randomizeHeadsOrTails()
 				}
 				else if(word.toLowerCase().equals("night mire"))
 				{
-					new Configuration_Specifications_Release.Configuration_Specifications_2_2.NightMireClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_2.NightMireClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("jade"))
 				{

@@ -11,6 +11,7 @@ public abstract class Arena_Default_System implements Arena_Default, Arena_Defau
   java.util.Deque
   java.util.concurrent.BlockingDeque*/
 
+  // BlockingQueue
   // Take a round, halt after end of round using a block mechanism, random_no generation, data -> Number queue, Number queue -> Collection Queue, Dequeue the number -> collection (reduce queue-size)
   // Restore current round -> next round 
   // Measure a path from a linked list (start -> end) : Store data from path using a collection (random selection)

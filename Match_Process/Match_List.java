@@ -6,13 +6,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class Match_Entry {
+import Collections.Setup;
+
+public class Match_List<T> {
+	//private Match_List<Object> matches = new Match_List<Object>();
 	public static void main(String[]args) throws InterruptedException, IOException
 	{
 		Predicate<Path> criteria = path -> {
@@ -25,7 +32,7 @@ public class Match_Entry {
 			return fileName.contains("round"); 
 		}; 
 
-		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
+		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)"); 
 
 		deleteFiles(startPath, criteria); 
 
