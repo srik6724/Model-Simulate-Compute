@@ -11,24 +11,28 @@ public class Parser {
   private LexicalAnalyzer lexer; 
   private List<Token> token_list;
 
-  public Parser(List<String> inputLines, String deckType) throws IOException
+  public Parser(List<String> inputLines, String deckType, String school) throws IOException
   {
-    lexer = new LexicalAnalyzer(inputLines, deckType);
+    System.out.println("OBJECT TYPE: " + school);
+    lexer = new LexicalAnalyzer(inputLines, deckType, school);
     // Get the token_list as it contains all the tokens
-    //token_list = lexer.get_token_list(); 
-    //System.out.println(token_list.size()); 
-    this.parse_deck_list(); 
+    // token_list = lexer.get_token_list(); 
+    // System.out.println(token_list.size()); 
+    this.parse_deck_list(school); 
   }
   
   void syntax_error()
   {
 	  System.out.println("SYNTAX ERROR!!!\n"); 
+    System.exit(0); 
   }
 
   Token expect(TokenType expected_type)
   {
     System.out.println("PROCESSING TOKEN"); 
+    System.out.println("EXPECTED TYPE: " + expected_type);
     Token t = lexer.getToken(); 
+    System.out.println("TOKEN TYPE: " + t.token_type);
     if (t.token_type != expected_type)
         syntax_error(); 
     return t; 
@@ -331,16 +335,32 @@ public class Parser {
     parse_spellList(); 
   }
 
-  void parse_deck_list() 
+  void parse_deck_list(String school) 
   {
+    school = school.toUpperCase();
+    if(school.equals("ICE")){
+      expect(TokenType.ICE);
+    }
+    else if(school.equals("FIRE")) {
+      expect(TokenType.FIRE);
+    }
+    else if(school.equals("STORM")) {
+      expect(TokenType.STORM);
+    }
+    else if(school.equals("LIFE")) {
+      expect(TokenType.LIFE);
+    }
+    else if(school.equals("MYTH")) {
+      expect(TokenType.MYTH);
+    }
+    else if(school.equals("DEATH")) {
+      expect(TokenType.DEATH);
+    }
+    else if(school.equals("BALANCE")) {
+      expect(TokenType.BALANCE);
+    }
     expect(TokenType.DECK); 
     parse_deck(); 
-    Token t; 
-    t = lexer.peek(1); 
-    if(t.token_type == TokenType.DECK)
-    {
-      parse_deck_list(); 
-    }
   }
 
   List<Token> get_deck_list() {

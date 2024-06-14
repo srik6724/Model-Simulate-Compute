@@ -28,11 +28,12 @@ public class LexicalAnalyzer {
   private FileWriter general_writer; 
   private Token tmp = new Token(); 
 
-  LexicalAnalyzer(List<String> inputLines, String deckType) throws IOException
+  LexicalAnalyzer(List<String> inputLines, String deckType, String identity) throws IOException
   {
     System.out.println("Looping through types defined by Type_Set implementation"); 
     int fIndex = 0; 
-    general_writer = new FileWriter(new File("token_list_full_types_representation_" + deckType + ".txt")); 
+    identity = identity.toLowerCase();
+    general_writer = new FileWriter(new File("token_list_full_types_representation_" + identity + "_" + deckType + "_.txt")); 
     for(StringBuilder c: types) {
       // tokens list corresponding to spell (apply filter by type of spell)
       // Examples: token_list_

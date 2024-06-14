@@ -27,6 +27,4 @@ class RoundDiscardSpellsTeam1Writer {
   static void setWriterCreated(boolean var) {
     RoundDiscardSpellsTeam1Writer.writerCreated = var;
   }
-
-
 }

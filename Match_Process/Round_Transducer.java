@@ -9,6 +9,6 @@ interface Round_Transducer {
   }
 
   static FileWriter getFileWriter(String team, int memberNo, int round) throws IOException {
-    return new FileWriter("round_" + round + "_" + team + "_member_" + memberNo + "_compute.txt");
+    return new FileWriter("round_" + round + "_transducer_" + team + "_member_" + memberNo + "_compute.txt");
   }
 }

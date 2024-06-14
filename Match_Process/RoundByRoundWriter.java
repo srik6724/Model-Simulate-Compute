@@ -28,5 +28,4 @@ class RoundByRoundWriter {
     RoundByRoundWriter.writerCreated = val; 
   }
 
-
 }

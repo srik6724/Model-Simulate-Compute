@@ -147,11 +147,8 @@ public class WizHeap {
 					}
 					buildHeap(tcDeckElements, identity, selectionNo, "tc"); 
 				}
-				
 			}
-
-			return null; 
-			
+			return null; 	
 	}
 
 	public void minHeapify(Element[]elements, int i)
@@ -241,7 +238,7 @@ public class WizHeap {
 					lines[index] = line;
 					index++;
 				}
-				new Parser(Arrays.asList(lines), deckType);
+				new Parser(Arrays.asList(lines), deckType, identity);
 			}
 			return elements; 
 }

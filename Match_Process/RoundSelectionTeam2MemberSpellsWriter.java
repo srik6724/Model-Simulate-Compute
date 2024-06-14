@@ -17,7 +17,7 @@ class RoundSelectionTeam2MemberSpellsWriter {
   }
 
   static void get_file_writer(int round, int memberNo) {
-    if(RoundSelectionTeam2MemberSpellsWriter.writerCreated == true) {
+    if(RoundSelectionTeam2MemberSpellsWriter.writerCreated == false) {
       new RoundSelectionTeam2MemberSpellsWriter("t2", memberNo, round); 
     }
   }

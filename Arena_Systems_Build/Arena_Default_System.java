@@ -6,14 +6,14 @@ public abstract class Arena_Default_System implements Arena_Default, Arena_Defau
   java.util.SortedSet
   java.util.NavigableSet
   java.util.Queue
-  java.util.concurrent.BlockingQueue
-  java.util.concurrent.TransferQueue
+  java.util.concurrent.BlockingQueue (pick a number up)
+  java.util.concurrent.TransferQueue (transfer data to another queue for processing)
   java.util.Deque
-  java.util.concurrent.BlockingDeque*/
+  java.util.concurrent.BlockingDeque*/ // (place the number from pick-up)
 
   // BlockingQueue
   // Take a round, halt after end of round using a block mechanism, random_no generation, data -> Number queue, Number queue -> Collection Queue, Dequeue the number -> collection (reduce queue-size)
-  // Restore current round -> next round 
+  // Restore current round -> next round ()
   // Measure a path from a linked list (start -> end) : Store data from path using a collection (random selection)
 
   void set_of_players() {

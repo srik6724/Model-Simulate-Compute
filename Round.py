@@ -33,7 +33,7 @@ pr.settings.atom_trace = True  # This allows us to view all the atoms that have 
 # Someone is "popular" if they have a friend who is popular and they both own the same pet
 pr.load_graph(g)
 pr.add_rule(pr.Rule('popular(x) <-1 popular(y), Friends(x,y), owns(y,z), owns(x,z)', 'popular_rule'))
-pr.add_fact(pr.Fact('popular-fact', 'Mary', 'popular', [1,1], 0, 2))
+pr.add_fact(pr.Fact('popular-fact', 'Mary', 'popular', [1,1], 0, 2)) 
 
 # Run the program for two timesteps to see the diffusion take place
 interpretation = pr.reason(timesteps=2)
