@@ -5,5 +5,5 @@
 3. Compute a Match
 
 Future Work: 
-Integration of data -> cloud
-AI Model Implementations for Testing
+1. Integration of data -> cloud
+2. AI Model Implementations for Testing
