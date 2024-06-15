@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import Credentials.WizCredentials;
+import Database.Credentials;
 import RunTime.Failure.EmptyStringException;
 import Match_Process.Match;
 import Match_Process.Option;
@@ -268,7 +268,7 @@ public class DarkmoorDeck implements Identity, TreasureCardSideDeck {
 		Connection conn1; 
 		Spell createSpell = null; 
 		try{
-			conn1 = DriverManager.getConnection(WizCredentials.getDB_URL(), WizCredentials.getDB_USERNAME(), WizCredentials.getDB_PASSWORD()); 
+			conn1 = DriverManager.getConnection(Credentials.getDB_URL(), Credentials.getDB_USERNAME(), Credentials.getDB_PASSWORD()); 
 			if(conn1 != null)
 			{
 				HashMap<Integer, String> sqlTests = new HashMap<Integer, String>(); 

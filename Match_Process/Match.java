@@ -27,21 +27,19 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
-import Credentials.WizCredentials;
-import Components.Amulet;
-import Components.Athame;
-import Components.Boot;
-import Components.Deck;
-import Components.Gear;
-import Components.Hat;
-import Components.Ring;
-import Components.Robe;
-import Components.Wand;
-import Configuration_Specifications_1_1.SpookyClass;
-import Configuration_Specifications_1_2.JadeClass;
-import Configuration_Specifications_2_2.NightMireClass;
+import Components.Bind_5;
+import Components.Bind_6;
+import Components.Bind_3;
+import Components.Bind_8;
+import Components.Product;
+import Components.Bind_1;
+import Components.Bind_7;
+import Components.Bind_2;
+import Components.Bind_4;
+import Configuration_Specifications_1_1.TitleClass;
 import Customizations.*;
 import Data_Structures.Object_Types.Element;
+import Database.Credentials;
 import Jar.Data_Store;
 
 import java.util.logging.*;
@@ -582,7 +580,6 @@ public class Match extends Arena_Default_System implements Round, Match_Singleto
 				if(playerName.contains("Player " + (i+1) + " Name: ")) {
 					String x = "Player " + (i+1) + " Name: "; 
 					playerName = playerName.replace(x, ""); 
-					//System.out.println("Player Name: " + playerName);
 					team[i] = playerName; 
 				}
 			}
@@ -2491,28 +2488,28 @@ public String randomizeHeadsOrTails()
 
 		String[] listGear = {"hat", "robe", "boot", "wand", "athame", "amulet", "ring", "deck", "pet"};  
 
-		Hat hat = (Hat)instantiateGearPiece(listGear[0], school, level, gearType1); 
+		Bind_1 hat = (Bind_1)instantiateGearPiece(listGear[0], school, level, gearType1); 
 		System.out.println("Hat gearType: " + gearType1);  
-		Robe robe = (Robe)instantiateGearPiece(listGear[1], school, level, gearType2); 
+		Bind_2 robe = (Bind_2)instantiateGearPiece(listGear[1], school, level, gearType2); 
 		System.out.println("Robe gearType: " + gearType2); 
-		Boot boot = (Boot)instantiateGearPiece(listGear[2], school, level, gearType3);
+		Bind_3 boot = (Bind_3)instantiateGearPiece(listGear[2], school, level, gearType3);
 		System.out.println("Boot gearType: " + gearType3); 
-		Wand wand = (Wand)instantiateGearPiece(listGear[3], school, level, gearType4); 
+		Bind_4 wand = (Bind_4)instantiateGearPiece(listGear[3], school, level, gearType4); 
 		System.out.println("Wand gearType: " + gearType4); 
-		Athame athame = (Athame)instantiateGearPiece(listGear[4], school, level, gearType5);
+		Bind_6 athame = (Bind_6)instantiateGearPiece(listGear[4], school, level, gearType5);
 		System.out.println("Athame gearType: " + gearType5); 
-		Amulet amulet = (Amulet)instantiateGearPiece(listGear[5], school, level, gearType6); 
+		Bind_5 amulet = (Bind_5)instantiateGearPiece(listGear[5], school, level, gearType6); 
 		System.out.println("Amulet gearType: " + gearType6); 
-		Ring ring = (Ring)instantiateGearPiece(listGear[6], school, level, gearType7); 
+		Bind_7 ring = (Bind_7)instantiateGearPiece(listGear[6], school, level, gearType7); 
 		System.out.println("Ring gearType: " + gearType7); 
 		
-		Deck deck = (Deck)instantiateGearPiece(listGear[7], school, level, gearType8); 
+		Bind_8 deck = (Bind_8)instantiateGearPiece(listGear[7], school, level, gearType8); 
 		System.out.println("Deck gearType: " + gearType8); 
 		Pet pet = (Pet)instantiateGearPiece(listGear[8], school, level, gearType8);
 		
 		keywords.put(count, Arrays.asList(gearType1.toString(), gearType2.toString(), gearType3.toString(), gearType4.toString(), gearType5.toString(), gearType6.toString(), gearType7.toString(), gearType8.toString())); 
 
-		Gear gear = new Gear(hat, robe, boot, wand, athame, amulet, ring, deck, pet); 
+		Product gear = new Product(hat, robe, boot, wand, athame, amulet, ring, deck, pet); 
 
 		System.out.println("The gear information for player "  + wizard + " is now completed."); 
 		System.out.println(gear.toString()); 
@@ -2570,27 +2567,27 @@ public String randomizeHeadsOrTails()
 	private void findGearClass(String word, String gearName, String pieceOfGear) throws IOException {
 				if(word.toLowerCase().equals("aeon"))
 				{
-					new Configuration_Specifications_2_0.AeonClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_0.TitleClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("eternal"))
 				{
-					new Configuration_Specifications_2_1.EternalClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_1.TitleClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("dragoon"))
 				{
-					new Configuration_Specifications_1_0.DragoonClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_1_0.TitleClass(gearName, pieceOfGear); 
 				}	
 				else if(word.toLowerCase().equals("spooky"))
 				{
-					new Configuration_Specifications_1_1.SpookyClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_1_1.TitleClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("night mire"))
 				{
-					new Configuration_Specifications_2_2.NightMireClass(gearName, pieceOfGear); 
+					new Configuration_Specifications_2_2.TitleClass(gearName, pieceOfGear); 
 				}
 				else if(word.toLowerCase().equals("jade"))
 				{
-					new Configuration_Specifications_1_2.JadeClass(gearName, pieceOfGear);
+					new Configuration_Specifications_1_2.TitleClass(gearName, pieceOfGear);
 				}
 	}
 
@@ -2676,12 +2673,12 @@ public String randomizeHeadsOrTails()
 				boolean res1 = checkGearName(hatName, gearName, extractGearType, school, level); 
 				if(res1 == true)
 				{
-					Hat hat = new Hat(hatName); 
+					Bind_1 hat = new Bind_1(hatName); 
 					System.out.println("Hat: " + hatName + " created."); 
 					return hat; 
 				}
 				extractGearType = new StringBuilder(""); 
-				Hat hat = (Hat)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_1 hat = (Bind_1)instantiateGearPiece(gearName, school, level, extractGearType);
 				return hat;
 			case "robe": 
 				if(Option.getScannerInUse() == true) {
@@ -2715,12 +2712,12 @@ public String randomizeHeadsOrTails()
 				boolean res2 = checkGearName(robeName, gearName, extractGearType, school, level); 
 				if(res2 == true)
 				{
-					Robe robe = new Robe(robeName); 
+					Bind_2 robe = new Bind_2(robeName); 
 					System.out.println("Robe: " + robeName + " created."); 
 					return robe;
 				}
 				extractGearType = new StringBuilder(""); 
-				Robe robe = (Robe)instantiateGearPiece(gearName, school, level,  extractGearType);
+				Bind_2 robe = (Bind_2)instantiateGearPiece(gearName, school, level,  extractGearType);
 				return robe;
 			case "boot": 
 				if(Option.getScannerInUse() == true) {
@@ -2754,12 +2751,12 @@ public String randomizeHeadsOrTails()
 				boolean res3 = checkGearName(bootName, gearName, extractGearType, school, level); 
 				if(res3 == true)
 				{
-					Boot boot = new Boot(bootName); 
+					Bind_3 boot = new Bind_3(bootName); 
 					System.out.println("Boot: " + bootName + " created."); 
 					return boot;
 				}
 				extractGearType = new StringBuilder(""); 
-				Boot boot = (Boot)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_3 boot = (Bind_3)instantiateGearPiece(gearName, school, level, extractGearType);
 				return boot;
 			case "wand": 
 				if(Option.getScannerInUse() == true) {
@@ -2793,12 +2790,12 @@ public String randomizeHeadsOrTails()
 				boolean res4 = checkGearName(wandName, gearName, extractGearType, school, level); 
 				if(res4 == true)
 				{
-					Wand wand = new Wand(wandName); 
+					Bind_4 wand = new Bind_4(wandName); 
 					System.out.println("Boot: " + wandName + " created."); 
 					return wand;
 				}
 				extractGearType = new StringBuilder(""); 
-				Wand wand = (Wand)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_4 wand = (Bind_4)instantiateGearPiece(gearName, school, level, extractGearType);
 				return wand;
 			case "athame": 
 				if(Option.getScannerInUse() == true) {
@@ -2832,12 +2829,12 @@ public String randomizeHeadsOrTails()
 				boolean res5 = checkGearName(athameName, gearName, extractGearType, school, level); 
 				if(res5 == true)
 				{
-					Athame athame = new Athame(athameName); 
+					Bind_6 athame = new Bind_6(athameName); 
 					System.out.println("Athame: " + athameName + " created."); 
 					return athame;
 				}
 				extractGearType = new StringBuilder(""); 
-				Athame athame = (Athame)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_6 athame = (Bind_6)instantiateGearPiece(gearName, school, level, extractGearType);
 				return athame;
 			case "amulet": 
 				if(Option.getScannerInUse() == true) {
@@ -2871,12 +2868,12 @@ public String randomizeHeadsOrTails()
 				boolean res6 = checkGearName(amuletName, gearName, extractGearType, school, level); 
 				if(res6 == true)
 				{
-					Amulet amulet = new Amulet(amuletName); 
+					Bind_5 amulet = new Bind_5(amuletName); 
 					System.out.println("Amulet: " + amuletName + " created."); 
 					return amulet;
 				}
 				extractGearType = new StringBuilder(""); 
-				Amulet amulet = (Amulet)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_5 amulet = (Bind_5)instantiateGearPiece(gearName, school, level, extractGearType);
 				return amulet;
 			case "ring": 
 				if(Option.getScannerInUse() == true) {
@@ -2910,12 +2907,12 @@ public String randomizeHeadsOrTails()
 				boolean res7 = checkGearName(ringName, gearName, extractGearType, school, level); 
 				if(res7 == true)
 				{
-					Ring ring = new Ring(ringName); 
+					Bind_7 ring = new Bind_7(ringName); 
 					System.out.println("Ring: " + ringName + " created.");
 					return ring;
 				}
 				extractGearType = new StringBuilder(""); 
-				Ring ring = (Ring)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_7 ring = (Bind_7)instantiateGearPiece(gearName, school, level, extractGearType);
 				return ring;
 			case "deck": 
 				if(Option.getScannerInUse() == true) {
@@ -2949,12 +2946,12 @@ public String randomizeHeadsOrTails()
 				boolean res8 = checkGearName(deckName, gearName, extractGearType, school, level);
 				if(res8 == true)
 				{
-					Deck deck = new Deck(deckName); 
+					Bind_8 deck = new Bind_8(deckName); 
 					System.out.println("Deck: " + deckName + " created.");  
 					return deck;
 				}
 				extractGearType = new StringBuilder(""); 
-				Deck deck = (Deck)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_8 deck = (Bind_8)instantiateGearPiece(gearName, school, level, extractGearType);
 				return deck;
 			case "pet": 
 				if(Option.getScannerInUse() == true) {
@@ -2994,7 +2991,7 @@ public String randomizeHeadsOrTails()
 			String user = "srik6724";
 			String password = "28892K0shair!"; 
 
-			if (WizCredentials.authenticate(user, password)) {
+			if (Credentials.authenticate(user, password)) {
 				System.out.println("Authentication successful");
 			} else {
 				System.out.println("Authentication failed");

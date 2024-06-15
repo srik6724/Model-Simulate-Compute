@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import Credentials.WizCredentials;
+import Database.Credentials;
 import RunTime.Failure.EmptyStringException;
 import RunTime.Failure.TypeException;
 
@@ -61,9 +61,9 @@ public class MessageDirectory {
       {
         try{
           Connection conn1;
-          if(WizCredentials.authenticate(WizCredentials.getDB_USERNAME(), WizCredentials.getDB_PASSWORD()))
+          if(Credentials.authenticate(Credentials.getDB_USERNAME(), Credentials.getDB_PASSWORD()))
           {
-            conn1 = DriverManager.getConnection(WizCredentials.getDB_URL(), WizCredentials.getDB_USERNAME(), WizCredentials.getDB_PASSWORD());
+            conn1 = DriverManager.getConnection(Credentials.getDB_URL(), Credentials.getDB_USERNAME(), Credentials.getDB_PASSWORD());
             if(conn1 != null)
             {
               String sql = "SELECT * FROM wizard_schema.4v4_sample_messages"; 
