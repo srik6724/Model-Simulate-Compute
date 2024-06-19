@@ -1,10 +1,10 @@
 package Configuration_Specifications_1_0;
 
 import Components.Bind_3;
-import Components.Binding_Specifications;
+import Components.Model_Specifications;
 import Generative_Restore.Healing;
 
-public class Title_Bind_3 extends Bind_3 implements Binding_Specifications {
+public class Title_Bind_3 extends Bind_3 implements Model_Specifications {
 
   private int health; 
   private int power_pip; 

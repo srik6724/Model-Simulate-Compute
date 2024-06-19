@@ -9,11 +9,11 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Components.Bind_3;
-import Components.Binding_Specifications;
+import Components.Model_Specifications;
 import Database.Credentials;
 import Model_Extensions.Socket;
 
-public class Title_Bind_3 extends Bind_3 implements Binding_Specifications {
+public class Title_Bind_3 extends Bind_3 implements Model_Specifications {
 
   private int health; 
   private int power_pip; 

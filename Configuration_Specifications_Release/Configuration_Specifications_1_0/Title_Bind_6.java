@@ -12,7 +12,7 @@ import Database.Credentials;
 import Generative_Restore.Healing;
 import Model_Extensions.*;
 
-public class Title_Bind_6 extends Components.Bind_6 implements Components.Binding_Specifications {
+public class Title_Bind_6 extends Components.Bind_6 implements Components.Model_Specifications {
   
   private int health; 
   private int block; 

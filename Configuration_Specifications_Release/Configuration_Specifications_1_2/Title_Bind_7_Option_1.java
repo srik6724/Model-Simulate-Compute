@@ -9,12 +9,12 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Components.Bind_7;
-import Components.Binding_Specifications;
+import Components.Model_Specifications;
 import Database.Credentials;
 import Generative_Restore.Healing;
 import Model_Extensions.Socket;
 
-public class Title_Bind_7_Option_1 extends Bind_7 implements Binding_Specifications {
+public class Title_Bind_7_Option_1 extends Bind_7 implements Model_Specifications {
   private int health; 
   private int mana; 
   private int power_pip; 

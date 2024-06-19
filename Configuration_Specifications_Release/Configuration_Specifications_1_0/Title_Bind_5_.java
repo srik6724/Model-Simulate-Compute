@@ -11,7 +11,7 @@ import java.util.Scanner;
 import Database.Credentials;
 import Model_Extensions.Socket;
 
-public class Title_Bind_5_ extends Components.Bind_5 implements Components.Binding_Specifications {
+public class Title_Bind_5_ extends Components.Bind_5 implements Components.Model_Specifications {
   private int health; 
   private int block; 
   private int resist; 

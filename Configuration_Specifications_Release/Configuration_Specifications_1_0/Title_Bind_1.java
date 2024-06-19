@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Components.Bind_1;
-import Components.Binding_Specifications;
+import Components.Model_Specifications;
 import Database.Credentials;
 
-public class Title_Bind_1 extends Bind_1 implements Binding_Specifications 
+public class Title_Bind_1 extends Bind_1 implements Model_Specifications 
 {
   private int health; 
   private int power_pip; 

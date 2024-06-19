@@ -1,5 +1,0 @@
-package Collections;
-
-class Consumer {
-  
-}

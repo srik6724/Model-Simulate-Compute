@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import Components.Binding_Specifications;
+import Components.Model_Specifications;
 import Database.Credentials;
 import Components.Bind_4;
 import Model_Extensions.Socket;
 
-public class Title_Bind_4 extends Bind_4 implements Binding_Specifications {
+public class Title_Bind_4 extends Bind_4 implements Model_Specifications {
   private int block; 
   private int pierce;
   private int critical;

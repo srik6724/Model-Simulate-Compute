@@ -2,10 +2,10 @@ package Logging_Process;
 
 import java.util.logging.*;
 
-import Match_Process.Match;
+import Product_Process.Product;
 
 public class LoggingStorage {
-  public final static Logger logger = Logger.getLogger(Match.class.getName());
+  public final static Logger logger = Logger.getLogger(Product.class.getName());
 
   public final static Logger getLogger() {
     return logger;

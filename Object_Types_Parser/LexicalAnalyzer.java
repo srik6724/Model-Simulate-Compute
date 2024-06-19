@@ -13,8 +13,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 
-import Collections.Type_Set;
 import Data_Structures.Object_Types.Element;
+import Mechanisms.Type_Set;
 import Object_Types_Parser.Token.TokenType;
 
 public class LexicalAnalyzer {

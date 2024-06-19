@@ -9,11 +9,11 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Components.Bind_5;
-import Components.Binding_Specifications;
+import Components.Model_Specifications;
 import Database.Credentials;
 import Model_Extensions.Socket;
 
-public class Title_Bind_5 extends Bind_5 implements Binding_Specifications {
+public class Title_Bind_5 extends Bind_5 implements Model_Specifications {
   
   private int block; 
   private int resist; 

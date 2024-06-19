@@ -10,13 +10,13 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Components.Bind_1;
-import Components.Binding_Specifications;
+import Components.Model_Specifications;
 import Database.Credentials;
-import Match_Process.Match;
-import Match_Process.Option;
 import Model_Extensions.Socket;
+import Product_Process.Product;
+import Product_Process.Option;
 
-public class Title_Bind_1 extends Bind_1 implements Binding_Specifications {
+public class Title_Bind_1 extends Bind_1 implements Model_Specifications {
   private int health; 
   private int power_pip; 
   private int block; 
@@ -196,8 +196,8 @@ public class Title_Bind_1 extends Bind_1 implements Binding_Specifications {
 							}
             }
 						else {
-              Match.getBufferReader().readLine(); 
-              addAttachment = Match.getBufferReader().readLine();
+              Product.getBufferReader().readLine(); 
+              addAttachment = Product.getBufferReader().readLine();
             }
 						Statement statement = conn1.createStatement(); 
 						String sqlString = "SELECT * FROM wizard_schema." + socket.getType() + "_sockets";

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import Database.Credentials;
 import Generative_Restore.Healing;
 
-public class Title_Bind_2 extends Components.Bind_2 implements Components.Binding_Specifications {
+public class Title_Bind_2 extends Components.Bind_2 implements Components.Model_Specifications {
 
   private int health; 
   private int power_pip; 
