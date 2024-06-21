@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import Database.Credentials;
-import RunTime.Failure.EmptyStringException;
+import Model_Knowledge.Credentials;
 import Object_Types.Category;
 import Product_Process.Product;
+import RunTime.Disruption.EmptyStringException;
+import RunTime.Disruption.TypeException;
 import Product_Process.Option;
-import RunTime.Failure.TypeException;
 
 public class Cache implements Label, Primary_Storage, Secondary_Storage {
 	private static Category<Unit>[] mainDeck; 

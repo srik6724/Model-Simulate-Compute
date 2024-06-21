@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import Agent_Restore.Healing;
 import Components.Bind_7;
 import Components.Model_Specifications;
-import Database.Credentials;
-import Generative_Restore.Healing;
 import Model_Extensions.Socket;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_7_Option_1 extends Bind_7 implements Model_Specifications {
   private int health; 

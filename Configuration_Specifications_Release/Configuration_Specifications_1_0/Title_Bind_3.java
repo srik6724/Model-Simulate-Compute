@@ -1,8 +1,8 @@
 package Configuration_Specifications_1_0;
 
+import Agent_Restore.Healing;
 import Components.Bind_3;
 import Components.Model_Specifications;
-import Generative_Restore.Healing;
 
 public class Title_Bind_3 extends Bind_3 implements Model_Specifications {
 

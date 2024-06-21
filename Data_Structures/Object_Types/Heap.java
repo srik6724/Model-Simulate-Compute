@@ -21,7 +21,6 @@ import java.util.Scanner;
 import java.util.logging.Filter;
 
 import Mechanisms.Type_Set;
-import RunTime.Failure.TypeException;
 import Object_Types.Category;
 import Object_Types_Build.Cache;
 import Object_Types_Build.Primary_Storage;
@@ -29,6 +28,7 @@ import Object_Types_Build.Secondary_Storage;
 import Object_Types_Parser.InputBuffer;
 import Object_Types_Parser.LexicalAnalyzer;
 import Object_Types_Parser.Parser;
+import RunTime.Disruption.TypeException;
 
 public class Heap {
 

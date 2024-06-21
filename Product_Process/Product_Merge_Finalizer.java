@@ -20,6 +20,6 @@ import java.io.IOException;
 
 interface Product_Merge_Finalizer {
   static FileWriter getFileWriter() throws IOException {
-    return new FileWriter("match_merge_finalizer_compute.txt");
+    return new FileWriter("product_merge_finalizer_compute.txt");
   }
 }

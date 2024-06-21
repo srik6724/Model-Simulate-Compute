@@ -5,6 +5,6 @@ import java.io.IOException;
 
 interface Product_Finalizer {
   static FileWriter getFileWriter() throws IOException {
-    return new FileWriter("match_finalizer_compute.txt"); 
+    return new FileWriter("product_finalizer_compute.txt"); 
   }
 }

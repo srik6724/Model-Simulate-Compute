@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 import Components.Bind_1;
 import Components.Model_Specifications;
-import Database.Credentials;
 import Model_Extensions.Socket;
+import Model_Knowledge.Credentials;
 import Product_Process.Product;
 import Product_Process.Option;
 

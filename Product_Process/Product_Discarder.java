@@ -6,7 +6,7 @@ import java.io.IOException;
 interface Product_Discarder {
    
   static FileWriter getFileWriter(String team) throws IOException {
-    return new FileWriter("match_excess_" + team + "_compute.txt");
+    return new FileWriter("product_excess_" + team + "_compute.txt");
   }
 
 }

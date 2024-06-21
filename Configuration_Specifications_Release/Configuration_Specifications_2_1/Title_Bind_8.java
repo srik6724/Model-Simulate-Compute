@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 import Components.Bind_8;
 import Components.Model_Specifications;
-import Database.Credentials;
 import Model_Extensions.Socket;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_8 extends Bind_8 implements Model_Specifications {
   private int max_spells;

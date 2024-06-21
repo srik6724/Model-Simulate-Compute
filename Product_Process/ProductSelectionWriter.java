@@ -18,7 +18,7 @@ class ProductSelectionWriter {
 
   static FileWriter get_file_writer() {
     if(ProductSelectionWriter.writerCreated == false) {
-      System.out.println("Calling match_selection constructor."); 
+      System.out.println("Calling product_selection constructor."); 
       new ProductSelectionWriter("default"); 
     }
     return file_writer;

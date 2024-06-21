@@ -23,7 +23,7 @@ public class Product_Queue<T> {
 	{
 		Predicate<Path> criteria = path -> {
 			String fileName = path.getFileName().toString(); 
-			return fileName.endsWith(".txt") && (fileName.contains("round") || fileName.contains("match") || fileName.contains("category")); 
+			return fileName.endsWith(".txt") && (fileName.contains("module") || fileName.contains("product") || fileName.contains("category") || fileName.contains("token")); 
 		}; 
 
 		Predicate<Path> fileCountCriteria = path -> { 
@@ -35,12 +35,12 @@ public class Product_Queue<T> {
 
 		deleteFiles(startPath, criteria); 
 
-		File round_reading = new File("round_reading.txt");
+		File round_reading = new File("module_reading.txt");
 		FileWriter round_reading_writer = new FileWriter(round_reading);
 		round_reading_writer.write("full-card-list"); 
 		round_reading_writer.close();
-		Product match = new Product(round_reading); 
-		match.enroll2Teams(args); 
+		Product assembly = new Product(round_reading); 
+		assembly.enroll2Teams(args); 
 
 		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
 		long fileCount = Files.list(directory).filter(fileCountCriteria).count();

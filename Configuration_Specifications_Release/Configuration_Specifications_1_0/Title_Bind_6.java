@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import Database.Credentials;
-import Generative_Restore.Healing;
+import Agent_Restore.Healing;
 import Model_Extensions.*;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_6 extends Components.Bind_6 implements Components.Model_Specifications {
   

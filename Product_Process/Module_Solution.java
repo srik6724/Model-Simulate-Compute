@@ -6,10 +6,10 @@ import java.io.IOException;
 interface Module_Solution {
   
   static FileWriter getFileWriter(String team, int round) throws IOException {
-    return new FileWriter("round_" + round + "_solution_" + team + ".compute.txt"); 
+    return new FileWriter("module_" + round + "_solution_" + team + ".compute.txt"); 
   }
 
   static FileWriter getFileWriter(String team, int memberNo, int round) throws IOException {
-    return new FileWriter("round_" + round + "_solution_" + team + "_member_" + memberNo + ".compute.txt"); 
+    return new FileWriter("module_" + round + "_solution_" + team + "_member_" + memberNo + ".compute.txt"); 
   }
 }

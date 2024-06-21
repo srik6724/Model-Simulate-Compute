@@ -5,6 +5,6 @@ import java.io.IOException;
 
 interface Product_Interpreter {
   static FileReader getFileReader() throws IOException {
-    return new FileReader("match_compute.txt"); 
+    return new FileReader("product_compute.txt"); 
   }
 }

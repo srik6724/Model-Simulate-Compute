@@ -142,8 +142,14 @@ public class Halt_Blocker<Host> {
     System.out.println("Purpose: " + purpose);
     System.out.println("Size Of Agent System: " + agentSystemSize);
     System.out.println("Conducting a poll for an element");
-    Object entry = q.poll(1);
-    System.out.println("Entry: " + entry);
+    Object entry1 = q.poll(1);
+    Object entry2 = q.poll(2); 
+    Object entry3  = q.poll(3); 
+    Object entry4 = q.poll(4); 
+    System.out.println("Entry 1: " + entry1);
+    System.out.println("Entry 2: " + entry2);
+    System.out.println("Entry 3: " + entry3);
+    System.out.println("Entry 4: "  + entry4);
     // boolean s1 = q.offer("a;lksdjf"); 
     // System.out.println("Boolean Value of s1: " + s1);
     // boolean elementIsContained = q.contains("a;lksdjf");

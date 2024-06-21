@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Database.Credentials;
-import Generative_Restore.Healing;
+import Agent_Restore.Healing;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_2 extends Components.Bind_2 implements Components.Model_Specifications {
 
