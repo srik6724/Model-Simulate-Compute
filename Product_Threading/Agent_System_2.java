@@ -25,12 +25,12 @@ public class Agent_System_2 implements Runnable {
       System.out.println("Starting round for team 2."); 
       try {
         FileWriter matchWriterFinalizer = ProductWriter.get_file_writer();
-        FileReader roundReading;
+        FileReader moduleReading;
         int roundNumber = 76; 
         for(int i = 0; i < roundNumber; i++) {
-          roundReading = new FileReader("round_reading.txt"); 
-          Product.startRound(1, matchWriterFinalizer, roundReading);
-          roundReading.close(); 
+          moduleReading = new FileReader("module_reading.txt"); 
+          Product.startRound(1, matchWriterFinalizer, moduleReading);
+          moduleReading.close(); 
         }
         matchWriterFinalizer.close(); 
       } catch (Exception e) {

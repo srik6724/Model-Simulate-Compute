@@ -5,9 +5,8 @@
     <key id="owns" for="edge" attr.name="owns" attr.type="long" />
     <key id="Friends" for="edge" attr.name="Friends" attr.type="long" />
     <graph edgedefault="directed">
-        <node id="John" />
-        <node id="Mary" />
-        <node id="Justin" />
+        <node id="Agent_1_No_System_1" />
+        <node id="Agent_2_No_System_2" />
         <node id="Dog" />
         <node id="Cat" />
         <edge source="John" target="Mary">

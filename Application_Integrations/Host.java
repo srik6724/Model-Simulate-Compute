@@ -1,3 +1,5 @@
+package Application_Integrations;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -6,8 +8,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-public class Main {
-   public static void main(String[] args) throws InterruptedException {
+public class Host {
+   public Host() {
+
+   }
+
+   public static void transform(Object[] data) throws InterruptedException {
         try {
             // Define the path to the C++ executable
             String cplusplusExecutable;
@@ -16,13 +22,13 @@ public class Main {
             String osName = System.getProperty("os.name").toLowerCase();
 
             if (osName.contains("win")) {
-                cplusplusExecutable = "C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)/Match-Build/Integrations/entity_linker.exe"; // Windows executable
+                cplusplusExecutable = "C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)/Match-Build/Application_Integrations/entity_linker.exe"; // Windows executable
             } else {
                 cplusplusExecutable = "./entity_linker"; // Unix-based executable 
             }
 
             // Create the process builder
-            ProcessBuilder pb = new ProcessBuilder(cplusplusExecutable);
+            ProcessBuilder pb = new ProcessBuilder(cplusplusExecutable); 
 
             // Start the process
             Process process = pb.start();
@@ -31,8 +37,10 @@ public class Main {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 
             // Write data to the C++ program
-            writer.write("Data from Java\n");
-            writer.flush(); // Flush the buffer to ensure data is sent
+            for(int i = 0; i < data.length; i++) {
+                writer.write(data[i] + "\n");
+                writer.flush(); 
+            }
 
             // Close the writer
             writer.close();

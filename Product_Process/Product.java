@@ -2171,7 +2171,6 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 		// 4 players <-> 2:2
 		// 6 players <-> 3:3
 		// 8 players <-> 4:4
-		@SuppressWarnings("unchecked")
 		int [][] agentSystemNoAssignments2DArray = new int[teamPlayers.size()][teamPlayers.size()]; 
 		int[] agentSystemNoAssignments1DArray = new int[teamPlayers.size() / 2];
 		int agentSystemNoStart = 0; 
@@ -2186,7 +2185,7 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				++agentSystemNoStart;
 				agentIndividualNoStart = 0; 
 				agentNoFixedGenerationEntry = 0; 
-				new Halt_Blocker<>(agentSystemNoAssignments1DArray, "fixed"); 
+				new Halt_Blocker(agentSystemNoAssignments1DArray, "fixed"); 
 				//new MyAgentSystemRepository();
 			}
 			agentSystemNoAssignments2DArray[agentSystemNoStart][agentIndividualNoStart] = ++agentNoFixedGenerationEntry;

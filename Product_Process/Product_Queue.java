@@ -28,23 +28,23 @@ public class Product_Queue<T> {
 
 		Predicate<Path> fileCountCriteria = path -> { 
 			String fileName = path.getFileName().toString(); 
-			return fileName.contains("round"); 
+			return fileName.contains("module"); 
 		}; 
 
 		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)"); 
 
 		deleteFiles(startPath, criteria); 
 
-		File round_reading = new File("module_reading.txt");
-		FileWriter round_reading_writer = new FileWriter(round_reading);
-		round_reading_writer.write("full-card-list"); 
-		round_reading_writer.close();
-		Product assembly = new Product(round_reading); 
+		File module_reading = new File("module_reading.txt");
+		FileWriter module_reading_writer = new FileWriter(module_reading);
+		module_reading_writer.write("full-card-list"); 
+		module_reading_writer.close();
+		Product assembly = new Product(module_reading); 
 		assembly.enroll2Teams(args); 
 
 		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
 		long fileCount = Files.list(directory).filter(fileCountCriteria).count();
-		System.out.println("Final count of round, match files in local directory: " + fileCount);
+		System.out.println("Final count of round, module files in local directory: " + fileCount);
 	}
 
 	private static void deleteFiles(Path startPath, Predicate<Path> criteria) throws IOException {
