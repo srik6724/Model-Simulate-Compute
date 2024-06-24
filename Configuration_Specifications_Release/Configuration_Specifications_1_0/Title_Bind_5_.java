@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import Database.Credentials;
 import Model_Extensions.Socket;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_5_ extends Components.Bind_5 implements Components.Model_Specifications {
   private int health; 

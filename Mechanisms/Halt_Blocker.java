@@ -5,12 +5,15 @@ import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class Halt_Blocker<Host> {
+import Application_Integrations.Host;
+
+public class Halt_Blocker {
 
   private boolean isFixed;
   private boolean isDynamic;
   private boolean isArray; 
   private Object dataCollection;
+  private Object[] dataTransfer;
 
   private Halt_Blocker(String typeStructure, Object dataCollection)  {
     this.dataCollection = dataCollection;
@@ -20,6 +23,7 @@ public class Halt_Blocker<Host> {
       Class<?> c = dataCollection.getClass();
       isArray = this.isArray(c, int.class); 
       System.out.println("isArray bool value: " + isArray); 
+      dataTransfer = new Object[5];
     }
     else if(typeStructure.equals("dynamic")) {
       isDynamic = true; 
@@ -30,7 +34,7 @@ public class Halt_Blocker<Host> {
     return host.isArray() && host.getComponentType() == dataType;
   }  
 
-  public Halt_Blocker(Object dataCollection, String typeStructure) {
+  public Halt_Blocker(Object dataCollection, String typeStructure) throws InterruptedException {
     this(typeStructure, dataCollection); 
     // Use producer-consumer 
     BlockingQueueIntermediary<Object> q = new BlockingQueueIntermediary<Object>() {
@@ -49,7 +53,7 @@ public class Halt_Blocker<Host> {
         return s; 
       }
 
-      public int poll(int entry) {
+      public void poll(int entry) {
         int data = 0; 
         if(isFixed) {
           if(isArray) {
@@ -60,12 +64,23 @@ public class Halt_Blocker<Host> {
               if(e == entryConversion) {
                 System.out.println("Data of e: " + e);
                 data = e;
+                System.out.println("Sending data to entity_linker for processing.");
+                try {
+                  dataTransfer[0]  = "agent_individual_template";
+                  dataTransfer[1] = data;
+                  dataTransfer[2] = 'L';
+                  dataTransfer[3] = "temporal logic formula";
+                  dataTransfer[4] = 10;
+                  Host.transform(dataTransfer);
+                } catch (InterruptedException e1) {
+                  // TODO Auto-generated catch block
+                  e1.printStackTrace();
+                }
                 break;
               }
             } 
           }
         }
-        return data; 
       }
 
       public Object addAll(Collection<?> c) {
@@ -142,8 +157,10 @@ public class Halt_Blocker<Host> {
     System.out.println("Purpose: " + purpose);
     System.out.println("Size Of Agent System: " + agentSystemSize);
     System.out.println("Conducting a poll for an element");
-    Object entry = q.poll(1);
-    System.out.println("Entry: " + entry);
+    q.poll(1);
+    q.poll(2); 
+    q.poll(3); 
+    q.poll(4);
     // boolean s1 = q.offer("a;lksdjf"); 
     // System.out.println("Boolean Value of s1: " + s1);
     // boolean elementIsContained = q.contains("a;lksdjf");

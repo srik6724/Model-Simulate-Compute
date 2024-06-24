@@ -8,7 +8,7 @@ interface BlockingQueueIntermediary<T> {
   Object element(); 
   Object peek(); 
   Object remove(); 
-  int poll(int entry);
+  void poll(int entry);
   Object addAll(Collection<?> c); 
   void clear(); 
   boolean containsAll(Collection<?> c);

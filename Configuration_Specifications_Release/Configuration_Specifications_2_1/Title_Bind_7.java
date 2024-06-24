@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 import Components.Bind_7;
 import Components.Model_Specifications;
-import Database.Credentials;
 import Model_Extensions.Socket;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_7 extends Bind_7 implements Model_Specifications {
   private int health; 
