@@ -6,7 +6,7 @@ import networkx as nx
 g = nx.DiGraph()
 
 # Add the nodes
-g.add_nodes_from(['John', 'Mary', 'Justin'])
+g.add_nodes_from(['Agent_1_System_1', 'Agent_2_System_2', 'Halt_Blocker'])
 g.add_nodes_from(['Dog', 'Cat'])
 
 # Add the edges and their attributes. When an attribute = x which is <= 1, the annotation
