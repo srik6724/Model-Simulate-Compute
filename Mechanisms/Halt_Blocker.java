@@ -160,8 +160,7 @@ public class Halt_Blocker {
     q.poll(1);
     q.poll(2); 
     q.poll(3); 
-    q.poll(4); 
-    System.exit(0);
+    q.poll(4);
     // boolean s1 = q.offer("a;lksdjf"); 
     // System.out.println("Boolean Value of s1: " + s1);
     // boolean elementIsContained = q.contains("a;lksdjf");
