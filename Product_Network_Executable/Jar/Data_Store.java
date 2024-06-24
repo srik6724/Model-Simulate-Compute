@@ -15,7 +15,7 @@ public class Data_Store implements Runnable {
     }
 
     public void run() {
-        try {
+        try { 
             // Define the URL of the Spring Boot endpoint
             String url = "http://localhost:8080/hello"; // Replace with your Spring Boot app's URL
 
