@@ -13,10 +13,10 @@ import java.util.Scanner;
 
 import Model_Knowledge.Credentials;
 import Object_Types.Category;
-import Product_Process.Product;
+import Category_Process.Category_;
+import Category_Process.Option;
 import RunTime.Disruption.EmptyStringException;
 import RunTime.Disruption.TypeException;
-import Product_Process.Option;
 
 public class Cache implements Label, Primary_Storage, Secondary_Storage {
 	private static Category<Unit>[] mainDeck; 
@@ -126,11 +126,11 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 
 			if(Option.getFileInUse() == true) {
 				if(initialFixIteration) {
-					Product.getBufferReader().readLine();
-					Product.getBufferReader().readLine();
+					Category_.getBufferReader().readLine();
+					Category_.getBufferReader().readLine();
 					initialFixIteration = false; 
 				}
-				spellInput = Product.getBufferReader().readLine();
+				spellInput = Category_.getBufferReader().readLine();
 				spellInput = spellInput.trim();
 				System.out.println("Spell Input Read Here: " + spellInput);  
 				//Thread.sleep(1000); 
@@ -209,11 +209,11 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 
 			if(Option.getFileInUse() == true) {
 				if(initialFixIteration) {
-					Product.getBufferReader().readLine();
-					Product.getBufferReader().readLine();
+					Category_.getBufferReader().readLine();
+					Category_.getBufferReader().readLine();
 					initialFixIteration = false; 
 				}
-				spellInput = Product.getBufferReader().readLine();
+				spellInput = Category_.getBufferReader().readLine();
 				System.out.println("Spell Input Read Here: " + spellInput);  
 				spellInput = spellInput.trim(); 
 				//Thread.sleep(1000); 

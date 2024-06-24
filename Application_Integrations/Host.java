@@ -66,7 +66,6 @@ public class Host {
                     String data = new String(buffer, 0, read);
                     System.out.print(data);
                 }
-                System.exit(0); 
             } catch (IOException e) {
                 e.printStackTrace(); 
             }

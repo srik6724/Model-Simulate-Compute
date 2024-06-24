@@ -1,0 +1,5 @@
+package Category_Process;
+
+interface Distinct_Number {
+  int uniqueNumber(int valuePrev, int valueCurrent); 
+}

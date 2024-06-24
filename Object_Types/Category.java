@@ -67,6 +67,11 @@ public class Category<T> {
 	{
 		this.count = count; 
 	}
+
+  public static Object getBufferReader() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getBufferReader'");
+  }
 	
 }
 
