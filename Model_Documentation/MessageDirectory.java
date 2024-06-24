@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import Database.Credentials;
-import RunTime.Failure.EmptyStringException;
-import RunTime.Failure.TypeException;
+import Model_Knowledge.Credentials;
+import RunTime.Disruption.EmptyStringException;
+import RunTime.Disruption.TypeException;
 
 public class MessageDirectory {
   private List<Message> messages = new ArrayList<Message>(); 

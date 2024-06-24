@@ -9,9 +9,9 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Components.Model_Specifications;
-import Database.Credentials;
 import Components.Bind_4;
 import Model_Extensions.Socket;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_4 extends Bind_4 implements Model_Specifications {
   private int block; 

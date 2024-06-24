@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Agent_Restore.Healing;
 import Components.Bind_2;
 import Components.Model_Specifications;
-import Database.Credentials;
 import Features.ItemCard;
-import Generative_Restore.Healing;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_1 extends Bind_2 implements Model_Specifications {
   private int health;

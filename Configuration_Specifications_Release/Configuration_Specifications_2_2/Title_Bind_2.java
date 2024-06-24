@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 import Components.Bind_2;
 import Components.Model_Specifications;
-import Database.Credentials;
 import Model_Extensions.Socket;
+import Model_Knowledge.Credentials;
 
 public class Title_Bind_2 extends Bind_2 implements Model_Specifications {
 

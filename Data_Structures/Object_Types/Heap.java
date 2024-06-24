@@ -21,7 +21,6 @@ import java.util.Scanner;
 import java.util.logging.Filter;
 
 import Mechanisms.Type_Set;
-import RunTime.Failure.TypeException;
 import Object_Types.Category;
 import Object_Types_Build.Cache;
 import Object_Types_Build.Primary_Storage;
@@ -29,6 +28,7 @@ import Object_Types_Build.Secondary_Storage;
 import Object_Types_Parser.InputBuffer;
 import Object_Types_Parser.LexicalAnalyzer;
 import Object_Types_Parser.Parser;
+import RunTime.Disruption.TypeException;
 
 public class Heap {
 
@@ -61,7 +61,7 @@ public class Heap {
 		return optionSelected; 
 	}
 
-	public List<List<Element>> storeSpellsInHeap(String input, Category[]mD, Category[]tC, String identity, int selectionNo) throws InterruptedException, IOException
+	public List<List<Element>> storeUnitsInHeap(String input, Category[]mD, Category[]tC, String identity, int selectionNo) throws InterruptedException, IOException
 	{
 		if(input.equals("CD"))
 			if(mainDeckInfo.getElements() != null && tcDeckInfo.getElements() != null)
@@ -279,7 +279,7 @@ public class Heap {
 					mainDeckInfo = new HeapMetrics(mainDeck.length, Primary_Storage.maxSpells("mainDeck")); 
 					//Retrieve tcDeckInfo
 					tcDeckInfo = new HeapMetrics(tcDeck.length, Secondary_Storage.capacityOfDarkmoorDeck("tcDeck"));
-					List<List<Element>> fullDeck = storeSpellsInHeap("CD", mainDeck, tcDeck, identity, selectionNo); 
+					List<List<Element>> fullDeck = storeUnitsInHeap("CD", mainDeck, tcDeck, identity, selectionNo); 
 					iterate = false; 
 					return fullDeck; 
 				default: 
@@ -337,12 +337,12 @@ public class Heap {
 				tcDeckSpells.put("Reshuffle", Arrays.asList("1", "100%", "4", "Balance")); 
 				tcDeckSpells.put("Weakness", Arrays.asList("4", "100%", "0", "Balance"));
 
-				fillMainDeck(mainDeckSpells, identity);
+				fillPrimaryStorage(mainDeckSpells, identity);
 				String inputMainDeck = findDeckType(); 
-				storeSpellsInHeap(inputMainDeck, null, null, null, selectionNo);
-				fillTcDeck(tcDeckSpells, identity);
+				storeUnitsInHeap(inputMainDeck, null, null, null, selectionNo);
+				fillSecondaryStorage(tcDeckSpells, identity);
 				String inputTcDeck = findDeckType(); 
-				storeSpellsInHeap(inputTcDeck, null, null, null, selectionNo);
+				storeUnitsInHeap(inputTcDeck, null, null, null, selectionNo);
 
 				fullDeck.add(mainDeckSpells); 
 				fullDeck.add(tcDeckSpells); 
@@ -383,8 +383,8 @@ public class Heap {
 				tcDeckSpells.put("Empower", Arrays.asList("4", "100%", "1", "Death")); 
 				tcDeckSpells.put("Weakness", Arrays.asList("4", "100%", "0", "Balance"));
 
-				fillMainDeck(mainDeckSpells, identity);
-				fillTcDeck(tcDeckSpells, identity);
+				fillPrimaryStorage(mainDeckSpells, identity);
+				fillSecondaryStorage(tcDeckSpells, identity);
 
 				fullDeck.add(mainDeckSpells); 
 				fullDeck.add(tcDeckSpells); 
@@ -429,8 +429,8 @@ public class Heap {
 				tcDeckSpells.put("Elemental Blade", Arrays.asList("2", "100%", "1", "Balance")); 
 
 
-				fillMainDeck(mainDeckSpells, identity);
-				fillTcDeck(tcDeckSpells, identity);
+				fillPrimaryStorage(mainDeckSpells, identity);
+				fillSecondaryStorage(tcDeckSpells, identity);
 
 				fullDeck.add(mainDeckSpells); 
 				fullDeck.add(tcDeckSpells); 
@@ -484,8 +484,8 @@ public class Heap {
 				tcDeckSpells.put("Weakness", Arrays.asList("4", "100%", "0", "Balance")); 
 
 
-				fillMainDeck(mainDeckSpells, identity);
-				fillTcDeck(tcDeckSpells, identity);
+				fillPrimaryStorage(mainDeckSpells, identity);
+				fillSecondaryStorage(tcDeckSpells, identity);
 
 				fullDeck.add(mainDeckSpells); 
 				fullDeck.add(tcDeckSpells); 
@@ -497,7 +497,7 @@ public class Heap {
 		return null;
 	}
 	
-	public void fillTcDeck(Map<String,List<String>> spells, String identity)
+	public void fillSecondaryStorage(Map<String,List<String>> spells, String identity)
 	{
 		try {
 			Connection conn1 = null; 
@@ -509,7 +509,7 @@ public class Heap {
 			if(conn1 != null)
 			{
     				// table doesn't exist, create it
-    				String createTableSQL = "CREATE TABLE wizard_schema." + identity.toLowerCase() + "tcdeck " +
+    				String createTableSQL = "CREATE TABLE wizard_schema." + identity.toLowerCase() + "secondarystorage" +
                         "(id INT NOT NULL, " +
                         " name VARCHAR(45), " + 
                         " level VARCHAR(45), " +
@@ -522,7 +522,7 @@ public class Heap {
     					statement.executeUpdate(createTableSQL);
     					System.out.println("Table " + identity + "tcdeck created successfully.");
 				int counter = 0; 
-				String sql = "INSERT INTO wizard_schema." + identity.toLowerCase() + "tcdeck(id, name, level, description, pip_chance, pips, school_typeSpell) VALUES(?, ?, ?, ?, ?, ?, ?)"; 
+				String sql = "INSERT INTO wizard_schema." + identity.toLowerCase() + "secondarystorage(id, name, level, description, pip_chance, pips, school_typeSpell) VALUES(?, ?, ?, ?, ?, ?, ?)"; 
 
 				PreparedStatement st = conn1.prepareStatement(sql); 
 				for(String spellName: spells.keySet())
@@ -553,7 +553,7 @@ public class Heap {
 	 }
 	}
 	
-	public void fillMainDeck(Map<String,List<String>> spells, String identity)
+	public void fillPrimaryStorage(Map<String,List<String>> spells, String identity)
 	{
 		try {
 			Connection conn1 = null; 
@@ -565,7 +565,7 @@ public class Heap {
 			if(conn1 != null)
 			{
     				// table doesn't exist, create it
-    				String createTableSQL = "CREATE TABLE wizard_schema." + identity.toLowerCase() + "maindeck " +
+    				String createTableSQL = "CREATE TABLE wizard_schema." + identity.toLowerCase() + "primarystorage " +
                         "(id INT NOT NULL, " +
                         " name VARCHAR(45), " + 
                         " level VARCHAR(45), " +
@@ -581,7 +581,7 @@ public class Heap {
 				
 				for(String spellName: spells.keySet())
 				{
-							String sql = "INSERT INTO wizard_schema." + identity.toLowerCase() + "maindeck(id, name, level, description, pip_chance, pips, school_typeSpell) VALUES(?, ?, ?, ?, ?, ?, ?)"; 
+							String sql = "INSERT INTO wizard_schema." + identity.toLowerCase() + "primarystorage(id, name, level, description, pip_chance, pips, school_typeSpell) VALUES(?, ?, ?, ?, ?, ?, ?)"; 
 
 							PreparedStatement st = conn1.prepareStatement(sql); 
 							int count = Integer.parseInt(spells.get(spellName).get(0)); 
