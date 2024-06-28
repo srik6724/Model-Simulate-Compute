@@ -1,10 +1,10 @@
-# Match (Model, Simulate, Compute)
+# Product (Model, Simulate, Compute)
 
-Player vs. Player (1-1 Member Ordering)
+Agent_System_1 X Agent_System_2 (1-1 Member Ordering)
 
-1. Model a Match
-2. Simulate a Match
-3. Compute a Match
+1. Model a Product
+2. Simulate a Product
+3. Compute a Product
 
 Future Work:
 
