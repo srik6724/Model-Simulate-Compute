@@ -39,16 +39,16 @@ public class Subdomain_Category_Product_List_1<T> {
             	Statement st1 = conn1.createStatement(); 
             	if(st1 != null)
             	{
-            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.balance_spells");
+            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.energy_units");
             		while(rs.next())
             		{
-            			String name = rs.getString("name"); 
-            			String level = rs.getString("level"); 
-            			String description = rs.getString("description"); 
-            			String pip_chance = rs.getString("pip_chance");
-            			String pips = rs.getString("pips"); 
-									String school = rs.getString("school"); 
-            			String balance_typeSpell = rs.getString("typeSpell"); 
+            			String name = rs.getString("tag"); 
+            			String level = rs.getString("lifetime"); 
+            			String description = rs.getString("information"); 
+            			String pip_chance = rs.getString("success_build_rate");
+            			String pips = rs.getString("assembly_no_of_steps"); 
+									String school = rs.getString("category"); 
+            			String balance_typeSpell = rs.getString("industryType"); 
             			
             			Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, balance_typeSpell); 
             			

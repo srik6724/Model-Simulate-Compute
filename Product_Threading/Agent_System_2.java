@@ -26,10 +26,10 @@ public class Agent_System_2 implements Runnable {
       try {
         FileWriter matchWriterFinalizer = ProductWriter.get_file_writer();
         FileReader moduleReading;
-        int roundNumber = 76; 
+        int roundNumber = 10; 
         for(int i = 0; i < roundNumber; i++) {
           moduleReading = new FileReader("module_reading.txt"); 
-          Product.startRound(1, matchWriterFinalizer, moduleReading);
+          Product.startModule(1, matchWriterFinalizer, moduleReading);
           moduleReading.close(); 
         }
         matchWriterFinalizer.close(); 

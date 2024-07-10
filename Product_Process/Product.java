@@ -76,8 +76,8 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 
 	// Read from the files team_1_information.txt and team_2_information.txt
 	String line_curr = ""; 
-	File team1 = new File("agent_system_1_information.txt"); 
-	File team2 = new File("agent_system_2_information.txt");
+	File team1 = new File("agent_system_1_1X1_information.txt"); 
+	File team2 = new File("agent_system_2_1X1_information.txt");
 
 	// round_reading file
 
@@ -1154,7 +1154,7 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				int counter = 0;
 				for(int i = 0; i < team.size(); i++) {
 					if(team.get(i).equals(uniquePlayer)) {
-						team.set(i, uniquePlayer +  " MEMBER "  + String.valueOf(++counter) + " --> (TEAM " + loop + ")");
+						team.set(i, uniquePlayer +  " BOT "  + String.valueOf(++counter) + " --> (SYSTEM " + loop + ")");
 					}
 				}
 				counter = 0; 
@@ -1260,7 +1260,7 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 		return matchRecorder;
 	}
 	
-	public static void startRound(int index, FileWriter productWriterFinalizer, FileReader moduleReading) throws IOException, InterruptedException
+	public static void startModule(int index, FileWriter productWriterFinalizer, FileReader moduleReading) throws IOException, InterruptedException
 	{
 		FileWriter moduleTeam1SpellsWriter = null;
 		FileWriter moduleTeam2SpellsWriter = null;
@@ -1343,6 +1343,9 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 		FileWriter modulePathTraceWriter = null;
 		FileWriter modulePathTraceTeam1Writer = null;
 		FileWriter modulePathTraceTeam2Writer = null;
+		FileWriter moduleTraceToStartWriter = null;
+		FileWriter moduleTraceToStartTeam1Writer = null;
+		FileWriter moduleTraceToStartTeam2Writer = null;
 		FileWriter moduleSatisfierWriter = null;
 		FileWriter moduleSatisfierTeam1Writer = null;
 		FileWriter moduleSatisfierTeam2Writer = null;
@@ -1355,6 +1358,9 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 		FileWriter moduleCheckPointWriter = null;
 		FileWriter moduleCheckPointTeam1Writer = null;
 		FileWriter moduleCheckPointTeam2Writer= null;
+		FileWriter moduleCompletionTimeWriter = null;
+		FileWriter moduleCompletionTeam1Writer = null;
+		FileWriter moduleCompletionTeam2Writer = null;
 		FileWriter moduleContributionalEstimateWriter = null;
 		FileWriter moduleContributionalEstimateTeam1Writer = null;
 		FileWriter moduleContributionalEstimateTeam2Writer = null;
@@ -1370,6 +1376,9 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 		FileWriter moduleLoggerWriter = null;
 		FileWriter moduleLoggerTeam1Writer = null;
 		FileWriter moduleLoggerTeam2Writer = null;
+		FileWriter moduleEventOccurrenceWriter = null;
+		FileWriter moduleEventOccurrenceTeam1Writer = null;
+		FileWriter moduleEventOccurrenceTeam2Writer = null;
 
 		int module = Module.get_current_number(); 
 		int size = 0;
@@ -1425,6 +1434,8 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				ModuleOutputSpellsTeam1MemberWriter.file_writers[0].write(""); 
 				ModulePathTraceTeam1MemberWriter.get_file_writer(module, 1);
 				ModulePathTraceTeam1MemberWriter.file_writers[0].write(""); 
+				ModuleTraceToStartTeam1MemberWriter.get_file_writer(module, 1); 
+				ModuleTraceToStartTeam1MemberWriter.file_writers[0].write(""); 
 				ModuleSatisfierTeam1MemberWriter.get_file_writer(module, 1); 
 				ModuleSatisfierTeam1MemberWriter.file_writers[0].write(""); 
 				ModuleHistoryTeam1MemberWriter.get_file_writer(module, 1); 
@@ -1489,8 +1500,10 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				ModuleReferencePointersTeam2MemberWriter.file_writers[0].write(""); 
 				ModuleOutputSpellsTeam2MemberWriter.get_file_writer(module, 1); 
 				ModuleOutputSpellsTeam2MemberWriter.file_writers[0].write(""); 
-				ModulePathTraceTeam1MemberWriter.get_file_writer(module, 1);
+				ModulePathTraceTeam2MemberWriter.get_file_writer(module, 1);
 				ModulePathTraceTeam2MemberWriter.file_writers[0].write(""); 
+				ModuleTraceToStartTeam2MemberWriter.get_file_writer(module, 1); 
+				ModuleTraceToStartTeam2MemberWriter.file_writers[0].write(""); 
 				ModuleSatisfierTeam2MemberWriter.get_file_writer(module, 1); 
 				ModuleSatisfierTeam2MemberWriter.file_writers[0].write(""); 
 				ModuleHistoryTeam2MemberWriter.get_file_writer(module, 1); 
@@ -1718,6 +1731,12 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 			modulePathTraceTeam1Writer.write(""); 
 			modulePathTraceTeam2Writer = ModulePathTraceTeam2Writer.get_file_writer(module); 
 			modulePathTraceTeam2Writer.write(""); 
+			moduleTraceToStartWriter = ModuleTraceToStartWriter.get_file_writer(module); 
+			moduleTraceToStartWriter.write(""); 
+			moduleTraceToStartTeam1Writer = ModuleTraceToStartTeam1Writer.get_file_writer(module); 
+			moduleTraceToStartTeam1Writer.write(""); 
+			moduleTraceToStartTeam2Writer = ModuleTraceToStartTeam2Writer.get_file_writer(module); 
+			moduleTraceToStartTeam2Writer.write(""); 
 			moduleSatisfierWriter = ModuleSatisfierWriter.get_file_writer(module); 
 			moduleSatisfierWriter.write(""); 
 			moduleSatisfierTeam1Writer = ModuleSatisfierTeam1Writer.get_file_writer(module); 
@@ -1819,6 +1838,8 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				ModuleOutputSpellsTeam1MemberWriter.get_file_writer(module, 1); 
 				ModulePathTraceTeam1MemberWriter.setWriterCreated(false);
 				ModulePathTraceTeam1MemberWriter.get_file_writer(module, 1);
+				ModuleTraceToStartTeam1MemberWriter.setWriterCreated(false); 
+				ModuleTraceToStartTeam1MemberWriter.get_file_writer(module, 1); 
 				ModuleSatisfierTeam1MemberWriter.setWriterCreated(false);
 				ModuleSatisfierTeam1MemberWriter.get_file_writer(module, 1); 
 				ModuleHistoryTeam1MemberWriter.setWriterCreated(false);
@@ -1881,8 +1902,10 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				ModuleReferencePointersTeam2MemberWriter.get_file_writer(module, 1); 
 				ModuleOutputSpellsTeam2MemberWriter.setWriterCreated(false);
 				ModuleOutputSpellsTeam2MemberWriter.get_file_writer(module, 1); 
-				ModulePathTraceTeam1MemberWriter.setWriterCreated(false);
-				ModulePathTraceTeam1MemberWriter.get_file_writer(module, 1);
+				ModulePathTraceTeam2MemberWriter.setWriterCreated(false);
+				ModulePathTraceTeam2MemberWriter.get_file_writer(module, 1);
+				ModuleTraceToStartTeam2MemberWriter.setWriterCreated(false); 
+				ModuleTraceToStartTeam2MemberWriter.get_file_writer(module, 1); 
 				ModuleSatisfierTeam2MemberWriter.setWriterCreated(false); 
 				ModuleSatisfierTeam2MemberWriter.get_file_writer(module, 1); 
 				ModuleHistoryTeam2MemberWriter.setWriterCreated(false); 
@@ -2099,6 +2122,12 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 			modulePathTraceTeam1Writer = ModulePathTraceTeam1Writer.get_file_writer(module); 
 			ModulePathTraceTeam2Writer.setWriterCreated(false); 
 			modulePathTraceTeam2Writer = ModulePathTraceTeam2Writer.get_file_writer(module); 
+			ModuleTraceToStartWriter.setWriterCreated(false); 
+			moduleTraceToStartWriter = ModuleTraceToStartWriter.get_file_writer(module); 
+			ModuleTraceToStartTeam1Writer.setWriterCreated(false); 
+			moduleTraceToStartTeam1Writer = ModuleTraceToStartTeam1Writer.get_file_writer(module); 
+			ModuleTraceToStartTeam2Writer.setWriterCreated(false); 
+			moduleTraceToStartTeam2Writer = ModuleTraceToStartTeam2Writer.get_file_writer(module); 
 			ModuleSatisfierWriter.setWriterCreated(false); 
 			moduleSatisfierWriter = ModuleSatisfierWriter.get_file_writer(module); 
 			ModuleSatisfierTeam1Writer.setWriterCreated(false); 
@@ -2208,63 +2237,63 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				}
 			}
 			agentSystemCount--; */
-			System.out.println("Player " + player + ": Select a card."); 
-			productModuleByModuleWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
-			productWriterFinalizer.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
-			moduleDefaultWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n");	
-			moduleCombineWriter.write("PLAYER-" + player + "-SPELLS SELECTION\n"); 
-			System.out.println("The following seven cards have been generated."); 
+			System.out.println("Player " + player + ": Select a manual."); 
+			productModuleByModuleWriter.write("AGENT-" + player + "-UNITS SELECTION\n"); 
+			productWriterFinalizer.write("AGENT-" + player + "-UNITS SELECTION\n"); 
+			moduleDefaultWriter.write("AGENT-" + player + "-UNITS SELECTION\n");	
+			moduleCombineWriter.write("AGENT-" + player + "-UNITS SELECTION\n"); 
+			System.out.println("The following seven manuals have been generated."); 
 			Element[] sevenCards = generateSevenCards(playerAssociationToSchool.get(player).toLowerCase(), index); 
-			System.out.println("Printing out the seven cards.");
+			System.out.println("Printing out the seven manuals.");
 			for(int z = 0; z < sevenCards.length; z++)
 			{
 				productModuleByModuleWriter.write("----------------------------\n");
 				productWriterFinalizer.write("----------------------------\n"); 
 				moduleDefaultWriter.write("----------------------------\n"); 
 				moduleCombineWriter.write("----------------------------\n");
-				System.out.println("Card " + (z+1) + ": " + "{ "); 
-				productModuleByModuleWriter.write("Card " + (z+1) + ": " + "{\n "); 
-				productWriterFinalizer.write("Card " + (z+1) + ": " + "{\n "); 
-				moduleDefaultWriter.write("Card " + (z+1) + ": " + "{\n ");
-				moduleCombineWriter.write("Card " + (z+1) + ": " + "{\n ");
-				System.out.println("Name Of Spell: " + sevenCards[z].getSpellName()); 
-				productModuleByModuleWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
-				productWriterFinalizer.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
-			 	moduleDefaultWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n");
-				moduleCombineWriter.write("Name Of Spell: " + sevenCards[z].getSpellName() + "\n"); 
-				System.out.println("Pips Of Spell: " + sevenCards[z].getPips()); 
-				productModuleByModuleWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
-				productWriterFinalizer.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
-				moduleDefaultWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n");
-				moduleCombineWriter.write("Pips Of Spell: " + sevenCards[z].getPips() + "\n"); 
-				System.out.println("Pip Chance Of Spell: " + sevenCards[z].getPipChance()); 
-				productModuleByModuleWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
-				productWriterFinalizer.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
-				moduleDefaultWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n");
-				moduleCombineWriter.write("Pip Chance Of Spell: " + sevenCards[z].getPipChance() + "\n"); 
-				System.out.println("Type Of Spell: " + sevenCards[z].getTypeSpell()); 
-				productModuleByModuleWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
-				productWriterFinalizer.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
-				moduleDefaultWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
-				moduleCombineWriter.write("Type Of Spell: " + sevenCards[z].getTypeSpell() + "\n"); 
+				System.out.println("Manual " + (z+1) + ": " + "{ "); 
+				productModuleByModuleWriter.write("Manual " + (z+1) + ": " + "{\n "); 
+				productWriterFinalizer.write("Manual " + (z+1) + ": " + "{\n "); 
+				moduleDefaultWriter.write("Manual " + (z+1) + ": " + "{\n ");
+				moduleCombineWriter.write("Manual " + (z+1) + ": " + "{\n ");
+				System.out.println("Unit Tag: " + sevenCards[z].getSpellName()); 
+				productModuleByModuleWriter.write("Unit Tag: " + sevenCards[z].getSpellName() + "\n"); 
+				productWriterFinalizer.write("Unit Tag: " + sevenCards[z].getSpellName() + "\n"); 
+			 	moduleDefaultWriter.write("Unit Tag: " + sevenCards[z].getSpellName() + "\n");
+				moduleCombineWriter.write("Unit Tag: " + sevenCards[z].getSpellName() + "\n"); 
+				System.out.println("Unit Assembly # Of Steps: " + sevenCards[z].getPips()); 
+				productModuleByModuleWriter.write("Unit Assembly # Of Steps: " + sevenCards[z].getPips() + "\n"); 
+				productWriterFinalizer.write("Unit Assembly # Of Steps: " + sevenCards[z].getPips() + "\n"); 
+				moduleDefaultWriter.write("Unit Assembly # Of Steps: " + sevenCards[z].getPips() + "\n");
+				moduleCombineWriter.write("Unit Assembly # Of Steps: " + sevenCards[z].getPips() + "\n"); 
+				System.out.println("Unit Success Build Rate: " + sevenCards[z].getPipChance()); 
+				productModuleByModuleWriter.write("Unit Success Build Rate: " + sevenCards[z].getPipChance() + "\n"); 
+				productWriterFinalizer.write("Unit Success Build Rate: " + sevenCards[z].getPipChance() + "\n"); 
+				moduleDefaultWriter.write("Unit Success Build Rate: " + sevenCards[z].getPipChance() + "\n");
+				moduleCombineWriter.write("Unit Success Build Rate: " + sevenCards[z].getPipChance() + "\n"); 
+				System.out.println("Unit Industry Type: " + sevenCards[z].getTypeSpell()); 
+				productModuleByModuleWriter.write("Unit Industry Type: " + sevenCards[z].getTypeSpell() + "\n"); 
+				productWriterFinalizer.write("Unit Industry Type: " + sevenCards[z].getTypeSpell() + "\n"); 
+				moduleDefaultWriter.write("Unit Industry Type: " + sevenCards[z].getTypeSpell() + "\n"); 
+				moduleCombineWriter.write("Unit Industry Type: " + sevenCards[z].getTypeSpell() + "\n"); 
 				Type_Spell.startToFinish(sevenCards[z].getTypeSpell());
-				moduleComputationSpellsWriter.write("SHEET STATEMENT: " + Type_Spell.configureInUseToEnd[0] + " OUT OF " + Type_Spell.configureInUseToEnd[1] + " " + sevenCards[z].getTypeSpell().toUpperCase() + " SPELLS\n");
-				System.out.println("Count Of Spell: " + sevenCards[z].getCount()); 
-				productModuleByModuleWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
-				productWriterFinalizer.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
-				moduleDefaultWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n");
-				moduleCombineWriter.write("Count Of Spell: " + sevenCards[z].getCount() + "\n"); 
-				System.out.println("Description Of Spell: " + sevenCards[z].getDescription()); 
-				productModuleByModuleWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
-				productWriterFinalizer.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n");
-				moduleDefaultWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
-				moduleCombineWriter.write("Description Of Spell: " + sevenCards[z].getDescription() + "\n"); 
+				moduleComputationSpellsWriter.write("MANUAL GUIDE: " + Type_Spell.configureInUseToEnd[0] + " OUT OF " + Type_Spell.configureInUseToEnd[1] + " " + sevenCards[z].getTypeSpell().toUpperCase() + " UNITS\n");
+				System.out.println("Unit Supply Count: " + sevenCards[z].getCount()); 
+				productModuleByModuleWriter.write("Unit Supply Count: " + sevenCards[z].getCount() + "\n"); 
+				productWriterFinalizer.write("Unit Supply Count: " + sevenCards[z].getCount() + "\n"); 
+				moduleDefaultWriter.write("Unit Supply Count: " + sevenCards[z].getCount() + "\n");
+				moduleCombineWriter.write("Unit Supply Count: " + sevenCards[z].getCount() + "\n"); 
+				System.out.println("Unit Information: " + sevenCards[z].getDescription()); 
+				productModuleByModuleWriter.write("Unit Information: " + sevenCards[z].getDescription() + "\n"); 
+				productWriterFinalizer.write("Unit Information: " + sevenCards[z].getDescription() + "\n");
+				moduleDefaultWriter.write("Unit Information: " + sevenCards[z].getDescription() + "\n"); 
+				moduleCombineWriter.write("Unit Information: " + sevenCards[z].getDescription() + "\n"); 
 				System.out.println("}");
 				productModuleByModuleWriter.write("}\n"); 
 				productWriterFinalizer.write("}\n"); 
 				moduleDefaultWriter.write("}\n"); 
 				moduleCombineWriter.write("}\n"); 
-				System.out.println("Spell added to the Matchwriter."); 
+				System.out.println("Unit added to the Productwriter."); 
 			}
 			productModuleByModuleWriter.write("----------------------------\n");
 			productWriterFinalizer.write("----------------------------\n"); 
@@ -2272,15 +2301,15 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 			moduleCombineWriter.write("----------------------------\n");
 			
 		}
-		productModuleByModuleWriter.write("END OF ROUND\n");
-		productWriterFinalizer.write("END OF ROUND\n"); 
+		productModuleByModuleWriter.write("END OF MODULE\n");
+		productWriterFinalizer.write("END OF MODULE\n"); 
 		productWriterFinalizer.write("############################\n"); 
-		moduleDefaultWriter.write("END OF ROUND\n"); 
-		moduleCombineWriter.write("END OF ROUND\n"); 
+		moduleDefaultWriter.write("END OF MODULE\n"); 
+		moduleCombineWriter.write("END OF MODULE\n"); 
 		moduleComputationSpellsWriter.write("________________________________________\n"); 
 		moduleComputationSpellsWriter.write("END OF COMPUTATION\n"); 
 		moduleComputationSpellsWriter.close(); 
-		System.out.println("Reading module of spells using reader. Decide between reading team 1 or team 2 first."); 
+		System.out.println("Reading module of units using reader. Decide between reading system 1 or system 2 first."); 
 
 		productModuleByModuleWriter.close(); 
 		moduleDefaultWriter.close(); 
@@ -2304,46 +2333,46 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 		String discardStmtLine_t2 = null;
 		String remainingStmtLine_t2 = null;
 		while((line = moduleComputeReader.readLine()) != null) { 
-			if(line.contains("(TEAM 1)")) {
-				System.out.println("CONTAINS TEAM 1"); 
+			if(line.contains("(SYSTEM 1)")) {
+				System.out.println("CONTAINS SYSTEM 1"); 
 				readFirstTeam = true; 
 				readSecondTeam = false; 
 				
-				line = line.replace("SPELLS SELECTION", "SPELL SELECTED"); 
+				line = line.replace("UNITS SELECTION", "UNIT SELECTED"); 
 				moduleSelectionLineWriter.write(line + "\n"); 
 				moduleSelectionLineTeam1Writer.write(line + "\n"); 
 				//roundCombineWriter.write(line + "\n"); 
 				selectionStmtLine_t1 = line;
 				String discardLine = line; 
-				discardLine = discardLine.replace("SPELL SELECTED", "SPELLS DISCARDED"); 
+				discardLine = discardLine.replace("UNIT SELECTED", "UNITS DISCARDED"); 
 				moduleExcessSpellsWriter.write(discardLine + "\n"); 
 				moduleExcessSpellsTeam1Writer.write(discardLine + "\n"); 
 				discardStmtLine_t1 = discardLine;
 				//roundCombineWriter.write(discardLine + "\n"); 
 				String remainingLine = line; 
-				remainingLine = remainingLine.replace("SPELL SELECTED", "SPELLS REMAINING"); 
+				remainingLine = remainingLine.replace("UNIT SELECTED", "UNITS REMAINING"); 
 				moduleRemainingSpellsWriter.write(remainingLine + "\n"); 
 				moduleRemainingTeam1SpellsWriter.write(remainingLine + "\n"); 
 				moduleRemainingTeam2SpellsWriter.write(remainingLine + "\n"); 
 				remainingStmtLine_t1 = remainingLine;
 				//roundCombineWriter.write(remainingLine + "\n"); 
 			}
-			if(line.contains("(TEAM 2)")) {
+			if(line.contains("(SYSTEM 2)")) {
 				readSecondTeam = true; 
 				readFirstTeam = false;
-				line = line.replace("SPELLS SELECTION", "SPELL SELECTED");
+				line = line.replace("UNITS SELECTION", "UNIT SELECTED");
 				moduleSelectionLineWriter.write(line + "\n"); 
 				moduleSelectionLineTeam2Writer.write(line + "\n");  
 				selectionStmtLine_t2 = line;
 				//roundCombineWriter.write(line + "\n"); 
 				String discardLine = line; 
-				discardLine = discardLine.replace("SPELL SELECTED", "SPELL DISCARDED"); 
+				discardLine = discardLine.replace("UNIT SELECTED", "UNIT DISCARDED"); 
 				moduleExcessSpellsWriter.write(discardLine + "\n"); 
 				moduleExcessSpellsTeam2Writer.write(discardLine + "\n"); 
 				discardStmtLine_t2 = discardLine;
 				//roundCombineWriter.write(discardLine + "\n"); 
 				String remainingLine = line; 
-				remainingLine = remainingLine.replace("SPELL SELECTED", "SPELL REMAINING"); 
+				remainingLine = remainingLine.replace("UNIT SELECTED", "UNIT REMAINING"); 
 				moduleRemainingSpellsWriter.write(remainingLine + "\n"); 
 				moduleRemainingTeam1SpellsWriter.write(remainingLine + "\n"); 
 				moduleRemainingTeam2SpellsWriter.write(remainingLine + "\n"); 
@@ -2354,8 +2383,8 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				System.out.println("WRITING LINE: " + line + " FOR TEAM 1"); 
 				moduleTeam1SpellsWriter.write(line + "\n"); 
 				System.out.println("Extracting member_no information"); 
-				if(line.contains("MEMBER")) {
-					int memberCharLoc = line.indexOf("M");
+				if(line.contains("BOT")) {
+					int memberCharLoc = line.indexOf("B");
 					int stringNoLoc = line.indexOf(" ", memberCharLoc) + 1; 
 					int memberNoLoc = Integer.parseInt(line.substring(stringNoLoc, stringNoLoc+1)); 
 					System.out.println("memberNoLoc index: " + memberNoLoc); 
@@ -2366,8 +2395,8 @@ public class Product extends Demo_Installation_Terrain implements Module, Produc
 				System.out.println("WRITING LINE: " + line + " FOR TEAM 2");
 				moduleTeam2SpellsWriter.write(line + "\n"); 
 				System.out.println("Extracting member_no information"); 
-				if(line.contains("MEMBER")) {
-					int memberCharLoc = line.indexOf("M"); 
+				if(line.contains("BOT")) {
+					int memberCharLoc = line.indexOf("B"); 
 					int stringNoLoc = line.indexOf(" ", memberCharLoc) + 1; 
 					int memberNoLoc = Integer.parseInt(line.substring(stringNoLoc, stringNoLoc+1)); 
 					System.out.println("memberNoLoc index: " + memberNoLoc); 
@@ -2491,7 +2520,7 @@ public String randomizeHeadsOrTails()
 		StringBuilder gearType7 = new StringBuilder(""); 
 		StringBuilder gearType8 = new StringBuilder(""); 
 
-		String[] listGear = {"hat", "robe", "boot", "wand", "athame", "amulet", "ring", "deck", "pet"};  
+		String[] listGear = {"c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "pet"};  
 
 		Bind_1 hat = (Bind_1)instantiateGearPiece(listGear[0], school, level, gearType1); 
 		System.out.println("Hat gearType: " + gearType1);  
@@ -2501,9 +2530,9 @@ public String randomizeHeadsOrTails()
 		System.out.println("Boot gearType: " + gearType3); 
 		Bind_4 wand = (Bind_4)instantiateGearPiece(listGear[3], school, level, gearType4); 
 		System.out.println("Wand gearType: " + gearType4); 
-		Bind_6 athame = (Bind_6)instantiateGearPiece(listGear[4], school, level, gearType5);
+		Bind_5 athame = (Bind_5)instantiateGearPiece(listGear[4], school, level, gearType5);
 		System.out.println("Athame gearType: " + gearType5); 
-		Bind_5 amulet = (Bind_5)instantiateGearPiece(listGear[5], school, level, gearType6); 
+		Bind_6 amulet = (Bind_6)instantiateGearPiece(listGear[5], school, level, gearType6); 
 		System.out.println("Amulet gearType: " + gearType6); 
 		Bind_7 ring = (Bind_7)instantiateGearPiece(listGear[6], school, level, gearType7); 
 		System.out.println("Ring gearType: " + gearType7); 
@@ -2530,7 +2559,7 @@ public String randomizeHeadsOrTails()
 	public void computeStatsInformation(HashMap<String, List<String>> gearSets, HashMap<Integer, List<String>> keywords) throws IOException
 	{
 		System.out.println("Before the loop.");
-		String[] listItems = {"hat", "robe", "boots", "wand", "athame", "amulet", "ring", "deck"};
+		String[] listItems = {"c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8"};
 
 		Iterator<Integer> numberIterator = keywords.keySet().iterator(); 
 		Iterator<String> wizardIterator = gearSets.keySet().iterator(); 
@@ -2644,7 +2673,7 @@ public String randomizeHeadsOrTails()
 
 		switch(gearName) 
 		{
-			case "hat": 
+			case "c1": 
 				if(Option.getScannerInUse() == true) {
 					hatName = sc.nextLine();
 					if(!(sc.hasNextLine()))
@@ -2685,7 +2714,7 @@ public String randomizeHeadsOrTails()
 				extractGearType = new StringBuilder(""); 
 				Bind_1 hat = (Bind_1)instantiateGearPiece(gearName, school, level, extractGearType);
 				return hat;
-			case "robe": 
+			case "c2": 
 				if(Option.getScannerInUse() == true) {
 					robeName = sc.nextLine();
 					if(!(sc.hasNextLine()))
@@ -2724,7 +2753,7 @@ public String randomizeHeadsOrTails()
 				extractGearType = new StringBuilder(""); 
 				Bind_2 robe = (Bind_2)instantiateGearPiece(gearName, school, level,  extractGearType);
 				return robe;
-			case "boot": 
+			case "c3": 
 				if(Option.getScannerInUse() == true) {
 					bootName = sc.nextLine();
 					if(!(sc.hasNextLine()))
@@ -2763,7 +2792,7 @@ public String randomizeHeadsOrTails()
 				extractGearType = new StringBuilder(""); 
 				Bind_3 boot = (Bind_3)instantiateGearPiece(gearName, school, level, extractGearType);
 				return boot;
-			case "wand": 
+			case "c4": 
 				if(Option.getScannerInUse() == true) {
 					wandName = sc.nextLine();
 					if(!(sc.hasNextLine()))
@@ -2802,7 +2831,7 @@ public String randomizeHeadsOrTails()
 				extractGearType = new StringBuilder(""); 
 				Bind_4 wand = (Bind_4)instantiateGearPiece(gearName, school, level, extractGearType);
 				return wand;
-			case "athame": 
+			case "c5": 
 				if(Option.getScannerInUse() == true) {
 					athameName = sc.nextLine();
 					if(!(sc.hasNextLine()))
@@ -2834,14 +2863,14 @@ public String randomizeHeadsOrTails()
 				boolean res5 = checkGearName(athameName, gearName, extractGearType, school, level); 
 				if(res5 == true)
 				{
-					Bind_6 athame = new Bind_6(athameName); 
+					Bind_5 athame = new Bind_5(athameName); 
 					System.out.println("Athame: " + athameName + " created."); 
 					return athame;
 				}
 				extractGearType = new StringBuilder(""); 
-				Bind_6 athame = (Bind_6)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_5 athame = (Bind_5)instantiateGearPiece(gearName, school, level, extractGearType);
 				return athame;
-			case "amulet": 
+			case "c6": 
 				if(Option.getScannerInUse() == true) {
 					amuletName = sc.nextLine();
 					if(!(sc.hasNextLine()))
@@ -2873,14 +2902,14 @@ public String randomizeHeadsOrTails()
 				boolean res6 = checkGearName(amuletName, gearName, extractGearType, school, level); 
 				if(res6 == true)
 				{
-					Bind_5 amulet = new Bind_5(amuletName); 
+					Bind_6 amulet = new Bind_6(amuletName); 
 					System.out.println("Amulet: " + amuletName + " created."); 
 					return amulet;
 				}
 				extractGearType = new StringBuilder(""); 
-				Bind_5 amulet = (Bind_5)instantiateGearPiece(gearName, school, level, extractGearType);
+				Bind_6 amulet = (Bind_6)instantiateGearPiece(gearName, school, level, extractGearType);
 				return amulet;
-			case "ring": 
+			case "c7": 
 				if(Option.getScannerInUse() == true) {
 					ringName = sc.nextLine();
 					if(!(sc.hasNextLine()))
@@ -2919,7 +2948,7 @@ public String randomizeHeadsOrTails()
 				extractGearType = new StringBuilder(""); 
 				Bind_7 ring = (Bind_7)instantiateGearPiece(gearName, school, level, extractGearType);
 				return ring;
-			case "deck": 
+			case "c8": 
 				if(Option.getScannerInUse() == true) {
 					deckName = sc.nextLine(); 
 					if(!(sc.hasNextLine()))

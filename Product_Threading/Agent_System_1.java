@@ -27,9 +27,9 @@ public class Agent_System_1 implements Runnable {
       try {
         FileWriter productWriterFinalizer = ProductWriter.get_file_writer(); 
         FileReader moduleReading = new FileReader("module_reading.txt");
-        int moduleNumber = 76; 
+        int moduleNumber = 10; 
         for(int i = 0; i < moduleNumber; i++) {
-          Product.startRound(0, productWriterFinalizer, moduleReading);
+          Product.startModule(0, productWriterFinalizer, moduleReading);
         }
         moduleReading.close(); 
         productWriterFinalizer.close(); 

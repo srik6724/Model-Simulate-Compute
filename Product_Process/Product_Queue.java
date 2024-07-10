@@ -30,19 +30,19 @@ public class Product_Queue<T> {
 			String fileName = path.getFileName().toString(); 
 			return fileName.contains("module"); 
 		}; 
-
-		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)"); 
+		
+		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/Product-Build-(1-1)"); 
 
 		deleteFiles(startPath, criteria); 
 
 		File module_reading = new File("module_reading.txt");
 		FileWriter module_reading_writer = new FileWriter(module_reading);
-		module_reading_writer.write("full-card-list"); 
+		module_reading_writer.write("full-manual-list"); 
 		module_reading_writer.close();
 		Product assembly = new Product(module_reading); 
 		assembly.enroll2Teams(args); 
 
-		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
+		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Product-Build-(1-1)");
 		long fileCount = Files.list(directory).filter(fileCountCriteria).count();
 		System.out.println("Final count of round, module files in local directory: " + fileCount);
 	}

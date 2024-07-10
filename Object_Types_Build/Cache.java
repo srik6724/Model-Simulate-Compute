@@ -270,15 +270,15 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 			if(conn1 != null)
 			{
 				HashMap<Integer, String> sqlTests = new HashMap<Integer, String>(); 
-				String sql1 = "SELECT * FROM wizard_schema.balance_spells WHERE name = ?"; 
-				String sql2 = "SELECT * FROM wizard_schema.ice_spells WHERE name = ?"; 
-				String sql3 = "SELECT * FROM wizard_schema.life_spells WHERE name = ?"; 
-				String sql4 = "SELECT * FROM wizard_schema.myth_spells WHERE name = ?"; 
-				String sql5 = "SELECT * FROM wizard_schema.death_spells WHERE name = ?"; 
-				String sql6 = "SELECT * FROM wizard_schema.fire_spells WHERE name = ?"; 
-				String sql7 = "SELECT * FROM wizard_schema.storm_spells WHERE name = ?"; 
-				String sql8 = "SELECT * FROM wizard_schema.astral_spells WHERE name = ?"; 
-				String sql9 = "SELECT * FROM wizard_schema.shadow_spells WHERE name = ?"; 
+				String sql1 = "SELECT * FROM wizard_schema.energy_units WHERE tag = ?"; 
+				String sql2 = "SELECT * FROM wizard_schema.consumer_discretionary_units WHERE tag = ?"; 
+				String sql3 = "SELECT * FROM wizard_schema.financials_units WHERE tag = ?"; 
+				String sql4 = "SELECT * FROM wizard_schema.materials_units WHERE tag = ?"; 
+				String sql5 = "SELECT * FROM wizard_schema.information_technology_units WHERE tag = ?"; 
+				String sql6 = "SELECT * FROM wizard_schema.healthcare_units WHERE tag = ?"; 
+				String sql7 = "SELECT * FROM wizard_schema.industrials_units WHERE tag = ?"; 
+				String sql8 = "SELECT * FROM wizard_schema.consumer_staples_units WHERE tag = ?"; 
+				String sql9 = "SELECT * FROM wizard_schema.utilities_units WHERE tag = ?"; 
 				sqlTests.put(1, sql1); 
 				sqlTests.put(2, sql2); 
 				sqlTests.put(3, sql3);
@@ -297,15 +297,24 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 					ResultSet rs = stmt.executeQuery(); 
 					while(rs.next())
 					{
-						String name = rs.getString("name"); 
-						String level = rs.getString("level"); 
-						String description = rs.getString("description"); 
-						String pip_chance = rs.getString("pip_chance"); 
-						String pips = rs.getString("pips"); 
-						String school = rs.getString("school"); 
-						String school_typeSpell = rs.getString("typeSpell");
-						boolean accessByOtherSchools = Boolean.parseBoolean(rs.getString("accessByOtherSchools")); 
-						boolean accessByTC = Boolean.parseBoolean(rs.getString("accessByTC")); 
+						String name = rs.getString("tag"); 
+						System.out.println("Name: " + name); 
+						String level = rs.getString("lifetime"); 
+						System.out.println("Level: " + level); 
+						String description = rs.getString("information"); 
+						System.out.println("Description: " + description);
+						String pip_chance = rs.getString("success_build_rate"); 
+						System.out.println("Pip Chance: " + pip_chance);
+						String pips = rs.getString("assembly_no_of_steps"); 
+						System.out.println("Pips: "  + pips); 
+						String school = rs.getString("category"); 
+						System.out.println("School: " + school); 
+						String school_typeSpell = rs.getString("industryType");
+						System.out.println("Type Spell: " + school_typeSpell);
+						boolean accessByOtherSchools = Boolean.parseBoolean(rs.getString("applicableToOtherCategories")); 
+						System.out.println("Access By Other Schools: " + accessByOtherSchools);
+						boolean accessByTC = Boolean.parseBoolean(rs.getString("accessBySecondaryStorage")); 
+						System.out.println("Access By TC: " + accessByTC);
 						
 						if(name != null && level != null && description != null && pip_chance != null && pips != null && school != null && school_typeSpell != null)
 						{

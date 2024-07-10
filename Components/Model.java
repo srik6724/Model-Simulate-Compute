@@ -8,13 +8,13 @@ public class Model {
   private Bind_2 robe; 
   private Bind_3 boot; 
   private Bind_4 wand; 
-  private Bind_6 athame; 
-  private Bind_5 amulet; 
+  private Bind_5 athame; 
+  private Bind_6 amulet; 
   private Bind_7 ring; 
   private Bind_8 deck; 
   private Pet pet; 
 
-  public Model(Bind_1 hat, Bind_2 robe, Bind_3 boot, Bind_4 wand, Bind_6 athame, Bind_5 amulet, Bind_7 ring, Bind_8 deck, Pet pet)
+  public Model(Bind_1 hat, Bind_2 robe, Bind_3 boot, Bind_4 wand, Bind_5 athame, Bind_6 amulet, Bind_7 ring, Bind_8 deck, Pet pet)
   {
     this.hat = hat; 
     this.robe = robe; 
@@ -47,12 +47,12 @@ public class Model {
     return wand; 
   }
 
-  public Bind_6 retrieveAthame()
+  public Bind_5 retrieveAthame()
   {
     return athame; 
   }
 
-  public Bind_5 retrieveAmulet()
+  public Bind_6 retrieveAmulet()
   {
     return amulet; 
   }

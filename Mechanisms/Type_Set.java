@@ -51,7 +51,7 @@ public class Type_Set {
     System.out.println("Creating file entry for type: " + type); 
     File file;
     String fileName = "category_type_" + type.toLowerCase() + ".txt";
-		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Match (Model, Simulate, Compute)");
+		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Product-Build-(1-1)");
     Path filePath = directory.resolve(fileName); 
     FileWriter file_writer; 
     if(!(Files.exists(filePath))) {

@@ -17,12 +17,12 @@ class ModuleSelectionTeam1MemberSpellsWriter {
   }
 
   static void get_file_writer(int round, int memberNo) {
-    if(ModuleSelectionTeam1MemberSpellsWriter.writerCreated == true) {
+    if(ModuleSelectionTeam1MemberSpellsWriter.writerCreated == false) {
       new ModuleSelectionTeam1MemberSpellsWriter("t1", memberNo, round); 
     }
   }
 
   static void setWriterCreated(boolean var) {
-    ModuleSelectionTeam1MemberSpellsWriter.writerCreated = true; 
+    ModuleSelectionTeam1MemberSpellsWriter.writerCreated = var; 
   }
 }

@@ -23,6 +23,6 @@ class ModuleSelectionTeam2MemberSpellsWriter {
   }
 
   static void setWriterCreated(boolean var) {
-    ModuleSelectionTeam2MemberSpellsWriter.writerCreated = true; 
+    ModuleSelectionTeam2MemberSpellsWriter.writerCreated = var; 
   }
 }
