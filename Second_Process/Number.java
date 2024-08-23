@@ -1,5 +1,5 @@
 package Second_Process;
 
 public class Number {
-  static int count; 
+  static int count = 812; 
 }

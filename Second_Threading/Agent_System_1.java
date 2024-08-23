@@ -28,9 +28,11 @@ public class Agent_System_1 implements Runnable {
         FileWriter secondWriterFinalizer = SecondWriter.get_file_writer(); 
         FileReader moduleReading = new FileReader("module_reading.txt");
         int moduleNumber = 1000; 
-        for(int i = 0; i < moduleNumber; i++) {
-          Second.startModule(0, secondWriterFinalizer, moduleReading);
+        FileWriter secondDataPersistor = new FileWriter("second_transdata.txt"); 
+        for(int i = 812; i < moduleNumber; i++) {
+          Second.startMicrosecond(0, secondWriterFinalizer, moduleReading, secondDataPersistor);
         }
+        secondDataPersistor.close(); 
         moduleReading.close(); 
         secondWriterFinalizer.close(); 
       } catch (Exception e) {

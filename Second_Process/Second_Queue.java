@@ -23,17 +23,17 @@ public class Second_Queue<T> {
 	{
 		Predicate<Path> criteria = path -> {
 			String fileName = path.getFileName().toString(); 
-			return fileName.endsWith(".txt") && (fileName.contains("nanosecond") || fileName.contains("second") || fileName.contains("category") || fileName.contains("token")); 
+			return fileName.endsWith(".txt") && fileName.contains("category") || fileName.contains("token"); 
 		}; 
 
-		Predicate<Path> fileCountCriteria = path -> { 
-			String fileName = path.getFileName().toString(); 
-			return fileName.contains("module"); 
-		}; 
-		
 		Path startPath = Paths.get("C:/Users/srik6/OneDrive/Desktop/Second-Build-(1-1)"); 
 
 		deleteFiles(startPath, criteria); 
+
+		Predicate<Path> fileCountCriteria = path -> { 
+			String fileName = path.getFileName().toString(); 
+			return fileName.contains("microsecond"); 
+		}; 
 
 		File module_reading = new File("module_reading.txt");
 		FileWriter module_reading_writer = new FileWriter(module_reading);

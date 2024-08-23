@@ -137,31 +137,31 @@ class FileOperation {
                   writer1.close(); 
                   if(label.equals("t1")) {
                     for(int i = 0; i < size; i++) {
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(line1 + "\n"); 
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                      NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(line1 + "\n"); 
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                     }
                   }
                   else if(label.equals("t2")) {
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(line1 + "\n"); 
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                      NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(line1 + "\n"); 
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                   }
                 } catch (IOException e1) {
                   try {
                     if(label.equals("t1")) {
-                      NanosecondSelectionTeam1Writer.setWriterCreated(false);
-                      writer1 = NanosecondSelectionTeam1Writer.get_file_writer(round);
+                      MicrosecondSelectionTeam1Writer.setWriterCreated(false);
+                      writer1 = MicrosecondSelectionTeam1Writer.get_file_writer(round);
                       writer1.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer1.write(nameOfSpell + "\n"); 
@@ -178,18 +178,18 @@ class FileOperation {
                       writerTemp.write("----------------------------\n");
                       writer1.close(); 
                       for(int i = 0; i < size; i++) {
-                        NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                        NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                        NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                        NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                        NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                        NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                        NanosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                        MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        MicrosecondSelectionTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                       }
                     }
                     else if(label.equals("t2")) {
-                      NanosecondSelectionTeam2Writer.setWriterCreated(false);
-                      writer1 = NanosecondSelectionTeam2Writer.get_file_writer(round);
+                      MicrosecondSelectionTeam2Writer.setWriterCreated(false);
+                      writer1 = MicrosecondSelectionTeam2Writer.get_file_writer(round);
                       writer1.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer1.write(nameOfSpell + "\n"); 
@@ -206,13 +206,13 @@ class FileOperation {
                       writerTemp.write("----------------------------\n");
                       writer1.close(); 
                       for(int i = 0; i < size; i++) {
-                        NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                        NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                        NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                        NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                        NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                        NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                        NanosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                        MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        MicrosecondSelectionTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                       } 
                     }
                   } catch (IOException sube1) {
@@ -242,33 +242,33 @@ class FileOperation {
                   writer2.close(); 
                   if(label.equals("t1")) {
                     for(int i = 0; i < size; i++) {
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(line2 + "\n");
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                     }
                   }
                   else if(label.equals("t2")) {
                     for(int i = 0; i < size; i++) {
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(line2 + "\n");
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                     }
                   }
                 } catch (IOException e2) {
                   try {
                     if(label.equals("t1")) {
-                      NanosecondDiscardSpellsTeam1Writer.setWriterCreated(false);
-                      writer2 = NanosecondDiscardSpellsTeam1Writer.get_file_writer(round); 
+                      MicrosecondDiscardSpellsTeam1Writer.setWriterCreated(false);
+                      writer2 = MicrosecondDiscardSpellsTeam1Writer.get_file_writer(round); 
                       writer2.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer2.write(nameOfSpell + "\n"); 
@@ -285,19 +285,19 @@ class FileOperation {
                       writerTemp.write("----------------------------\n");
                       writer2.close(); 
                       for(int i = 0; i < size; i++) {
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(line2 + "\n");
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                        NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                       }
                     }
                     else if(label.equals("t2")) {
-                      NanosecondDiscardSpellsTeam2Writer.setWriterCreated(false);
-                      writer2 = NanosecondDiscardSpellsTeam2Writer.get_file_writer(round); 
+                      MicrosecondDiscardSpellsTeam2Writer.setWriterCreated(false);
+                      writer2 = MicrosecondDiscardSpellsTeam2Writer.get_file_writer(round); 
                       writer2.write("----------------------------\n");
                       writerTemp.write("----------------------------\n");
                       writer2.write(nameOfSpell + "\n"); 
@@ -314,14 +314,14 @@ class FileOperation {
                       writerTemp.write("----------------------------\n");
                       writer2.close(); 
                       for(int i = 0; i < size; i++) {
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(line2 + "\n");
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                        NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(line2 + "\n");
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                       }
                     }
                   } catch (IOException sube2) {
@@ -351,33 +351,33 @@ class FileOperation {
                   writer3.close(); 
                   if(label.equals("t1")) {
                     for(int i = 0; i < size; i++) {
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(line3 + "\n");
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                      NanosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      MicrosecondDiscardTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                     }
                   }
                   else if(label.equals("t2")) {
                     for(int i = 0; i < size; i++) {
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(line3 + "\n");
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                      NanosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                      MicrosecondDiscardTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                     }
                   }
                 } catch (IOException e3) {
                   try {
                     if(label.equals("t1")) {
-                      NanosecondLeftOverSpellsTeam1Writer.setWriterCreated(false);
-                      writer3 = NanosecondLeftOverSpellsTeam1Writer.get_file_writer(round); 
+                      MicrosecondLeftOverSpellsTeam1Writer.setWriterCreated(false);
+                      writer3 = MicrosecondLeftOverSpellsTeam1Writer.get_file_writer(round); 
                       writer3.write("----------------------------\n"); 
                       writerTemp.write("----------------------------\n"); 
                       writer3.write(nameOfSpell + "\n"); 
@@ -394,19 +394,19 @@ class FileOperation {
                       writerTemp.write("----------------------------\n");
                       writer3.close(); 
                       for(int i = 0; i < size; i++) {
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(line3 + "\n");
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                        NanosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam1MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                       }
                     }
                     else if(label.equals("t2")) {
-                      NanosecondLeftOverSpellsTeam2Writer.setWriterCreated(false);
-                      writer3 = NanosecondLeftOverSpellsTeam2Writer.get_file_writer(round); 
+                      MicrosecondLeftOverSpellsTeam2Writer.setWriterCreated(false);
+                      writer3 = MicrosecondLeftOverSpellsTeam2Writer.get_file_writer(round); 
                       writer3.write("----------------------------\n"); 
                       writerTemp.write("----------------------------\n");
                       writer3.write(nameOfSpell + "\n"); 
@@ -423,14 +423,14 @@ class FileOperation {
                       writerTemp.write("----------------------------\n");
                       writer3.close(); 
                       for(int i = 0; i < size; i++) {
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(line3 + "\n");
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
-                        NanosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(line3 + "\n");
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n"); 
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(nameOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(pipsOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(pipChanceOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(countOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write(descriptionOfSpell + "\n"); 
+                        MicrosecondLeftOverTeam2MemberSpellsWriter.file_writers[size].write("----------------------------\n");
                       }
                     }
                   } catch (IOException sube3) {
