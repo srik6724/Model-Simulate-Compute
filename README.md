@@ -1,10 +1,10 @@
-# Product (Model, Simulate, Compute)
+# Interrogative-Word-Build (Model, Simulate, Compute)
 
 Agent_System_1 X Agent_System_2 (1-1 Member Ordering)
 
-1. Model a Product
-2. Simulate a Product
-3. Compute a Product
+1. Model a Interrogative-Word
+2. Simulate a Interrogative-Word
+3. Compute a Interrogative-Word
 
 Future Work:
 
