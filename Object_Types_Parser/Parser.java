@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Object_Types_Parser.Token.TokenType;
-import Product_Process.Product;
+import Interrogative_Word_Process_.Interrogative_Word;
 
 public class Parser {
   private LexicalAnalyzer lexer; 

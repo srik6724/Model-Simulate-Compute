@@ -13,8 +13,8 @@ import java.util.Scanner;
 
 import Model_Knowledge.Credentials;
 import Object_Types.Category;
-import Product_Process.Product;
-import Product_Process.Option;
+import Interrogative_Word_Process_.Interrogative_Word;
+import Interrogative_Word_Process_.Option;
 import RunTime.Disruption.EmptyStringException;
 import RunTime.Disruption.TypeException;
 
@@ -126,11 +126,11 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 
 			if(Option.getFileInUse() == true) {
 				if(initialFixIteration) {
-					Product.getBufferReader().readLine();
-					Product.getBufferReader().readLine();
+					Interrogative_Word.getBufferReader().readLine();
+					Interrogative_Word.getBufferReader().readLine();
 					initialFixIteration = false; 
 				}
-				spellInput = Product.getBufferReader().readLine();
+				spellInput = Interrogative_Word.getBufferReader().readLine();
 				spellInput = spellInput.trim();
 				System.out.println("Spell Input Read Here: " + spellInput);  
 				//Thread.sleep(1000); 
@@ -209,11 +209,11 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 
 			if(Option.getFileInUse() == true) {
 				if(initialFixIteration) {
-					Product.getBufferReader().readLine();
-					Product.getBufferReader().readLine();
+					Interrogative_Word.getBufferReader().readLine();
+					Interrogative_Word.getBufferReader().readLine();
 					initialFixIteration = false; 
 				}
-				spellInput = Product.getBufferReader().readLine();
+				spellInput = Interrogative_Word.getBufferReader().readLine();
 				System.out.println("Spell Input Read Here: " + spellInput);  
 				spellInput = spellInput.trim(); 
 				//Thread.sleep(1000); 
@@ -270,24 +270,8 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 			if(conn1 != null)
 			{
 				HashMap<Integer, String> sqlTests = new HashMap<Integer, String>(); 
-				String sql1 = "SELECT * FROM wizard_schema.energy_units WHERE tag = ?"; 
-				String sql2 = "SELECT * FROM wizard_schema.consumer_discretionary_units WHERE tag = ?"; 
-				String sql3 = "SELECT * FROM wizard_schema.financials_units WHERE tag = ?"; 
-				String sql4 = "SELECT * FROM wizard_schema.materials_units WHERE tag = ?"; 
-				String sql5 = "SELECT * FROM wizard_schema.information_technology_units WHERE tag = ?"; 
-				String sql6 = "SELECT * FROM wizard_schema.healthcare_units WHERE tag = ?"; 
-				String sql7 = "SELECT * FROM wizard_schema.industrials_units WHERE tag = ?"; 
-				String sql8 = "SELECT * FROM wizard_schema.consumer_staples_units WHERE tag = ?"; 
-				String sql9 = "SELECT * FROM wizard_schema.utilities_units WHERE tag = ?"; 
+				String sql1 = "SELECT * FROM wizard_schema.interrogative_words_english WHERE name = ?"; 
 				sqlTests.put(1, sql1); 
-				sqlTests.put(2, sql2); 
-				sqlTests.put(3, sql3);
-				sqlTests.put(4, sql4); 
-				sqlTests.put(5, sql5);
-				sqlTests.put(6, sql6); 
-				sqlTests.put(7, sql7);
-				sqlTests.put(8, sql8); 
-				sqlTests.put(9, sql9); 
 				Outer: 
 				for(int num: sqlTests.keySet())
 				{
@@ -297,7 +281,11 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 					ResultSet rs = stmt.executeQuery(); 
 					while(rs.next())
 					{
-						String name = rs.getString("tag"); 
+						String name = rs.getString("name"); 
+						System.out.println("Name: " + name); 
+						String description = rs.getString("description"); 
+						System.out.println("Description: " + description); 
+						/*String name = rs.getString("tag"); 
 						System.out.println("Name: " + name); 
 						String level = rs.getString("lifetime"); 
 						System.out.println("Level: " + level); 
@@ -314,9 +302,16 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 						boolean accessByOtherSchools = Boolean.parseBoolean(rs.getString("applicableToOtherCategories")); 
 						System.out.println("Access By Other Schools: " + accessByOtherSchools);
 						boolean accessByTC = Boolean.parseBoolean(rs.getString("accessBySecondaryStorage")); 
-						System.out.println("Access By TC: " + accessByTC);
+						System.out.println("Access By TC: " + accessByTC);*/
+
+						if(name != null && description != null) {
+							createSpell = countSpell(spellList, countOfEachSpell, name); 
+							if(createSpell == null) {
+								createSpell = new Category<Unit>(name, description); 
+							}
+						}
 						
-						if(name != null && level != null && description != null && pip_chance != null && pips != null && school != null && school_typeSpell != null)
+						/*if(name != null && description != null)
 						{
 							//System.out.println("School Identity: " + collectIdentity); 
 							if(school.toLowerCase().equals(collectIdentity.toLowerCase()))
@@ -324,7 +319,7 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 								createSpell = countSpell(spellList, countOfEachSpell, name); 
 								if(createSpell == null)
 								{
-									createSpell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, school_typeSpell); 
+									createSpell = new Category<Unit>(name, description); 
 								}
 								else 
 								{
@@ -396,7 +391,7 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 									createSpell = new Category<Unit>(name, level, description, pip_chance, pips, currentCount, school, school_typeSpell); 
 								}
 							}
-						}
+						}*/
 					}
 				}
 				return createSpell; 

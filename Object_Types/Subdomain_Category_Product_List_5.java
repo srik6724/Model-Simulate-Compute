@@ -39,18 +39,19 @@ public class Subdomain_Category_Product_List_5<T> {
             	Statement st1 = conn1.createStatement(); 
             	if(st1 != null)
             	{
-            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.financials_units");
+            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.interrogative_words_english");
             		while(rs.next())
             		{
-            			String name = rs.getString("tag"); 
-            			String level = rs.getString("lifetime"); 
-            			String description = rs.getString("information"); 
-            			String pip_chance = rs.getString("success_build_rate");
-            			String pips = rs.getString("assembly_no_of_steps"); 
-									String school = rs.getString("category"); 
-            			String life_typeSpell = rs.getString("industryType"); 
+            			String name = rs.getString("name"); 
+									String description = rs.getString("description"); 
+            			//String level = rs.getString("lifetime"); 
+            			//String description = rs.getString("information"); 
+            			//String pip_chance = rs.getString("success_build_rate");
+            			//String pips = rs.getString("assembly_no_of_steps"); 
+									//String school = rs.getString("category"); 
+            			//String life_typeSpell = rs.getString("industryType"); 
             			
-            			Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, life_typeSpell); 
+            			Category<Unit> spell = new Category<Unit>(name, description); 
             			
             			lifeSpells.add(spell); 
             		}

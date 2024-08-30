@@ -2,10 +2,10 @@ package Logging_Process;
 
 import java.util.logging.*;
 
-import Product_Process.Product;
+import Interrogative_Word_Process_.Interrogative_Word;
 
 public class LoggingStorage {
-  public final static Logger logger = Logger.getLogger(Product.class.getName());
+  public final static Logger logger = Logger.getLogger(Interrogative_Word.class.getName());
 
   public final static Logger getLogger() {
     return logger;

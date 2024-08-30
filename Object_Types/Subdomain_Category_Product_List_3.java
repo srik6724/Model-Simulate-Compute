@@ -38,7 +38,7 @@ public class Subdomain_Category_Product_List_3<T> {
             	Statement st1 = conn1.createStatement(); 
             	if(st1 != null)
             	{
-            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.fire_spells");
+            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.interrogative_words_french");
             		while(rs.next())
             		{
             			String name = rs.getString("name"); 
@@ -49,9 +49,9 @@ public class Subdomain_Category_Product_List_3<T> {
 									String school = rs.getString("school"); 
             			String fire_typeSpell = rs.getString("typeSpell"); 
             			
-            			Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, fire_typeSpell); 
+            			//Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, fire_typeSpell); 
             			
-            			fireSpells.add(spell); 
+            			//fireSpells.add(spell); 
             		}
 								conn1.close(); 
 								List<List<Category<Unit>>> createdFireSpells = null; 
