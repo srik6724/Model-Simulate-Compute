@@ -50,7 +50,7 @@ public class Subdomain_Category_Product_List_6<T> {
 									String school = rs.getString("school"); 
             			String myth_typeSpell = rs.getString("typeSpell"); 
             			
-            			Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, myth_typeSpell); 
+            			Category<Unit> spell = new Category<Unit>(name, description); 
             			
             			mythSpells.add(spell); 
             		}

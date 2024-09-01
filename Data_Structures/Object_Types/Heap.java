@@ -78,23 +78,23 @@ public class Heap {
 						for(Element e: mainDeckElements)
 						{
 							e.setSpellName(mD[mainDeckCounter].getName());
-							e.setPipChance(mD[mainDeckCounter].getPipChance());
-							e.setPips(mD[mainDeckCounter].getPips());
-							e.setCount(mD[mainDeckCounter].getCount());
-							e.setDescription(mD[mainDeckCounter].getDescription());
-							e.setSchool(mD[mainDeckCounter].getSchool());  
-							e.setTypeSpell(mD[mainDeckCounter].getTypeSpell());
+							//e.setPipChance(mD[mainDeckCounter].getPipChance());
+							//e.setPips(mD[mainDeckCounter].getPips());
+							//e.setCount(mD[mainDeckCounter].getCount());
+							//e.setDescription(mD[mainDeckCounter].getDescription());
+							//e.setSchool(mD[mainDeckCounter].getSchool());  
+							//e.setTypeSpell(mD[mainDeckCounter].getTypeSpell());
 							mainDeckCounter++;
 						}
 						int tcDeckCounter = 0; 
 						for(Element e: tcDeckElements)
 						{
 							e.setSpellName(tC[tcDeckCounter].getName());
-							e.setPipChance(tC[tcDeckCounter].getPipChance());
-							e.setPips(tC[tcDeckCounter].getPips());
-							e.setCount(tC[tcDeckCounter].getCount());
-							e.setDescription(tC[tcDeckCounter].getDescription());
-							e.setTypeSpell(tC[tcDeckCounter].getTypeSpell()); 
+							//e.setPipChance(tC[tcDeckCounter].getPipChance());
+							//e.setPips(tC[tcDeckCounter].getPips());
+							//e.setCount(tC[tcDeckCounter].getCount());
+							//e.setDescription(tC[tcDeckCounter].getDescription());
+							//e.setTypeSpell(tC[tcDeckCounter].getTypeSpell()); 
 							tcDeckCounter++; 
 						}
 						mainDeckElements = buildHeap(mainDeckElements, identity, selectionNo, "main"); 
@@ -157,7 +157,7 @@ public class Heap {
 			int leftIndex = 2 * i; 
 			int rightIndex = (2 * i) + 1; 
 			int smallestIndex = i;
-			if(leftIndex <= elements.length && Integer.parseInt(elements[leftIndex-1].getPips()) < Integer.parseInt(elements[i-1].getPips()))
+			if(leftIndex <= elements.length) // && Integer.parseInt(elements[leftIndex-1].getPips()) < Integer.parseInt(elements[i-1].getPips()))
 			{
 				smallestIndex = leftIndex; 
 			}
@@ -165,7 +165,7 @@ public class Heap {
 			{
 				smallestIndex = i; 
 			}
-			if(rightIndex <= elements.length && Integer.parseInt(elements[rightIndex-1].getPips()) < Integer.parseInt(elements[smallestIndex-1].getPips()))
+			if(rightIndex <= elements.length) //&& Integer.parseInt(elements[rightIndex-1].getPips()) < Integer.parseInt(elements[smallestIndex-1].getPips()))
 			{
 				smallestIndex = rightIndex;
 			}
@@ -205,7 +205,7 @@ public class Heap {
 			{
 				System.out.println("Spell Name: " + e.getSpellName()); 
 				f.write("Spell Name: " + e.getSpellName() + "\n"); 
-				System.out.println("Count: " + e.getCount()); 
+				/*System.out.println("Count: " + e.getCount()); 
 				f.write("Count: " + e.getCount() + "\n"); 
 				System.out.println("Description: " + e.getDescription()); 
 				f.write("Description: " + e.getDescription() + "\n"); 
@@ -220,18 +220,18 @@ public class Heap {
 				System.out.println("-----------------------------------"); 
 				f.write("-----------------------------------" + "\n");
 				System.out.println("Extracting type of spell info: " + e.getTypeSpell()); 
-				Type_Set.initialize(e.getTypeSpell(), e);
+				Type_Set.initialize(e.getTypeSpell(), e);*/
 			}
 			f.close(); 
 			System.out.println("Reading the deck file now"); 
-			try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
+			/*try(BufferedReader reader = new BufferedReader(new FileReader(files[0]))) {
 				String line; 
 				String[] lines = null;
 				if(deckType.equals("main")) {
-					lines = new String[514]; 
+					lines = new String[82]; 
 				}
 				else if(deckType.equals("tc")) {
-					lines = new String[322]; 
+					lines = new String[82]; 
 				}
 				int index = 0; 
 				while((line = reader.readLine()) != null) {
@@ -239,7 +239,7 @@ public class Heap {
 					index++;
 				}
 				new Parser(Arrays.asList(lines), deckType, identity);
-			}
+			}*/
 			return elements; 
 }
 
@@ -269,11 +269,11 @@ public class Heap {
 					for(int i = 0; i < tcDeck.length; i++)
 					{
 						System.out.println("Spell Name: " + tcDeck[i].getName());
-						System.out.println("Count: " + tcDeck[i].getCount()); 
+						//System.out.println("Count: " + tcDeck[i].getCount()); 
 						System.out.println("Description: " + tcDeck[i].getDescription()); 
-						System.out.println("Pip Chance: " + tcDeck[i].getPipChance()); 
-						System.out.println("Pips: " + tcDeck[i].getPips()); 
-						System.out.println("Type Of Spell: " + tcDeck[i].getTypeSpell()); 
+						//System.out.println("Pip Chance: " + tcDeck[i].getPipChance()); 
+						//System.out.println("Pips: " + tcDeck[i].getPips()); 
+						//System.out.println("Type Of Spell: " + tcDeck[i].getTypeSpell()); 
 					}
 					//Retrieve mainDeckInfo
 					mainDeckInfo = new HeapMetrics(mainDeck.length, Primary_Storage.maxSpells("mainDeck")); 

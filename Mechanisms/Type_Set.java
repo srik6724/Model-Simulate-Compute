@@ -51,7 +51,7 @@ public class Type_Set {
     System.out.println("Creating file entry for type: " + type); 
     File file;
     String fileName = "category_type_" + type.toLowerCase() + ".txt";
-		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Product-Build-(1-1)");
+		Path directory = Paths.get("C:/Users/srik6/OneDrive/Desktop/Verb-Build-(1-1)");
     Path filePath = directory.resolve(fileName); 
     FileWriter file_writer; 
     if(!(Files.exists(filePath))) {
@@ -60,27 +60,27 @@ public class Type_Set {
       file_writer.write("CATEGORY TYPE: " + type); 
       file_writer.write("-----------------------------------"); 
       file_writer.write("Spell Name:" + e.getSpellName()); 
-      file_writer.write("Count: " + e.getCount()); 
+      /*file_writer.write("Count: " + e.getCount()); 
       file_writer.write("Description: " + e.getDescription());
       file_writer.write("Pip Chance: " + e.getPipChance()); 
       file_writer.write("Pips: " + e.getPips()); 
       file_writer.write("School: " + e.getSchool()); 
       file_writer.write("Type Of Spell: " + e.getTypeSpell());
-      Type_Set.UNIQUE_SPELL_TYPES_COUNT.put(e.getTypeSpell(), 11); 
-      System.out.println("INITIAL PLACEMENT: " + UNIQUE_SPELL_TYPES_COUNT.get(e.getTypeSpell())); 
+      Type_Set.UNIQUE_SPELL_TYPES_COUNT.put(e.getTypeSpell(), 11); */
+      //System.out.println("INITIAL PLACEMENT: " + UNIQUE_SPELL_TYPES_COUNT.get(e.getTypeSpell())); 
     }
     else {
       String objectContainer = "-----------------------------------\n"
-                              + "Spell Name: " + e.getSpellName() + "\n"
-                              + "Count: " + e.getCount() + "\n"
+                              + "Spell Name: " + e.getSpellName() + "\n";
+                             /* + "Count: " + e.getCount() + "\n"
                               + "Description: " + e.getDescription() + "\n"
                               + "Pip Chance: " + e.getPipChance() + "\n"
                               + "Pips: " + e.getPips() + "\n"
                               + "School: " + e.getSchool() + "\n"
                               + "Type Of Spell: " + e.getTypeSpell() + "\n";
       Files.write(filePath, objectContainer.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND); 
-      int count = UNIQUE_SPELL_TYPES_COUNT.get(e.getTypeSpell());
-      System.out.println("COUNT RETRIEVAL: " + count); 
+      int count = UNIQUE_SPELL_TYPES_COUNT.get(e.getTypeSpell()); */
+      /*System.out.println("COUNT RETRIEVAL: " + count); 
       String numberWord = String.valueOf(count); 
       System.out.println("NUMBER WORD: " + numberWord); 
       String digitWordForm = numberWord.substring(1); 
@@ -89,7 +89,7 @@ public class Type_Set {
       numberCount++; 
       String modifiedNumberWord = numberWord.substring(0,1) + numberCount;
       System.out.println("MODIFIED NUMBER WORD: " + modifiedNumberWord);
-      Type_Set.UNIQUE_SPELL_TYPES_COUNT.put(e.getTypeSpell(), Integer.parseInt(modifiedNumberWord));
+      Type_Set.UNIQUE_SPELL_TYPES_COUNT.put(e.getTypeSpell(), Integer.parseInt(modifiedNumberWord));*/
     }
   }
 

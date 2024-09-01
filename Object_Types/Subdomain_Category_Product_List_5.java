@@ -39,7 +39,7 @@ public class Subdomain_Category_Product_List_5<T> {
             	Statement st1 = conn1.createStatement(); 
             	if(st1 != null)
             	{
-            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.financials_units");
+            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.verbs_english");
             		while(rs.next())
             		{
             			String name = rs.getString("tag"); 
@@ -50,7 +50,7 @@ public class Subdomain_Category_Product_List_5<T> {
 									String school = rs.getString("category"); 
             			String life_typeSpell = rs.getString("industryType"); 
             			
-            			Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, life_typeSpell); 
+            			Category<Unit> spell = new Category<Unit>(name, description); 
             			
             			lifeSpells.add(spell); 
             		}

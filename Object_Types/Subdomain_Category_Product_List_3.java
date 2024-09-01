@@ -49,7 +49,7 @@ public class Subdomain_Category_Product_List_3<T> {
 									String school = rs.getString("school"); 
             			String fire_typeSpell = rs.getString("typeSpell"); 
             			
-            			Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, fire_typeSpell); 
+            			Category<Unit> spell = new Category<Unit>(name, description); 
             			
             			fireSpells.add(spell); 
             		}

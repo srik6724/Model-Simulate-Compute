@@ -48,7 +48,7 @@ public class Subdomain_Category_Product_List_7<T> {
 									String school = rs.getString("school"); 
             			String storm_typeSpell = rs.getString("storm_typeSpell"); 
             			
-            			Category<Unit> spell = new Category<Unit>(name, level, description, pip_chance, pips, 1, school, storm_typeSpell); 
+            			Category<Unit> spell = new Category<Unit>(name, description); 
             			
             			stormSpells.add(spell); 
             			 

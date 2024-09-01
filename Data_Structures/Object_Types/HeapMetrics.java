@@ -22,7 +22,7 @@ public class HeapMetrics {
     elements = new Element[size]; 
     for(int i = 0; i < elements.length; i++)
     {
-      elements[i] = new Element("Insert SpellName Here", 0, "Insert Description Here", "Insert Pip Chance Here", "Insert Number Of Pips Here", "Insert School Name Here", "Insert Type Of Spell Here");
+      elements[i] = new Element("Insert SpellName Here");
     }
     extractHeapInfo();
   }
