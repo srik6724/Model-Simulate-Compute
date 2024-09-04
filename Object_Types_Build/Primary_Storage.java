@@ -6,7 +6,7 @@ public interface Primary_Storage {
 	{
 		if(deckType.equals("mainDeck"))
 		{
-			return 10; 
+			return 3; 
 		}
 		return -1; 
 	}

@@ -13,8 +13,8 @@ import Components.Bind_1;
 import Components.Model_Specifications;
 import Model_Extensions.Socket;
 import Model_Knowledge.Credentials;
-import Verb_Process.Verb;
-import Verb_Process.Option;
+import Article_Process.Article;
+import Article_Process.Option;
 
 public class Title_Bind_1 extends Bind_1 implements Model_Specifications {
   private int health; 
@@ -196,8 +196,8 @@ public class Title_Bind_1 extends Bind_1 implements Model_Specifications {
 							}
             }
 						else {
-              Verb.getBufferReader().readLine(); 
-              addAttachment = Verb.getBufferReader().readLine();
+              Article.getBufferReader().readLine(); 
+              addAttachment = Article.getBufferReader().readLine();
             }
 						Statement statement = conn1.createStatement(); 
 						String sqlString = "SELECT * FROM wizard_schema." + socket.getType() + "_sockets";

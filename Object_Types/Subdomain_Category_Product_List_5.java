@@ -39,7 +39,7 @@ public class Subdomain_Category_Product_List_5<T> {
             	Statement st1 = conn1.createStatement(); 
             	if(st1 != null)
             	{
-            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.verbs_english");
+            		ResultSet rs = st1.executeQuery("SELECT * FROM wizard_schema.articles_english");
             		while(rs.next())
             		{
             			String name = rs.getString("tag"); 

@@ -13,8 +13,8 @@ import java.util.Scanner;
 
 import Model_Knowledge.Credentials;
 import Object_Types.Category;
-import Verb_Process.Verb;
-import Verb_Process.Option;
+import Article_Process.Article;
+import Article_Process.Option;
 import RunTime.Disruption.EmptyStringException;
 import RunTime.Disruption.TypeException;
 
@@ -126,11 +126,11 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 
 			if(Option.getFileInUse() == true) {
 				if(initialFixIteration) {
-					Verb.getBufferReader().readLine();
-					Verb.getBufferReader().readLine();
+					Article.getBufferReader().readLine();
+					Article.getBufferReader().readLine();
 					initialFixIteration = false; 
 				}
-				spellInput = Verb.getBufferReader().readLine();
+				spellInput = Article.getBufferReader().readLine();
 				spellInput = spellInput.trim();
 				System.out.println("Spell Input Read Here: " + spellInput);  
 				//Thread.sleep(1000); 
@@ -209,11 +209,11 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 
 			if(Option.getFileInUse() == true) {
 				if(initialFixIteration) {
-					Verb.getBufferReader().readLine();
-					Verb.getBufferReader().readLine();
+					Article.getBufferReader().readLine();
+					Article.getBufferReader().readLine();
 					initialFixIteration = false; 
 				}
-				spellInput = Verb.getBufferReader().readLine();
+				spellInput = Article.getBufferReader().readLine();
 				System.out.println("Spell Input Read Here: " + spellInput);  
 				spellInput = spellInput.trim(); 
 				//Thread.sleep(1000); 
@@ -270,7 +270,7 @@ public class Cache implements Label, Primary_Storage, Secondary_Storage {
 			if(conn1 != null)
 			{
 				HashMap<Integer, String> sqlTests = new HashMap<Integer, String>(); 
-				String sql1 = "SELECT * FROM wizard_schema.verbs_english WHERE name = ?"; 
+				String sql1 = "SELECT * FROM wizard_schema.articles_english WHERE name = ?"; 
 				sqlTests.put(1, sql1); 
 				Outer: 
 				for(int num: sqlTests.keySet())

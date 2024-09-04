@@ -6,7 +6,7 @@ public interface Secondary_Storage {
 	{
 		if(typeName.equals("tcDeck"))
 		{
-			return 10;
+			return 3;
 		}
 		return -1; 
 	}
