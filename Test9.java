@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Test {
+public class Test9 {
 
-    Test() {
+    Test9() {
         
     }
 
@@ -13,140 +13,106 @@ public class Test {
     }
     public static void main(String[]args) {
         List<String> main_deck_wizard_1_t1 = new ArrayList<String>(); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Balefrost, Pips Of Spell: 2, Pip Chance: 100%, School: Ice, Description Of Spell: Applies a +25% Ice Damage Global"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Balefrost, Pips Of Spell: 2, Pip Chance: 100%, School: Ice, Description Of Spell: Applies a +25% Ice Damage Global"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Balefrost, Pips Of Spell: 2, Pip Chance: 100%, School: Ice, Description Of Spell: Applies a +25% Ice Damage Global"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Balefrost, Pips Of Spell: 2, Pip Chance: 100%, School: Ice, Description Of Spell: Applies a +25% Ice Damage Global");
-        main_deck_wizard_1_t1.add("Name Of Spell: Wall Of Blades, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three helpful Charms from target to apply up to three -20% Damage or Steal Wards on caster.");
-        main_deck_wizard_1_t1.add("Name Of Spell: Wall Of Blades, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three helpful Charms from target to apply up to three -20% Damage or Steal Wards on caster."); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Wall Of Blades, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three helpful Charms from target to apply up to three -20% Damage or Steal Wards on caster."); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Glacial Fortress, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from ally to apply up to three -20% Damage or Steal Wards on ally"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Glacial Fortress, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from ally to apply up to three -20% Damage or Steal Wards on ally");
-        main_deck_wizard_1_t1.add("Name Of Spell: Glacial Fortress, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from ally to apply up to three -20% Damage or Steal Wards on ally"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Glacial Fortress, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from ally to apply up to three -20% Damage or Steal Wards on ally"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Glacial Fortress, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from ally to apply up to three -20% Damage or Steal Wards on ally"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Glacial Fortress, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from ally to apply up to three -20% Damage or Steal Wards on ally"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Jinn's Vexation, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from caster to apply up to three -10% Damage Charms on enemy"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Jinn's Vexation, Pips Of Spell: 3, Pip Chance: 100%, School: Ice, Description Of Spell: Removes up to three harmful Charms from caster to apply up to three -10% Damage Charms on enemy"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Volcanic Shield, Pips Of Spell: 0, Pip Chance: 100%, School: Ice, Description Of Spell: Applies -70% Fire and Storm Damage Wards"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Volcanic Shield, Pips Of Spell: 0, Pip Chance: 100%, School: Ice, Description Of Spell: Applies -70% Fire and Storm Damage Wards"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Volcanic Shield, Pips Of Spell: 0, Pip Chance: 100%, School: Ice, Description Of Spell: Applies -70% Fire and Storm Damage Wards"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Volcanic Shield, Pips Of Spell: 0, Pip Chance: 100%, School: Ice, Description Of Spell: Applies -70% Fire and Storm Damage Wards"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Volcanic Shield, Pips Of Spell: 0, Pip Chance: 100%, School: Ice, Description Of Spell: Applies -70% Fire and Storm Damage Wards"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Volcanic Shield, Pips Of Spell: 0, Pip Chance: 100%, School: Ice, Description Of Spell: Applies -70% Fire and Storm Damage Wards"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Brilliant Light, Pips Of Spell: 1, Pip Chance: 100%, School: Life, Description Of Spell: Applies a +30% Healing Charm on all allies");
-        main_deck_wizard_1_t1.add("Name Of Spell: Pacify on Any Wizard, Pips Of Spell: 3, Pip Chance: 100%, School: Life, Description Of Spell: Pacifies any wizard for 1 round"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Pacify on Any Wizard, Pips Of Spell: 3, Pip Chance: 100%, School: Life, Description Of Spell: Pacifies any wizard for 1 round");
-        main_deck_wizard_1_t1.add("Name Of Spell: Guiding Light, Pips Of Spell: 0, Pip Chance: 100%, School: Life Description Of Spell: Applies a +35% Healing Charm"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Guiding Light, Pips Of Spell: 0, Pip Chance: 100%, School: Life, Description Of Spell: Applies a +35% Healing Charm"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Pacify on Self, Pips Of Spell: 2, Pip Chance: 100%, School: Life, Description Of Spell: Pacifies self for 1 round"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Pacify on Self, Pips Of Spell: 2, Pip Chance: 100%, School: Life, Description Of Spell: Pacifies self for 1 round.");  
-        main_deck_wizard_1_t1.add("Name Of Spell: Minor Blessing, Pips Of Spell: 0, Pip Chance: 100%, School: Life, Description Of Spell: Restores 120 health"); 
-        main_deck_wizard_1_t1.add("Name Of Spell: Minor Blessing, Pips Of Spell: 0, Pip Chance: 100%, School: Life, Description Of Spell: Restores 120 health");
-        main_deck_wizard_1_t1.add("Name Of Spell: Minor Blessing, Pips Of Spell: 0, Pip Chance: 100%, School: Life, Description Of Spell: Restores 120 health");
-        main_deck_wizard_1_t1.add("Minor Blessing"); 
-        main_deck_wizard_1_t1.add("Pixie");
-        main_deck_wizard_1_t1.add("Pixie"); 
-        main_deck_wizard_1_t1.add("Pixie");
-        main_deck_wizard_1_t1.add("Pixie");
-        main_deck_wizard_1_t1.add("Pixie");
-        main_deck_wizard_1_t1.add("Regenerate");
-        main_deck_wizard_1_t1.add("Regenerate");
-        main_deck_wizard_1_t1.add("Regenerate");
-        main_deck_wizard_1_t1.add("Regenerate");
-        main_deck_wizard_1_t1.add("Regenerate");
-        main_deck_wizard_1_t1.add("Regenerate");
-        main_deck_wizard_1_t1.add("Sanctuary");
-        main_deck_wizard_1_t1.add("Sanctuary");
-        main_deck_wizard_1_t1.add("Sanctuary"); 
-        main_deck_wizard_1_t1.add("Renew");
-        main_deck_wizard_1_t1.add("Renew");
-        main_deck_wizard_1_t1.add("Renew");
-        main_deck_wizard_1_t1.add("Renew");
-        main_deck_wizard_1_t1.add("Infection");
-        main_deck_wizard_1_t1.add("Infection");
-        main_deck_wizard_1_t1.add("Infection");
-        main_deck_wizard_1_t1.add("Infection"); 
-        main_deck_wizard_1_t1.add("Putrefaction");
-        main_deck_wizard_1_t1.add("Putrefaction");
-        main_deck_wizard_1_t1.add("Putrefaction");
-        main_deck_wizard_1_t1.add("Putrefaction");
-        main_deck_wizard_1_t1.add("Contagion");
-        main_deck_wizard_1_t1.add("Contagion"); 
-        main_deck_wizard_1_t1.add("Threefold Fever"); 
-        main_deck_wizard_1_t1.add("Threefold Fever"); 
-        main_deck_wizard_1_t1.add("Threefold Fever");
-        main_deck_wizard_1_t1.add("Threefold Fever"); 
+        main_deck_wizard_1_t1.add("Wyldfire"); 
+        main_deck_wizard_1_t1.add("Wyldfire"); 
+        main_deck_wizard_1_t1.add("Wyldfire"); 
+        main_deck_wizard_1_t1.add("Wyldfire");
+        main_deck_wizard_1_t1.add("Immolate");
+        main_deck_wizard_1_t1.add("Blast Off"); 
+        main_deck_wizard_1_t1.add("Fire-Dragon"); 
+        main_deck_wizard_1_t1.add("Fire-Dragon"); 
+        main_deck_wizard_1_t1.add("Fire-Dragon");
+        main_deck_wizard_1_t1.add("Fire-Dragon"); 
+        main_deck_wizard_1_t1.add("Caldera Jinn"); 
+        main_deck_wizard_1_t1.add("Caldera Jinn"); 
+        main_deck_wizard_1_t1.add("Caldera Jinn"); 
+        main_deck_wizard_1_t1.add("Fuel"); 
+        main_deck_wizard_1_t1.add("Fuel"); 
+        main_deck_wizard_1_t1.add("Fuel"); 
+        main_deck_wizard_1_t1.add("Bernie Notice"); 
+        main_deck_wizard_1_t1.add("Bernie Notice"); 
+        main_deck_wizard_1_t1.add("Fireblade");
+        main_deck_wizard_1_t1.add("Fireblade");
+        main_deck_wizard_1_t1.add("Fireblade"); 
+        main_deck_wizard_1_t1.add("Fireblade"); 
+        main_deck_wizard_1_t1.add("Fireblade"); 
+        main_deck_wizard_1_t1.add("Fireblade");
+        main_deck_wizard_1_t1.add("Glacial Shield"); 
+        main_deck_wizard_1_t1.add("Glacial Shield"); 
+        main_deck_wizard_1_t1.add("Glacial Shield"); 
+        main_deck_wizard_1_t1.add("Glacial Shield"); 
+        main_deck_wizard_1_t1.add("Glacial Shield"); 
+        main_deck_wizard_1_t1.add("Glacial Shield"); 
+        main_deck_wizard_1_t1.add("Glacial Fortress"); 
+        main_deck_wizard_1_t1.add("Glacial Fortress"); 
+        main_deck_wizard_1_t1.add("Jinn's Vexation"); 
+        main_deck_wizard_1_t1.add("Jinn's Vexation");
+        main_deck_wizard_1_t1.add("Jinn's Vexation");
+        main_deck_wizard_1_t1.add("Jinn's Vexation"); 
+        main_deck_wizard_1_t1.add("Oni's Forge"); 
+        main_deck_wizard_1_t1.add("Oni's Forge"); 
+        main_deck_wizard_1_t1.add("Infernal Oni");
+        main_deck_wizard_1_t1.add("Choke"); 
+        main_deck_wizard_1_t1.add("Choke"); 
+        main_deck_wizard_1_t1.add("Fire from Above"); 
+        main_deck_wizard_1_t1.add("Fire from Above"); 
+        main_deck_wizard_1_t1.add("Fire from Above"); 
+        main_deck_wizard_1_t1.add("Snowball Barrage"); 
+        main_deck_wizard_1_t1.add("Smoke Screen"); 
+        main_deck_wizard_1_t1.add("Smoke Screen"); 
+        main_deck_wizard_1_t1.add("Smoke Screen"); 
+        main_deck_wizard_1_t1.add("Smoke Screen");
+        main_deck_wizard_1_t1.add("Smoke Screen");
+        main_deck_wizard_1_t1.add("Raging Bull"); 
+        main_deck_wizard_1_t1.add("Raging Bull"); 
+        main_deck_wizard_1_t1.add("Raging Bull"); 
+        main_deck_wizard_1_t1.add("Raging Bull");
+        main_deck_wizard_1_t1.add("Volcanic Shield"); 
+        main_deck_wizard_1_t1.add("S'mores"); 
+        main_deck_wizard_1_t1.add("S'mores"); 
+        main_deck_wizard_1_t1.add("Meteor Strike"); 
+        main_deck_wizard_1_t1.add("Meteor Strike"); 
+        main_deck_wizard_1_t1.add("Meteor Strike"); 
+        main_deck_wizard_1_t1.add("Steal Charm"); 
+        main_deck_wizard_1_t1.add("Oni's Shadow"); 
+        main_deck_wizard_1_t1.add("Steal Pip"); 
+        main_deck_wizard_1_t1.add("Shadow Shrike"); 
+        main_deck_wizard_1_t1.add("Shadow Shrike");
+        main_deck_wizard_1_t1.add("Wand-Hit"); 
+        main_deck_wizard_1_t1.add("Wand-Hit"); 
+        main_deck_wizard_1_t1.add("Wand-Hit"); 
+        main_deck_wizard_1_t1.add("Wand-Hit");  
         List<String> main_deck_wizard_2_t1 = new ArrayList<String>(); 
         main_deck_wizard_2_t1.add("Stun Block");
         main_deck_wizard_2_t1.add("Stun Block");
         main_deck_wizard_2_t1.add("Stun Block");
         main_deck_wizard_2_t1.add("Stun Block");
-        main_deck_wizard_2_t1.add("Beguile"); 
-        main_deck_wizard_2_t1.add("Beguile"); 
-        main_deck_wizard_2_t1.add("Dark Pact");
-        main_deck_wizard_2_t1.add("Dark Pact");
-        main_deck_wizard_2_t1.add("Dark Pact");
-        main_deck_wizard_2_t1.add("Dark Pact");
-        main_deck_wizard_2_t1.add("Dark Pact");
-        main_deck_wizard_2_t1.add("Doom And Gloom");
-        main_deck_wizard_2_t1.add("Mass-Infection"); 
-        main_deck_wizard_2_t1.add("Mass-Infection"); 
-        main_deck_wizard_2_t1.add("Mass-Infection"); 
-        main_deck_wizard_2_t1.add("Mass-Infection"); 
-        main_deck_wizard_2_t1.add("Mass-Infection"); 
-        main_deck_wizard_2_t1.add("Mass-Infection"); 
-        main_deck_wizard_2_t1.add("Pacify"); 
-        main_deck_wizard_2_t1.add("Pacify"); 
-        main_deck_wizard_2_t1.add("Plague"); 
-        main_deck_wizard_2_t1.add("Plague"); 
-        main_deck_wizard_2_t1.add("Plague"); 
-        main_deck_wizard_2_t1.add("Plague"); 
-        main_deck_wizard_2_t1.add("Putrefaction"); 
-        main_deck_wizard_2_t1.add("Putrefaction"); 
-        main_deck_wizard_2_t1.add("Putrefaction"); 
-        main_deck_wizard_2_t1.add("Putrefaction"); 
-        main_deck_wizard_2_t1.add("Sacrifice");
-        main_deck_wizard_2_t1.add("Sacrifice");
-        main_deck_wizard_2_t1.add("Sacrifice");
-        main_deck_wizard_2_t1.add("Sacrifice");
-        main_deck_wizard_2_t1.add("Sacrifice");
-        main_deck_wizard_2_t1.add("Sacrifice");
-        main_deck_wizard_2_t1.add("Threefold Fever");
-        main_deck_wizard_2_t1.add("Threefold Fever");
-        main_deck_wizard_2_t1.add("Threefold Fever");
-        main_deck_wizard_2_t1.add("Threefold Fever");
-        main_deck_wizard_2_t1.add("Virulence Plague"); 
-        main_deck_wizard_2_t1.add("Virulence Plague"); 
-        main_deck_wizard_2_t1.add("Virulence Plague"); 
-        main_deck_wizard_2_t1.add("Virulence Plague"); 
-        main_deck_wizard_2_t1.add("Virulence Plague"); 
-        main_deck_wizard_2_t1.add("Virulence Plague"); 
-        main_deck_wizard_2_t1.add("Donate Pip"); 
-        main_deck_wizard_2_t1.add("Donate Pip"); 
-        main_deck_wizard_2_t1.add("Donate Pip"); 
-        main_deck_wizard_2_t1.add("Balance Of Power"); 
-        main_deck_wizard_2_t1.add("Balance Of Power");
-        main_deck_wizard_2_t1.add("Balance Of Power"); 
-        main_deck_wizard_2_t1.add("Balance Of Power"); 
-        main_deck_wizard_2_t1.add("Eye Of Vigilance"); 
-        main_deck_wizard_2_t1.add("Jinn's Fortune"); 
-        main_deck_wizard_2_t1.add("Jinn's Fortune"); 
-        main_deck_wizard_2_t1.add("Steel Giant"); 
-        main_deck_wizard_2_t1.add("Steel Giant"); 
-        main_deck_wizard_2_t1.add("Steel Giant"); 
-        main_deck_wizard_2_t1.add("Steel Giant"); 
-        main_deck_wizard_2_t1.add("Elemental Blade"); 
-        main_deck_wizard_2_t1.add("Elemental Blade"); 
-        main_deck_wizard_2_t1.add("Elemental Blade"); 
-        main_deck_wizard_2_t1.add("Weakness");
-        main_deck_wizard_2_t1.add("Weakness");
-        main_deck_wizard_2_t1.add("Weakness");
-        main_deck_wizard_2_t1.add("Weakness");
-        main_deck_wizard_2_t1.add("Pigsie");
-        main_deck_wizard_2_t1.add("Brace"); 
-        main_deck_wizard_2_t1.add("Brace");
-        main_deck_wizard_2_t1.add("Headless Horseman"); 
+        main_deck_wizard_2_t1.add("Enfeeble"); 
+        main_deck_wizard_2_t1.add("Enfeeble"); 
+        main_deck_wizard_2_t1.add("Darkwind");
+        main_deck_wizard_2_t1.add("Darkwind");
+        main_deck_wizard_2_t1.add("Darkwind");
+        main_deck_wizard_2_t1.add("Darkwind");
+        main_deck_wizard_2_t1.add("Darkwind");
+        main_deck_wizard_2_t1.add("Squall Bugs");
+        main_deck_wizard_2_t1.add("Squall Bugs"); 
+        main_deck_wizard_2_t1.add("Squall Bugs"); 
+        main_deck_wizard_2_t1.add("Squall Bugs"); 
+        main_deck_wizard_2_t1.add("Storm Lord"); 
+        main_deck_wizard_2_t1.add("Storm Lord"); 
+        main_deck_wizard_2_t1.add("Storm Lord"); 
+        main_deck_wizard_2_t1.add("Storm Lord"); 
+        main_deck_wizard_2_t1.add("Storm Lord"); 
+        main_deck_wizard_2_t1.add("Stormblade"); 
+        main_deck_wizard_2_t1.add("Stormblade"); 
+        main_deck_wizard_2_t1.add("Stormblade"); 
+        main_deck_wizard_2_t1.add("Stormblade"); 
+        main_deck_wizard_2_t1.add("Windstorm"); 
+        main_deck_wizard_2_t1.add("Windstorm"); 
+        main_deck_wizard_2_t1.add("Windstorm"); 
+        main_deck_wizard_2_t1.add("Shadow Shrike"); 
+        main_deck_wizard_2_t1.add("Shadow Shrike");
+        main_deck_wizard_2_t1.add("Shadow Shrike");
         List<String> main_deck_wizard_3_t1 = new ArrayList<String>(); 
         main_deck_wizard_3_t1.add("Glacial Fortress"); 
         main_deck_wizard_3_t1.add("Glacial Fortress"); 
@@ -258,42 +224,43 @@ public class Test {
         List<List<String>> tc_deck_wizards = new ArrayList<List<String>>();  
         List<String> tc_deck_wizard_2_t1 = new ArrayList<String>(); 
         List<String> tc_deck_wizard_1_t1 = new ArrayList<String>(); 
+        tc_deck_wizard_1_t1.add("TC Fireblade");
+        tc_deck_wizard_1_t1.add("TC Fireblade");
+        tc_deck_wizard_1_t1.add("TC Fireblade");
+        tc_deck_wizard_1_t1.add("TC Fireblade");
+        tc_deck_wizard_1_t1.add("TC Fire Dragon");
+        tc_deck_wizard_1_t1.add("TC Fire Dragon");
+        tc_deck_wizard_1_t1.add("TC Fire Dragon");
+        tc_deck_wizard_1_t1.add("TC Fire Dragon");
         tc_deck_wizard_1_t1.add("TC Legion-Shield");
         tc_deck_wizard_1_t1.add("TC Legion-Shield");
         tc_deck_wizard_1_t1.add("TC Legion-Shield");
         tc_deck_wizard_1_t1.add("TC Legion-Shield");
         tc_deck_wizard_1_t1.add("TC Legion-Shield");
-        tc_deck_wizard_1_t1.add("TC Stun Block");
-        tc_deck_wizard_1_t1.add("TC Stun Block");
-        tc_deck_wizard_1_t1.add("TC Stun Block");
-        tc_deck_wizard_1_t1.add("TC Stun Block");
-        tc_deck_wizard_1_t1.add("TC Choke");
-        tc_deck_wizard_1_t1.add("TC Choke");
-        tc_deck_wizard_1_t1.add("TC Choke");
-        tc_deck_wizard_1_t1.add("TC Choke");
-        tc_deck_wizard_1_t1.add("TC Choke");
+        tc_deck_wizard_1_t1.add("TC Legion-Shield"); 
         tc_deck_wizard_1_t1.add("TC Empower");
         tc_deck_wizard_1_t1.add("TC Empower");
         tc_deck_wizard_1_t1.add("TC Empower");
-        tc_deck_wizard_1_t1.add("TC Mass-Infection"); 
-        tc_deck_wizard_1_t1.add("TC Mass-Infection");
-        tc_deck_wizard_1_t1.add("TC Mass-Infection");
-        tc_deck_wizard_1_t1.add("TC Mass-Infection");
-        tc_deck_wizard_1_t1.add("TC Mass-Infection");
-        tc_deck_wizard_1_t1.add("TC Cleanse Charm"); 
-        tc_deck_wizard_1_t1.add("TC Cleanse Charm"); 
-        tc_deck_wizard_1_t1.add("TC Cleanse Charm"); 
-        tc_deck_wizard_1_t1.add("TC Cleanse Charm"); 
-        tc_deck_wizard_1_t1.add("TC Cleanse Charm"); 
-        tc_deck_wizard_1_t1.add("TC Balance Blade"); 
+        tc_deck_wizard_1_t1.add("TC Empower");
+        tc_deck_wizard_1_t1.add("TC Empower"); 
+        tc_deck_wizard_1_t1.add("TC Empower"); 
+        tc_deck_wizard_1_t1.add("TC Empower"); 
+        tc_deck_wizard_1_t1.add("TC Infallible"); 
+        tc_deck_wizard_1_t1.add("TC Infallible");
+        tc_deck_wizard_1_t1.add("TC Infallible");
+        tc_deck_wizard_1_t1.add("TC Infallible");
         tc_deck_wizard_1_t1.add("TC Reshuffle");
-        tc_deck_wizard_1_t1.add("TC Elemental Blade"); 
-        tc_deck_wizard_1_t1.add("TC Elemental Blade");
-        tc_deck_wizard_1_t1.add("TC Elemental Blade"); 
-        tc_deck_wizard_1_t1.add("TC Weakness"); 
-        tc_deck_wizard_1_t1.add("TC Weakness"); 
+        tc_deck_wizard_1_t1.add("TC Reshuffle");
+        tc_deck_wizard_1_t1.add("TC Weakness");
+        tc_deck_wizard_1_t1.add("TC Weakness");
+        tc_deck_wizard_1_t1.add("TC Weakness");
+        tc_deck_wizard_1_t1.add("TC Weakness");
         tc_deck_wizard_1_t1.add("TC Weakness"); 
         tc_deck_wizard_1_t1.add("TC Weakness");
+        tc_deck_wizard_1_t1.add("TC Fire Elf");
+        tc_deck_wizard_1_t1.add("TC Fire Elf");
+        tc_deck_wizard_1_t1.add("TC Fire Elf");
+
         tc_deck_wizards.add(tc_deck_wizard_1_t1);
 
         List<String> main_deck_wizard_1_t2 = new ArrayList<String>(); 
@@ -316,8 +283,8 @@ public class Test {
         boolean fifthIndexFlag = true; 
         boolean sixthIndexFlag = true; 
         boolean seventhIndexFlag = true;
-        int main_deck_size = 64; 
-        int tc_deck_size = 36; 
+        int main_deck_size = main_deck_wizard_1_t1.size(); 
+        int tc_deck_size = tc_deck_wizard_1_t1.size(); 
         int firstIndex = 0; 
         int firstIndex_ = 0; 
         int secondIndex = 0; 
@@ -333,68 +300,77 @@ public class Test {
         int seventhIndex = 0;
         int seventhIndex_ = 0; 
         while((main_deck_size + tc_deck_size) > 0) {
+            System.out.println("CARDS REMAINING: " + (main_deck_size + tc_deck_size));
             if(firstIndexFlag == true) {
-                firstIndex = (int)(Math.random() * 64);
+                firstIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                 sevenRandomIndexes[0] = main_deck_wizard_1_t1.get(firstIndex); 
-                int firstSpellIndex = sevenRandomIndexes[0].indexOf(":") + 2; 
+                /*int firstSpellIndex = sevenRandomIndexes[0].indexOf(":") + 2; 
                 String nameOfSpell = ""; 
                 for(int i = firstSpellIndex; i < sevenRandomIndexes[0].indexOf(","); i++) {
                     nameOfSpell += sevenRandomIndexes[0].substring(i, i+1);
                 }
-                sevenRandomIndexes[0] = nameOfSpell;
-                System.out.println(sevenRandomIndexes[0]);
+                sevenRandomIndexes[0] = nameOfSpell;*/
+                //System.out.println(sevenRandomIndexes[0]);
                 while(sevenRandomIndexes[0] == "X") {
+                    firstIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                     sevenRandomIndexes[0] = main_deck_wizard_1_t1.get(firstIndex); 
-                    int firstSpellIndex2 = sevenRandomIndexes[0].indexOf(":") + 2; 
+                    /*int firstSpellIndex2 = sevenRandomIndexes[0].indexOf(":") + 2; 
                     String nameOfSpell2 = ""; 
                     for(int i = firstSpellIndex2; i < sevenRandomIndexes[0].indexOf(","); i++) {
                         nameOfSpell2 += sevenRandomIndexes[0].substring(i, i+1);
                     }
-                    sevenRandomIndexes[0] = nameOfSpell2;
+                    sevenRandomIndexes[0] = nameOfSpell2;*/
                 }
             }
             if(secondIndexFlag == true) {
-                secondIndex = (int)(Math.random() * 64);
+                secondIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                 sevenRandomIndexes[1] = main_deck_wizard_1_t1.get(secondIndex); 
                 while(sevenRandomIndexes[1] == "X") {
+                    secondIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                     sevenRandomIndexes[1] = main_deck_wizard_1_t1.get(secondIndex); 
                 }
             }
             if(thirdIndexFlag == true) {
-                thirdIndex = (int)(Math.random() * 64);
+                thirdIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                 sevenRandomIndexes[2] = main_deck_wizard_1_t1.get(thirdIndex); 
                 while(sevenRandomIndexes[2] == "X") {
+                    thirdIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                     sevenRandomIndexes[2] = main_deck_wizard_1_t1.get(thirdIndex); 
                 }
             }
             if(fourthIndexFlag == true) {
-                fourthIndex = (int)(Math.random() * 64);
+                fourthIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                 sevenRandomIndexes[3] = main_deck_wizard_1_t1.get(fourthIndex); 
                 while(sevenRandomIndexes[3] == "X") {
+                    fourthIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                     sevenRandomIndexes[3] = main_deck_wizard_1_t1.get(fourthIndex); 
                 }
             }
             if(fifthIndexFlag == true) {
-                fifthIndex = (int)(Math.random() * 64);
+                fifthIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                 sevenRandomIndexes[4] = main_deck_wizard_1_t1.get(fifthIndex); 
                 while(sevenRandomIndexes[4] == "X") {
+                    fifthIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                     sevenRandomIndexes[4] = main_deck_wizard_1_t1.get(fifthIndex); 
                 }
             }
             if(sixthIndexFlag == true) {
-                sixthIndex = (int)(Math.random() * 64);
+                sixthIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                 sevenRandomIndexes[5] = main_deck_wizard_1_t1.get(sixthIndex); 
                 while(sevenRandomIndexes[5] == "X") {
+                    sixthIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                     sevenRandomIndexes[5] = main_deck_wizard_1_t1.get(sixthIndex); 
                 }
             }
             if(seventhIndexFlag == true) {
-                seventhIndex = (int)(Math.random() * 64);
+                seventhIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                 sevenRandomIndexes[6] = main_deck_wizard_1_t1.get(seventhIndex); 
                 while(sevenRandomIndexes[6] == "X") {
+                    seventhIndex = (int)(Math.random() * main_deck_wizard_1_t1.size());
                     sevenRandomIndexes[6] = main_deck_wizard_1_t1.get(seventhIndex); 
                 }
             }
+            System.out.println("Cards on display: " + sevenRandomIndexes[0] + "," + sevenRandomIndexes[1] + "," + sevenRandomIndexes[2] + "," + sevenRandomIndexes[3] + "," + sevenRandomIndexes[4] + "," + sevenRandomIndexes[5] + "," + sevenRandomIndexes[6]);
             System.out.println("First Index: " + firstIndex);
             System.out.println(sevenRandomIndexes[0]); 
             String input = ""; 
@@ -407,10 +383,12 @@ public class Test {
                     tc_deck_wizard_1_t1.set(firstIndex_, "X"); 
                     tc_deck_size--;
                     System.out.println("Size Of TC Deck: " + tc_deck_size--);
+                    sevenRandomIndexes[0] = "X";
                 } else {
                     main_deck_wizard_1_t1.set(firstIndex, "X");   
                     main_deck_size--;            
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
+                    sevenRandomIndexes[0] = "X";
                 }
                 noOfDiscards++; 
                 String input2 = ""; 
@@ -436,10 +414,12 @@ public class Test {
                     tc_deck_wizard_1_t1.set(secondIndex_, "X");
                     tc_deck_size--;
                     System.out.println("Size of TC Deck: " + tc_deck_size); 
+                    sevenRandomIndexes[1] = "X";
                 } else {
                     main_deck_wizard_1_t1.set(secondIndex, "X");
                     main_deck_size--;
                     System.out.println("Size of Main Deck: " + main_deck_size--); 
+                    sevenRandomIndexes[1] = "X";
                 }
                 noOfDiscards++; 
                 String input2 = ""; 
@@ -465,10 +445,12 @@ public class Test {
                     tc_deck_wizard_1_t1.set(thirdIndex_, "X");
                     tc_deck_size--;
                     System.out.println("Size Of TC Deck: " + tc_deck_size); 
+                    sevenRandomIndexes[2] = "X";
                 } else {
                     main_deck_wizard_1_t1.set(thirdIndex, "X");
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
+                    sevenRandomIndexes[2] = "X";
                 }                
                 noOfDiscards++; 
                 String input2 = ""; 
@@ -494,10 +476,12 @@ public class Test {
                     tc_deck_wizard_1_t1.set(fourthIndex_, "X");
                     tc_deck_size--;
                     System.out.println("Size Of TC Deck: " + tc_deck_size); 
+                    sevenRandomIndexes[3] = "X";
                 } else {
                     main_deck_wizard_1_t1.set(fourthIndex, "X");
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
+                    sevenRandomIndexes[3] = "X";
                 }      
                 noOfDiscards++; 
                 String input2 = ""; 
@@ -523,10 +507,12 @@ public class Test {
                     tc_deck_wizard_1_t1.set(fifthIndex_, "X");
                     tc_deck_size--;
                     System.out.println("Size Of TC Deck: " + tc_deck_size); 
+                    sevenRandomIndexes[4] = "X";
                 } else {
                     main_deck_wizard_1_t1.set(fifthIndex, "X");
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
+                    sevenRandomIndexes[4] = "X";
                 } 
                 noOfDiscards++; 
                 String input2 = ""; 
@@ -552,10 +538,12 @@ public class Test {
                     tc_deck_wizard_1_t1.set(sixthIndex_, "X");
                     tc_deck_size--;
                     System.out.println("Size Of TC Deck: " + tc_deck_size); 
+                    sevenRandomIndexes[5] = "X";
                 } else {
                     main_deck_wizard_1_t1.set(sixthIndex, "X");
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
+                    sevenRandomIndexes[5] = "X";
                 } 
                 noOfDiscards++; 
                 String input2 = ""; 
@@ -582,10 +570,12 @@ public class Test {
                     tc_deck_wizard_1_t1.set(seventhIndex_, "X");
                     tc_deck_size--;
                     System.out.println("Size Of TC Deck: " + tc_deck_size); 
+                    sevenRandomIndexes[6] = "X";
                 } else {
                     main_deck_wizard_1_t1.set(seventhIndex, "X");
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
+                    sevenRandomIndexes[6] = "X";
                 } 
                 noOfDiscards++; 
                 String input2 = ""; 
@@ -606,7 +596,7 @@ public class Test {
             }
             System.out.println("Number Of Discards: " + noOfDiscards);
             System.out.print(sevenRandomIndexes[0] + "," + sevenRandomIndexes[1] + "," + sevenRandomIndexes[2] + "," + sevenRandomIndexes[3] + "," + sevenRandomIndexes[4] + "," + sevenRandomIndexes[5] + "," + sevenRandomIndexes[6]); 
-            System.out.println("select 1,2,3,4,5,6,7");
+            System.out.println("select 1,2,3,4,5,6,7,pass");
             String selectInput = sc.nextLine();  
             if(selectInput.equals("1")) {
                 System.out.println("Selected: " + sevenRandomIndexes[0]);
@@ -620,12 +610,36 @@ public class Test {
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
                 } 
                 firstIndexFlag = true; 
-                secondIndexFlag = false; 
-                thirdIndexFlag = false; 
-                fourthIndexFlag = false; 
-                fifthIndexFlag = false;
-                sixthIndexFlag = false; 
-                seventhIndexFlag = false; 
+                if(sevenRandomIndexes[1].equals("X")) {
+                    secondIndexFlag = true; 
+                } else {
+                    secondIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[2].equals("X")) {
+                    thirdIndexFlag = true; 
+                } else {
+                    thirdIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[3].equals("X")) {
+                    fourthIndexFlag = true; 
+                } else {
+                    fourthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[4].equals("X")) {
+                    fifthIndexFlag = true; 
+                } else {
+                    fifthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[5].equals("X")) {
+                    sixthIndexFlag = true; 
+                } else {
+                    sixthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[6].equals("X")) {
+                    seventhIndexFlag = true; 
+                } else {
+                    seventhIndexFlag = false; 
+                }
             }   
             else if(selectInput.equals("2")) {
                 System.out.println("Selected: " + sevenRandomIndexes[1]);
@@ -638,13 +652,37 @@ public class Test {
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
                 } 
-                firstIndexFlag = false; 
+                if(sevenRandomIndexes[0].equals("X")) {
+                    firstIndexFlag = true; 
+                } else {
+                    firstIndexFlag = false;
+                }
                 secondIndexFlag = true; 
-                thirdIndexFlag = false; 
-                fourthIndexFlag = false; 
-                fifthIndexFlag = false;
-                sixthIndexFlag = false; 
-                seventhIndexFlag = false; 
+                if(sevenRandomIndexes[2].equals("X")) {
+                    thirdIndexFlag = true; 
+                } else {
+                    thirdIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[3].equals("X")) {
+                    fourthIndexFlag = true; 
+                } else {
+                    fourthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[4].equals("X")) {
+                    fifthIndexFlag = true; 
+                } else {
+                    fifthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[5].equals("X")) {
+                    sixthIndexFlag = true; 
+                } else {
+                    sixthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[6].equals("X")) {
+                    seventhIndexFlag = true; 
+                } else {
+                    seventhIndexFlag = false; 
+                }
             }  
             else if(selectInput.equals("3")) {
                 System.out.println("Selected: " + sevenRandomIndexes[2]);
@@ -657,13 +695,37 @@ public class Test {
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
                 } 
-                firstIndexFlag = false; 
-                secondIndexFlag = true; 
+                if(sevenRandomIndexes[0].equals("X")) {
+                    firstIndexFlag = true; 
+                } else {
+                    firstIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[1].equals("X")) {
+                    secondIndexFlag = true; 
+                } else {
+                    secondIndexFlag = false;
+                }
                 thirdIndexFlag = true; 
-                fourthIndexFlag = false; 
-                fifthIndexFlag = false;
-                sixthIndexFlag = false; 
-                seventhIndexFlag = false; 
+                if(sevenRandomIndexes[3].equals("X")) {
+                    fourthIndexFlag = true; 
+                } else {
+                    fourthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[4].equals("X")) {
+                    fifthIndexFlag = true; 
+                } else {
+                    fifthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[5].equals("X")) {
+                    sixthIndexFlag = true; 
+                } else {
+                    sixthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[6].equals("X")) {
+                    seventhIndexFlag = true; 
+                } else {
+                    seventhIndexFlag = false; 
+                }
             }  
             else if(selectInput.equals("4")) {
                 System.out.println("Selected: " + sevenRandomIndexes[3]);
@@ -676,13 +738,37 @@ public class Test {
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
                 } 
-                firstIndexFlag = false; 
-                secondIndexFlag = true; 
-                thirdIndexFlag = false; 
+                if(sevenRandomIndexes[0].equals("X")) {
+                    firstIndexFlag = true; 
+                } else {
+                    firstIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[1].equals("X")) {
+                    secondIndexFlag = true; 
+                } else {
+                    secondIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[2].equals("X")) {
+                    thirdIndexFlag = true; 
+                } else {
+                    thirdIndexFlag = false;
+                }
                 fourthIndexFlag = true; 
-                fifthIndexFlag = false;
-                sixthIndexFlag = false; 
-                seventhIndexFlag = false; 
+                if(sevenRandomIndexes[4].equals("X")) {
+                    fifthIndexFlag = true; 
+                } else {
+                    fifthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[5].equals("X")) {
+                    sixthIndexFlag = true;
+                } else {
+                    sixthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[6].equals("X")) {
+                    seventhIndexFlag = true; 
+                } else {
+                    seventhIndexFlag = false; 
+                }
             }  
             else if(selectInput.equals("5")) {
                 System.out.println("Selected: " + sevenRandomIndexes[4]);
@@ -695,13 +781,37 @@ public class Test {
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
                 } 
-                firstIndexFlag = false; 
-                secondIndexFlag = true; 
-                thirdIndexFlag = false; 
-                fourthIndexFlag = false; 
+                if(sevenRandomIndexes[0].equals("X")) {
+                    firstIndexFlag = true; 
+                } else {
+                    firstIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[1].equals("X")) {
+                    secondIndexFlag = true; 
+                } else {
+                    secondIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[2].equals("X")) {
+                    thirdIndexFlag = true; 
+                } else {
+                    thirdIndexFlag = false;
+                }
+                if(sevenRandomIndexes[3].equals("X")) {
+                    fourthIndexFlag = true; 
+                } else {
+                    fourthIndexFlag = false; 
+                }                
                 fifthIndexFlag = true;
-                sixthIndexFlag = false; 
-                seventhIndexFlag = false; 
+                if(sevenRandomIndexes[5].equals("X")) {
+                    sixthIndexFlag = true;
+                } else {
+                    sixthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[6].equals("X")) {
+                    seventhIndexFlag = true; 
+                } else {
+                    seventhIndexFlag = false; 
+                }
             }  
             else if(selectInput.equals("6")) {
                 System.out.println("Selected: " + sevenRandomIndexes[5]);
@@ -714,13 +824,37 @@ public class Test {
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
                 } 
-                firstIndexFlag = false; 
-                secondIndexFlag = true; 
-                thirdIndexFlag = false; 
-                fourthIndexFlag = false; 
-                fifthIndexFlag = false;
+                if(sevenRandomIndexes[0].equals("X")) {
+                    firstIndexFlag = true; 
+                } else {
+                    firstIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[1].equals("X")) {
+                    secondIndexFlag = true; 
+                } else {
+                    secondIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[2].equals("X")) {
+                    thirdIndexFlag = true; 
+                } else {
+                    thirdIndexFlag = false;
+                }
+                if(sevenRandomIndexes[3].equals("X")) {
+                    fourthIndexFlag = true; 
+                } else {
+                    fourthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[4].equals("X")) {
+                    fifthIndexFlag = true; 
+                } else {
+                    fifthIndexFlag = false; 
+                }
                 sixthIndexFlag = true; 
-                seventhIndexFlag = false; 
+                if(sevenRandomIndexes[6].equals("X")) {
+                    seventhIndexFlag = true; 
+                } else {
+                    seventhIndexFlag = false; 
+                }
             }  
             else if(selectInput.equals("7")) {
                 System.out.println("Selected: " + sevenRandomIndexes[6]);
@@ -733,15 +867,75 @@ public class Test {
                     main_deck_size--;
                     System.out.println("Size Of Main Deck: " + main_deck_size); 
                 } 
-                firstIndexFlag = false; 
-                secondIndexFlag = true; 
-                thirdIndexFlag = false; 
-                fourthIndexFlag = false; 
-                fifthIndexFlag = false;
-                sixthIndexFlag = false; 
-                seventhIndexFlag = true; 
-            }  
+                if(sevenRandomIndexes[0].equals("X")) {
+                    firstIndexFlag = true; 
+                } else {
+                    firstIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[1].equals("X")) {
+                    secondIndexFlag = true; 
+                } else {
+                    secondIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[2].equals("X")) {
+                    thirdIndexFlag = true; 
+                } else {
+                    thirdIndexFlag = false;
+                }
+                if(sevenRandomIndexes[3].equals("X")) {
+                    fourthIndexFlag = true; 
+                } else {
+                    fourthIndexFlag = false; 
+                } 
+                if(sevenRandomIndexes[4].equals("X")) {
+                    fifthIndexFlag = true; 
+                } else {
+                    fifthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[5].equals("X")) {
+                    sixthIndexFlag = true;
+                } else {
+                    sixthIndexFlag = false; 
+                }
+                seventhIndexFlag = true;
+            }
+            else if(selectInput.equals("pass")) {
+                if(sevenRandomIndexes[0].equals("X")) {
+                    firstIndexFlag = true; 
+                } else {
+                    firstIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[1].equals("X")) {
+                    secondIndexFlag = true; 
+                } else {
+                    secondIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[2].equals("X")) {
+                    thirdIndexFlag = true; 
+                } else {
+                    thirdIndexFlag = false;
+                }
+                if(sevenRandomIndexes[3].equals("X")) {
+                    fourthIndexFlag = true; 
+                } else {
+                    fourthIndexFlag = false; 
+                } 
+                if(sevenRandomIndexes[4].equals("X")) {
+                    fifthIndexFlag = true; 
+                } else {
+                    fifthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[5].equals("X")) {
+                    sixthIndexFlag = true;
+                } else {
+                    sixthIndexFlag = false; 
+                }
+                if(sevenRandomIndexes[6].equals("X")) {
+                    seventhIndexFlag = true; 
+                } else {
+                    seventhIndexFlag = false;
+                }
+            }
         }
-
     }
 }
